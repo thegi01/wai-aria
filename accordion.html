@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>Accordion | WAI-ARIA</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+		role[heading] {
+
+		}
+		role[region] {
+			display: none;
+		}
+		role[region][aria-expanded=true] {
+			display: block;
+		}
+		role[region][aria-disabled="true"] {
+			pointer-events: none;
+		}
+		*[aria-disabled="true"] {
+			pointer-events: none;
+			cursor: pointer;
+		}
+		*[aria-hidden="true"] {
+			display: none;
+		}
+
+		h1 {
+			font-size: 20px;
+		}		
+		.demo dt a[aria-expanded="true"] {
+			font-weight: bold;
+		}
+    </style>
+</head>
+<body>
+
+<div class="wrap ex">
+	<h1 class="h1">Accordion | WAI-ARIA</h1>
+
+	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>
+	
+	<div class="demo">	
+		<dl class="accordion">
+			<dt role="heading" aria-level="3">
+				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false" data-defaultopen="true">Button 1</a>
+			</dt>
+			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
+				resigon 1 <br>
+				<a href="">test</a>
+			</dd>
+
+			<dt role="heading" aria-level="3">
+				<a role="button" href="#" id="demoButton1" aria-controls="demoRegion1" aria-expanded="false">Button 2</a>
+			</dt>
+			<dd role="region" id="demoRegion1" aria-labelledby="demoButton1" aria-hidden="true">
+				resigon 2 <br>
+				<a href="">test</a>
+
+			</dd>
+
+			<dt role="heading" aria-level="3">
+				<a role="button" href="#" id="demoButton2" aria-controls="demoRegion2" aria-expanded="false">Button 3</a>
+			</dt>
+			<dd role="region" id="demoRegion2" aria-labelledby="demoButton2" aria-hidden="true">
+				resigon 3 <br>
+				<a href="">test</a>
+			</dd>
+		</dl>
+
+	</div>
+
+	<div>
+		<h3>Accordion Role</h3>
+		<ul>
+			<li>heading
+				<ul>
+					<li>buttton</li>
+				</ul>
+			</li>
+			<li>region</li>
+		</ul>
+	</div>
+
+	<div>
+		<h3>Issue</h3>
+		<ol>
+			<li>aria 속성이 모바일에서 어떻게 읽히는지 확인</li>
+		</ol>
+	</div>
+
+	
+</div>
+
+<!-- javacript -->
+<script>
+	window.onload = function(){
+
+		/* accordion in wai-aria */
+
+		var accordion = {
+			expandedHeading : undefined,
+			expand : function( object ){
+				object.setAttribute('aria-expanded', 'true');
+				object.setAttribute('aria-disabled', 'true');
+				var region = document.getElementById( object.getAttribute('aria-controls') );
+				region.setAttribute('aria-hidden', 'false');
+			},
+			collapse : function( object ){
+				object.setAttribute('aria-expanded', 'false');
+				object.setAttribute('aria-disabled', 'false');
+				var region = document.getElementById( object.getAttribute('aria-controls') );
+				region.setAttribute('aria-hidden', 'true');
+			},
+			toggle : function( object ){
+				var isOpen = object.getAttribute('aria-expanded') == 'true' ? true : false;
+
+				if(isOpen) return;
+
+				this.expand( object );
+
+				this.collapse( this.expandedHeading );
+
+				this.expandedHeading = object;
+			}
+		};
+
+		// get actions
+		var accordionActions = document.querySelectorAll('.accordion a[role=button]'); 
+
+		// default open
+		for(var i=0 ; i<accordionActions.length ; i++){
+			if( accordionActions[i].getAttribute('data-defaultopen') == 'true' ) {
+				accordion.expand( accordionActions[i] );
+				accordion.expandedHeading = accordionActions[i];
+			}
+		}
+
+		// click event
+		for(var i=0 ; i<accordionActions.length ; i++){
+			accordionActions[i].onclick = function(){
+
+				accordion.toggle(this);
+
+				if (event.preventDefault) {
+			     	event.preventDefault();
+			    } else {
+			        return false;
+			    }
+
+			};
+		}
+
+		/*var accordionExpadedHeading;
+
+		var accordionExpand = function(element){
+			element.setAttribute('aria-expanded', 'true');
+			element.setAttribute('aria-disabled', 'true');
+			var region = document.getElementById( element.getAttribute('aria-controls') );
+			region.setAttribute('aria-hidden', 'false');
+		};
+
+		var accordionCollapse = function(element){
+			element.setAttribute('aria-expanded', 'false');
+			element.setAttribute('aria-disabled', 'false');
+			var expandedRegion = document.getElementById( element.getAttribute('aria-controls') );
+			expandedRegion.setAttribute('aria-hidden', 'true');
+		};
+
+		var accordionToggle = function(element){
+
+			var isOpen = element.getAttribute('aria-expanded') == 'true' ? true : false;
+
+			if(isOpen) return;
+
+			accordionExpand( element );
+
+			accordionCollapse( accordionExpadedHeading );
+
+			accordionExpadedHeading = element;
+
+		};
+
+		// get actions
+		var accordionActions = document.querySelectorAll('.demo a[role=button]'); // lte ie9
+
+		// default open
+		for(var i=0 ; i<accordionActions.length ; i++){
+			if( accordionActions[i].getAttribute('data-defaultopen') == 'true' ) {
+				accordionExpand( accordionActions[i] );
+				accordionExpadedHeading = accordionActions[i];
+			}
+		}
+
+		// click event
+		for(var i=0 ; i<accordionActions.length ; i++){
+			accordionActions[i].onclick = function(){
+
+				accordionToggle(this);
+
+				if (event.preventDefault) {
+			     	event.preventDefault();
+			    } else {
+			        return false;
+			    }
+
+			};
+		}*/
+
+	};
+</script>
+<!-- //javacript -->
+
+</body>
+</html>
