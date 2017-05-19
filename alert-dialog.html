@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Alert Dialog (Modal) | WAI-ARIA</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        :root {
+          font-size: 100%;
+          font-family: verdana, sans-serif;
+          line-height: 1.6;
+          margin: 1em;
+          padding: 1em;
+        }
+
+        html {
+          box-sizing: border-box;
+        }
+
+        body {
+          background: #eee;
+        }
+
+        *, *:before, *:after {
+          box-sizing: inherit;
+        }
+
+        body * + * {
+          margin: 1.5rem, 1.25rem, 1.25rem;
+        }
+
+        [aria-hidden="true"] {
+          display: none;
+        }
+
+        ul {
+          margin: 0 0 1rem 0;
+          padding: 0;
+        }
+
+        li {
+          margin: 0 0 0 1rem;
+          padding: 0;
+        }
+
+        abbr {
+          border-bottom: 1px dotted blue;
+          text-decoration: none;
+        }
+
+        kbd {
+          font-size: 1rem;
+        }
+
+
+        /** alertdialog rules **/
+
+        [role="alertdialog"] {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 0.25em;
+            padding: 1.5em 2em 2em;
+            position: fixed;
+
+            /* pseudo-responsive settings */
+
+            bottom: 10%;
+            left: 10%;
+            right: 10%;
+            top: 10%;
+        }
+
+        /**
+         * Hide all subsequent siblings of alertdialog, which is a direct child of
+         * the body element.
+         */
+        [open] ~ * {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <dialog role="alertdialog" aria-hidden="true" aria-labelledby="dialogue-label">
+        <!-- We make the alertdialog a direct child of the body, 
+        so we can hide its siblings when opend.
+        The "dailgue-label" element is generated when the user opens the dialog, and placed inside the dialig itself. -->
+        <div role="document" tabindex="0">
+            <p id="dialogue-label">Click button to close the dialog</p>
+            <button role="button" type="button" id="buttonCloseDialog">Close</button>
+        </div>
+    </dialog>
+
+    <header role="banner">
+        <h1>
+            <abbr title="Web Accessibility Initiative">WAI</abbr><span>&ndash;</span><abbr title="Accessible Rich Internet Applications">ARIA</abbr>
+            Alert Dialog (Modal)
+        </h1>
+        <p>
+            &hellip; per <abbr title="Wrold-Wide Web Consortium">W3C</abbr> 
+            best practice spec at
+            <a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">https://www.w3.org/TR/wai-aria-practices/#alertdialog</a>
+        </p>
+    </header>
+
+    <main role="main">
+        <section>
+            <h2>Alert Dialog Behavior</h2>
+            <p>
+                Focus is maintained in the dialog while it is open, i.e., 
+                the <kbd>Tab</kbd> key is cancelled when user tab's out of the last element (button) in the dialog.
+            </p>
+            <p>
+                Focus is returned to the element (button) that initiated the dialog.
+            </p>
+            <p>
+                To open the dialog, navigate to the <kbd>Open</kbd> button, 
+                then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
+            </p>
+            <p>
+                To close the dialog, either press <kbd>Escape</kbd> key, or navigate to the <kbd>Close</kbd> button,
+                then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
+            </p>
+            <button type="button" data-dialog-messge="Click button to close the dialog" id="buttonOpenDialog"> <!-- aria-label ??? -->
+                Open
+            </button>
+        </section>
+    </main>
+
+    <footer role="contintinfo">
+        &copy; 2017
+    </footer>
+
+    
+<script>
+    window.onload = function(){
+        "use strict";
+
+        var alertDialog = {
+            object : document.querySelector('[role="alertdialog"]'),
+            opener : undefined,
+            open : function( opener ){
+                this.object.setAttribute('open', 'true');
+                this.object.setAttribute('aria-hidden', 'false');
+                this.object.querySelector('[tabindex="0"]').focus();
+                this.opener = opener;
+            },
+            close : function(){
+                this.object.removeAttribute('open');
+                this.object.setAttribute('aria-hidden', 'true');
+                this.opener.focus();
+                this.opener = undefined;
+            },
+            escape : function( event ){
+                var k = event.which || event.keyCode;
+                if (k == '27') {
+                  this.close();
+                }
+            }
+        };
+
+        document.getElementById('buttonOpenDialog').onclick = function(){
+            alertDialog.open( this );
+        };
+        document.getElementById('buttonCloseDialog').onclick = function(){
+            alertDialog.close();
+        };
+        document.onkeydown = function( event ){
+            alertDialog.escape( event );
+        }
+    };
+</script>
+
+</body>
+</html>

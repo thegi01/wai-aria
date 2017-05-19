@@ -45,6 +45,7 @@
 	
 	<div class="demo">	
 		<dl class="accordion">
+			
 			<dt role="heading" aria-level="3">
 				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false" data-defaultopen="true">Button 1</a>
 			</dt>
@@ -69,6 +70,7 @@
 				resigon 3 <br>
 				<a href="">test</a>
 			</dd>
+
 		</dl>
 
 	</div>
@@ -104,26 +106,24 @@
 		var accordion = {
 			expandedHeading : undefined,
 			expand : function( object ){
+				var resigon;
 				object.setAttribute('aria-expanded', 'true');
 				object.setAttribute('aria-disabled', 'true');
-				var region = document.getElementById( object.getAttribute('aria-controls') );
+				region = document.getElementById( object.getAttribute('aria-controls') );
 				region.setAttribute('aria-hidden', 'false');
 			},
 			collapse : function( object ){
+				var resigon;
 				object.setAttribute('aria-expanded', 'false');
 				object.setAttribute('aria-disabled', 'false');
-				var region = document.getElementById( object.getAttribute('aria-controls') );
+				region = document.getElementById( object.getAttribute('aria-controls') );
 				region.setAttribute('aria-hidden', 'true');
 			},
 			toggle : function( object ){
 				var isOpen = object.getAttribute('aria-expanded') == 'true' ? true : false;
-
 				if(isOpen) return;
-
 				this.expand( object );
-
 				this.collapse( this.expandedHeading );
-
 				this.expandedHeading = object;
 			}
 		};
@@ -142,17 +142,15 @@
 		// click event
 		for(var i=0 ; i<accordionActions.length ; i++){
 			accordionActions[i].onclick = function(){
-
 				accordion.toggle(this);
-
 				if (event.preventDefault) {
 			     	event.preventDefault();
 			    } else {
 			        return false;
 			    }
-
 			};
 		}
+
 
 		/*var accordionExpadedHeading;
 
