@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>Tabs | WAI-ARIA</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+</head>
+<body>
+
+	<h1 class="h1">Tabs | WAI-ARIA</h1>
+
+	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#tabpanel" target="_blank">W3 URL</a></div>
+	<ul>
+		<li> 
+			<p><strong>Tabs and tabbed Interface</strong></p>
+		 	<p>A set of tab elements and their associated tab panels. </p>
+		</li>
+		<li>
+			<p><strong>Tab List</strong></p>
+			<p>A set of tab elements contained in s tablist element</p>
+		</li>
+		<li>
+			<p><strong>tab</strong></p>
+			<p>An element in the tab list that serves as a label for one of tab panels and can be activated to display that panel</p>
+		</li>
+		<li>
+			<p><strong>tabpanel</strong></p>
+			<p>The element that contains the content associated widh a tab</p>
+		</li>
+	</ul>
+	<div>
+		When a tabbed interface is initialized, 
+			one tab panel is displayed 
+			and its associated tab is styled to indicate that it is active.
+		When the user activates one of the other tab elements, 
+			the previously displayed tab panel is hidden,
+			the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
+	</div>
+
+	<h3>Keyboard Interaction</h3>
+	<ul>
+		<li>Tab</li>
+		<li>Left Arrow, Right Arrow (Up Arrow, Down Arrow) </li>
+		<li>
+			space or enter <br>
+			Home(Optional) <br>
+			End(Optional) <br>
+			Shift + 10 <br>
+			Delete(Optinal)
+		</li>
+	</ul>
+
+	<h3>WAI-ARIA Roles, States and Properties</h3>
+	<ul>
+		<li> The element that serves ad the container for the set of tabs has role tablist. </li>
+		<li>
+			Each element that serves as a tab has role tab
+			and is contained within the element width role tablist.
+		</li>
+		<li>
+			Each element that contains the content panel for a tab has role tabpanel.
+		</li>
+		<li>
+			Each element with role tab has the proeprty aria-contorls referring to its associated tabpanel element.
+		</li>
+		<li>
+			The active tab element has the state aria-selected set to true and all other tab elements have it set to false.
+		</li>
+		<li>
+			Each element with role tabpanel has the properth aria-albelledby referring to its associated tab element.
+		</li>
+		<li>
+			If a tab element has a pop-up menu, it has the property aria-haspopup set to true.
+		</li>
+		<li>
+			If the tablist element is vertically oriented, it has the property aria-orientation set to vertical. <br>
+			The default value of aria-orientation for a tablist element is horizontal.
+		</li>
+	</ul>
+
+
+	<h2>W3 Tabs Widget Demonstrates : Design pattern for tabs</h2>
+	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/tabs/tabs.html" target="_blank">W3 Tabs Widget Example URL</a></div>
+
+	<div class="demo">	
+
+		<h3>Example</h3>
+
+		    <style>
+				.tabs {
+				    width: 20em;
+				    font-family: "lucida grande", sans-serif;
+				}
+				[role="tab"] {
+				    margin: 0 0 -2px;
+				    border: 2px solid #444;
+				    border-radius: 0.4em 0.4em 0 0;
+				    font-family: inherit;
+				    font-size: inherit;
+				    background: #fff;
+				}
+				[role="tab"][aria-selected="true"] {
+				    border-color: hsl(218, 96%, 38%);
+				    color: #fff;
+				    background: hsl(212, 96%, 38%);
+				    outline: 0;
+				}
+				[role="tab"]:hover,
+				[role="tab"]:focus {
+				    border-color: hsl(20, 96%, 38%);
+				    color: #000;
+				    background: hsl(20, 96%, 70%);
+				    outline: 0;
+				}
+				[role="tabpanel"] {
+				    position: relative;
+				    z-index: 2;
+				    padding: 0.5em;
+				    border: 2px solid #444;
+				    border-radius: 0 0.4em 0.4em 0.4em;
+				}
+				[role="tabpanel"]:focus {
+				    border-color: hsl(20, 96%, 38%);
+				    outline: 0;
+				}
+				[role="tabpanel"] p {
+				    margin: 0;
+				}
+				[role="tabpanel"] * + p {
+				    margin-top: 1em;
+				}
+		    </style>
+
+		<div class="tabs" id="tabsC">
+			<div role="tablist">
+				<button role="tab" aria-selected="true" aria-controls="nils-tab" id="nils">Nils Frahm</button>
+				<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios" tabindex="-1">Helios</button>
+				<button role="tab" aria-selected="false" aria-controls="complexcomplex" id="complex" tabindex="-1" data-lelteable="">Joke</button>
+			</div>
+			<div role="tabpanel" id="nils-tab" aria-labelledby="nils">
+				<p>Nils Frahm is a German musician, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.</p>
+			</div>
+			<div role="tabpanel" id="helios-tab" aria-labelledby="helios" hidden="">
+				<p>Helios (Keith Kenniff) is an American composer, multi-instrumentalist, and electronic music producer. He composes ambient/electronic music under the moniker Helios and post-classical piano music under Goldmund. He is also one half of the indie band Mint Julep, and ambient project "A Pale Fire". Keith is also a composer for film, television, dance and performance art. In 2010 he created the record label Unseen.</p>
+			</div>
+			<div role="tabpanel" id="complexcomplex" aria-labelledby="complex" hidden="">
+				<p>Fear of complicated buildings:</p>
+				<p>A complex complex complex.</p>
+			</div>
+		</div>
+
+		<h3>Keyboard Support</h3>
+		<table aria-labelledby="kbd_label">
+		          <thead>
+		            <tr>
+		              <th>Key</th>
+		              <th>Function</th>
+		            </tr>
+		          </thead>
+		          <tbody>
+		            <tr>
+		              <th><kbd>tab</kbd></th>
+		              <td>Moves focus to the active tab or first focusable in the tab panel.</td>
+		            </tr>
+		            <tr>
+		              <th><kbd>left arrow</kbd></th>
+		              <td>Moves focus to the previous tab.</td>
+		            </tr>
+		            <tr>
+		              <th><kbd>right arrow</kbd></th>
+		              <td>Moves focus to the next tab.</td>
+		            </tr>
+		            <tr>
+		              <th><kbd>home</kbd></th>
+		              <td>Moves focus to the first tab.</td>
+		            </tr>
+		            <tr>
+		              <th><kbd>end</kbd></th>
+		              <td>Moves focus to the last tab.</td>
+		            </tr>
+		            <tr>
+		              <th><kbd>delete</kbd></th>
+		              <td>If deletion on the selected tab is allowed this will that tab element and its associated tab panel.</td>
+		            </tr>
+		          </tbody>
+		        </table>
+		
+	</div>
+
+<!-- javacript -->
+<script>
+	
+	/* Tabs Component Control */
+	var tabsCC = function( tabsComponent ){
+		this.tabsC = tabsComponent;
+	};
+	tabsCC.prototype.init = function(){
+		this.getElements();
+		this.bind();
+	};
+	tabsCC.prototype.getElements = function(){
+		this.tabs = this.tabsC.querySelectorAll('[role="tab"]');
+		this.tabpanels = this.tabsC.querySelectorAll('[role="tabpanel"]');
+	};
+	tabsCC.prototype.bind = function(){
+		for( i=0 ; i<this.tabs.length ; i++ ){
+			this.addListener(i);
+		}
+	};
+	tabsCC.prototype.addListener = function( index ){
+		this.tabs[index].addEventListener( 'click', this.clickEventListener.bind(this) );
+		// tabs[index].addEventListener('keydown', keydownEventListener);
+		// tabs[index].addEventListener('keyup', keyupEventListener);
+	};
+	tabsCC.prototype.clickEventListener = function( event ){
+		var tab = event.target;
+		this.activateTab( tab, false );
+	};
+	tabsCC.prototype.activateTab = function( tab, sefFocus ){
+		var setFocus = setFocus || true;
+
+		this.deactivateTabs();
+
+		tab.removeAttribute('tabindex');
+		tab.setAttribute('aria-selected', 'true');
+
+		var controls = tab.getAttribute('aria-controls');
+		document.getElementById(controls).removeAttribute('hidden');
+
+		if(setFocus){
+			tab.focus();
+		}
+	};
+	tabsCC.prototype.deactivateTabs = function(){
+		var i;
+		for( i=0 ; i < this.tabs.length ; i++){
+			this.tabs[i].setAttribute('tabindex', '-1');
+			this.tabs[i].setAttribute('aria-selected', 'false');
+	    	//this.tabs[i].removeEventListener('focus', focusEventHandler);
+		}
+		for( i=0 ; i<this.tabpanels.length ; i++){
+			this.tabpanels[i].setAttribute('hidden', 'hidden');
+		}
+	};
+
+
+
+	// TabsCC 실행
+	var tabsCC = new tabsCC( document.getElementById('tabsC') );
+	tabsCC.init();
+
+
+
+/*
+	// Variable
+	var tabComponent = document.getElementById('demoTabs'),// 추후 조정,
+		tablist = tabComponent.querySelectorAll('[role="tablist"]')[0],
+		tabs,
+		tabpanels,
+		i;
+
+	// Functons
+	var getElements = function(){
+		tabs = tabComponent.querySelectorAll('[role="tab"]');
+		tabpanels = tabComponent.querySelectorAll('[role="tabpanel"]');
+	};
+
+	var deactivateTabs = function(){
+		for( i=0 ; i < tabs.length ; i++){
+			tabs[i].setAttribute('tabindex', '-1');
+			tabs[i].setAttribute('aria-selected', 'false');
+	    	//tabs[i].removeEventListener('focus', focusEventHandler);
+		}
+		for( i=0 ; i<tabpanels.length ; i++){
+			tabpanels[i].setAttribute('hidden', 'hidden');
+		}
+	};
+
+	var activateTab = function( tab, sefFocus ){
+		var setFocus = setFocus || true;
+
+		deactivateTabs();
+
+		tab.removeAttribute('tabindex');
+		tab.setAttribute('aria-selected', 'true');
+
+		var controls = tab.getAttribute('aria-controls');
+		document.getElementById(controls).removeAttribute('hidden');
+
+		if(setFocus){
+			tab.focus();
+		}
+	};
+
+	var addListener = function( index ){
+		tabs[index].addEventListener('click', clickEventListener);
+		// tabs[index].addEventListener('keydown', keydownEventListener);
+		// tabs[index].addEventListener('keyup', keyupEventListener);
+	};
+
+	var clickEventListener = function( event ){
+		var tab = event.target;
+		activateTab( tab, false );
+	};
+
+
+	// Get tabs, tabpanels 
+	getElements();
+
+	// Bind listeners
+	for( i=0 ; i<tabs.length ; i++ ){
+		addListener(i);
+	}*/
+	
+
+
+
+
+	/*(function () {
+	  var tablist = document.querySelectorAll('[role="tablist"]')[0];
+	  var tabs;
+	  var panels;
+	  var delay = determineDelay();
+
+	  generateArrays();
+
+	  function generateArrays () {
+	    tabs = document.querySelectorAll('[role="tab"]');
+	    panels = document.querySelectorAll('[role="tabpanel"]');
+	  };
+
+	  // For easy reference
+	  var keys = {
+	    end: 35,
+	    home: 36,
+	    left: 37,
+	    up: 38,
+	    right: 39,
+	    down: 40,
+	    delete: 46
+	  };
+
+	  // Add or substract depenign on key pressed
+	  var direction = {
+	    37: -1,
+	    38: -1,
+	    39: 1,
+	    40: 1
+	  };
+
+	  // Bind listeners
+	  for (i = 0; i < tabs.length; ++i) {
+	    addListeners(i);
+	  };
+
+	  function addListeners (index) {
+	    tabs[index].addEventListener('click', clickEventListener);
+	    tabs[index].addEventListener('keydown', keydownEventListener);
+	    tabs[index].addEventListener('keyup', keyupEventListener);
+
+	    // Build an array with all tabs (<button>s) in it
+	    tabs[index].index = index;
+	  };
+
+	  // When a tab is clicked, activateTab is fired to activate it
+	  function clickEventListener (event) {
+	    var tab = event.target;
+	    activateTab(tab, false);
+	  };
+
+	  // Handle keydown on tabs
+	  function keydownEventListener (event) {
+	    var key = event.keyCode;
+
+	    switch (key) {
+	      case keys.end:
+	        event.preventDefault();
+	        // Activate last tab
+	        activateTab(tabs[tabs.length - 1]);
+	        break;
+	      case keys.home:
+	        event.preventDefault();
+	        // Activate first tab
+	        activateTab(tabs[0]);
+	        break;
+
+	      // Up and down are in keydown
+	      // because we need to prevent page scroll >:)
+	      case keys.up:
+	      case keys.down:
+	        determineOrientation(event);
+	        break;
+	    };
+	  };
+
+	  // Handle keyup on tabs
+	  function keyupEventListener (event) {
+	    var key = event.keyCode;
+
+	    switch (key) {
+	      case keys.left:
+	      case keys.right:
+	        determineOrientation(event);
+	        break;
+	      case keys.delete:
+	        determineDeletable(event);
+	        break;
+	    };
+	  };
+
+	  // When a tablist�셲 aria-orientation is set to vertical,
+	  // only up and down arrow should function.
+	  // In all other cases only left and right arrow function.
+	  function determineOrientation (event) {
+	    var key = event.keyCode;
+	    var vertical = tablist.getAttribute('aria-orientation') == 'vertical';
+	    var proceed = false;
+
+	    if (vertical) {
+	      if (key === keys.up || key === keys.down) {
+	        event.preventDefault();
+	        proceed = true;
+	      };
+	    }
+	    else {
+	      if (key === keys.left || key === keys.right) {
+	        proceed = true;
+	      };
+	    };
+
+	    if (proceed) {
+	      switchTabOnArrowPress(event);
+	    };
+	  };
+
+	  // Either focus the next, previous, first, or last tab
+	  // depening on key pressed
+	  function switchTabOnArrowPress (event) {
+	    var pressed = event.keyCode;
+
+	    for (x = 0; x < tabs.length; x++) {
+	      tabs[x].addEventListener('focus', focusEventHandler);
+	    };
+
+	    if (direction[pressed]) {
+	      var target = event.target;
+	      if (target.index !== undefined) {
+	        if (tabs[target.index + direction[pressed]]) {
+	          tabs[target.index + direction[pressed]].focus();
+	        }
+	        else if (pressed === keys.left || pressed === keys.up) {
+	          focusLastTab();
+	        }
+	        else if (pressed === keys.right || pressed == keys.down) {
+	          focusFirstTab();
+	        };
+	      };
+	    };
+	  };
+
+	  // Activates any given tab panel
+	  function activateTab (tab, setFocus) {
+	    setFocus = setFocus || true;
+	    // Deactivate all other tabs
+	    deactivateTabs();
+
+	    // Remove tabindex attribute
+	    tab.removeAttribute('tabindex');
+
+	    // Set the tab as selected
+	    tab.setAttribute('aria-selected', 'true');
+
+	    // Get the value of aria-controls (which is an ID)
+	    var controls = tab.getAttribute('aria-controls');
+
+	    // Remove hidden attribute from tab panel to make it visible
+	    document.getElementById(controls).removeAttribute('hidden');
+
+	    // Set focus when required
+	    if (setFocus) {
+	      tab.focus();
+	    };
+	  };
+
+	  // Deactivate all tabs and tab panels
+	  function deactivateTabs () {
+	    for (t = 0; t < tabs.length; t++) {
+	      tabs[t].setAttribute('tabindex', '-1');
+	      tabs[t].setAttribute('aria-selected', 'false');
+	      tabs[t].removeEventListener('focus', focusEventHandler);
+	    };
+
+	    for (p = 0; p < panels.length; p++) {
+	      panels[p].setAttribute('hidden', 'hidden');
+	    };
+	  };
+
+	  // Make a guess
+	  function focusFirstTab () {
+	    tabs[0].focus();
+	  };
+
+	  // Make a guess
+	  function focusLastTab () {
+	    tabs[tabs.length - 1].focus();
+	  };
+
+	  // Detect if a tab is deletable
+	  function determineDeletable (event) {
+	    target = event.target;
+
+	    if (target.getAttribute('data-deletable') !== null) {
+	      // Delete target tab
+	      deleteTab(event, target);
+
+	      // Update arrays related to tabs widget
+	      generateArrays();
+
+	      // Activate the first tab
+	      activateTab(tabs[0]);
+	    };
+	  };
+
+	  // Deletes a tab and its panel
+	  function deleteTab (event) {
+	    var target = event.target;
+	    var panel = document.getElementById(target.getAttribute('aria-controls'));
+
+	    target.parentElement.removeChild(target);
+	    panel.parentElement.removeChild(panel);
+	  };
+
+	  // Determine whether there should be a delay
+	  // when user navigates with the arrow keys
+	  function determineDelay () {
+	    var hasDelay = tablist.hasAttribute('data-delay');
+	    var delay = 0;
+
+	    if (hasDelay) {
+	      var delayValue = tablist.getAttribute('data-delay');
+	      if (delayValue) {
+	        delay = delayValue;
+	      }
+	      else {
+	        // If no value is specified, default to 300ms
+	        delay = 300;
+	      };
+	    };
+
+	    return delay;
+	  };
+
+	  //
+	  function focusEventHandler (event) {
+	    var target = event.target;
+
+	    setTimeout(checkTabFocus, delay, target);
+	  };
+
+	  // Only activate tab on focus if it still has focus after the delay
+	  function checkTabFocus (target) {
+	    focused = document.activeElement;
+
+	    if (target === focused) {
+	      activateTab(target, false);
+	    };
+	  };
+	})();*/
+</script>
+<!-- //javacript -->
+
+</body>
+</html>
