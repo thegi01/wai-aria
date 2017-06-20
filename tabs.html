@@ -202,180 +202,182 @@
 		this.component = tabsComponent;
 	  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
 	};
-	tabsCC.prototype.init = function(){
-		this.getElements();
-		this.bind();
-		this.determineDelay();
-	};
-	tabsCC.prototype.getElements = function(){
-		this.tabs = this.component.querySelectorAll('[role="tab"]');
-		this.tabpanels = this.component.querySelectorAll('[role="tabpanel"]');
-	};
-	tabsCC.prototype.bind = function(){
-		for( i=0 ; i<this.tabs.length ; i++ ){
-			this.addListeners(i);
-		}
-	};
-	tabsCC.prototype.addListeners = function( index ){
-		this.tabs[index].addEventListener( 'click', this.clickEventListener.bind(this) );
-		this.tabs[index].addEventListener( 'keydown', this.keydownEventListener.bind(this) );
-		this.tabs[index].addEventListener( 'keyup', this.keyupEventListener.bind(this) );
-		// Build an array with all tabs (<button>s) in it
-		this.tabs[index].index = index;
-	};
-	tabsCC.prototype.clickEventListener = function( event ){
-		var tab = event.target;
-		this.activateTab( tab, false );
-	};
-	tabsCC.prototype.keydownEventListener = function( event ){
-		var key = event.keyCode;
-		switch( key ){
-			case this.keys.end:
-				event.preventDefault();
-				this.activateTab( tabs[tabs.length-1] );
-				break;
-			case this.keys.home:
-				event.preventDefault();
-				this.activateTab( tabs[0] );
-				break;
-			case this.keys.up:
-			case this.keys.down:
-				this.determineOrientation.call(this, event);
-				break;
-		};
-	};
-	tabsCC.prototype.keyupEventListener = function( event ){
-		var key = event.keyCode;
-		switch( key ){
-			case this.keys.left:
-			case this.keys.right:
-				this.determineOrientation.call( this, event );
-				break;
-			case this.keys.delete:
-				this.determineDeletable.call(this, event);
-				break;
-		}
-	};
-	tabsCC.prototype.determineDelay = function(){
-		var hasDelay = this.tablist.hasAttribute('data-delay');
-		this.delay = 0;
-		if(hasDelay){
-			var delayValue = this.tablist.getAttribute('data-delay');
-			if(delayValue){
-				this.delay = delayValue;
-			} else {
-				this.delay = 300;
+	tabsCC.prototype = {
+		init : function(){
+			this.getElements();
+			this.bind();
+			this.determineDelay();
+		},
+		getElements : function(){
+			this.tabs = this.component.querySelectorAll('[role="tab"]');
+			this.tabpanels = this.component.querySelectorAll('[role="tabpanel"]');
+		},
+		bind : function(){
+			for( i=0 ; i<this.tabs.length ; i++ ){
+				this.addListeners(i);
 			}
-		}
-	};
-	tabsCC.prototype.determineOrientation = function( event ){
-		var key = event.keyCode;
-		var vertical = this.tablist.getAttribute('aria-orientation') == 'vertical';
-		var proceed = false;
-		if(vertical){
-			if( key === this.keys.up || key === this.keys.down){
-				event.preventDefault();
-				proceed = true;
+		},
+		addListeners : function( index ){
+			this.tabs[index].addEventListener( 'click', this.clickEventListener.bind(this) );
+			this.tabs[index].addEventListener( 'keydown', this.keydownEventListener.bind(this) );
+			this.tabs[index].addEventListener( 'keyup', this.keyupEventListener.bind(this) );
+			this.tabs[index].index = index;
+		},
+		clickEventListener : function( event ){
+			var tab = event.target;
+			this.activateTab( tab, false );
+		},
+		keydownEventListener : function( event ){
+			var key = event.keyCode;
+			switch( key ){
+				case this.keys.end:
+					event.preventDefault();
+					this.activateTab( tabs[tabs.length-1] );
+					break;
+				case this.keys.home:
+					event.preventDefault();
+					this.activateTab( tabs[0] );
+					break;
+				case this.keys.up:
+				case this.keys.down:
+					this.determineOrientation.call(this, event);
+					break;
+			};
+		},
+		keyupEventListener : function( event ){
+			var key = event.keyCode;
+			switch( key ){
+				case this.keys.left:
+				case this.keys.right:
+					this.determineOrientation.call( this, event );
+					break;
+				case this.keys.delete:
+					this.determineDeletable.call(this, event);
+					break;
 			}
-		} else {
-			if( key == this.keys.left || key === this.keys.right ){
-				proceed = true;
-			}
-		}
-		if(proceed){
-			this.switchTabOnArrowPress.call( this, event );
-		}
-	};
-	tabsCC.prototype.switchTabOnArrowPress = function( event ){
-		var pressed = event.keyCode;
-		for( var i=0 ; i<this.tabs.length ; i++){
-			this.tabs[i].addEventListener( 'focus', this.focusEventHandler.bind(this) );
-		}
-		if( this.direction[pressed] ){
-			var target = event.target;
-			if( target.index !== undefined){
-				if (this.tabs[target.index + this.direction[pressed]]) {
-					this.tabs[target.index + this.direction[pressed]].focus();
-				} else if( pressed === this.keys.left || pressed == this.keys.up ){
-					this.focusLastTab();
-				} else if( pressed === this.keys.right || pressed === this.keys.down ){
-					this.focusFirstTab();
+		},
+		determineDelay : function(){
+			var hasDelay = this.tablist.hasAttribute('data-delay');
+			this.delay = 0;
+			if(hasDelay){
+				var delayValue = this.tablist.getAttribute('data-delay');
+				if(delayValue){
+					this.delay = delayValue;
+				} else {
+					this.delay = 3000;
 				}
 			}
-		}
-	};
-	tabsCC.prototype.focusEventHandler = function( event ){
-		var target = event.target;
-		setTimeout(
-			this.checkTabFocus.bind(this, target)
-		, this.delay );
-	};
-	tabsCC.prototype.checkTabFocus = function( target ){
-		var focused = document.activeElement;
-		if(target === focused){
-			this.activateTab(target, false);
-		}
-	};
-	tabsCC.prototype.activateTab = function( tab, sefFocus ){
-		var setFocus = setFocus || true;
+		},
+		determineOrientation : function( event ){
+			var key = event.keyCode;
+			var vertical = this.tablist.getAttribute('aria-orientation') == 'vertical';
+			var proceed = false;
+			if(vertical){
+				if( key === this.keys.up || key === this.keys.down){
+					event.preventDefault();
+					proceed = true;
+				}
+			} else {
+				if( key == this.keys.left || key === this.keys.right ){
+					proceed = true;
+				}
+			}
+			if(proceed){
+				this.switchTabOnArrowPress.call( this, event );
+			}
+		},
+		switchTabOnArrowPress : function( event ){
+			var pressed = event.keyCode;
+			for( var i=0 ; i<this.tabs.length ; i++){
+				this.tabs[i].addEventListener( 'focus', this.focusEventHandler.bind(this) );
+			}
+			if( this.direction[pressed] ){
+				var target = event.target;
+				if( target.index !== undefined){
+					if (this.tabs[target.index + this.direction[pressed]]) {
+						this.tabs[target.index + this.direction[pressed]].focus();
+					} else if( pressed === this.keys.left || pressed == this.keys.up ){
+						this.focusLastTab();
+					} else if( pressed === this.keys.right || pressed === this.keys.down ){
+						this.focusFirstTab();
+					}
+				}
+			}
+		},
+		focusEventHandler : function( event ){
+			var target = event.target;
+			setTimeout(
+				this.checkTabFocus.bind(this, target)
+			, this.delay );
+		},
+		checkTabFocus : function( target ){
+			var focused = document.activeElement;
+			if(target === focused){
+				this.activateTab(target, false);
+			}
+		},
+		activateTab : function( tab, sefFocus ){
+			var setFocus = setFocus || true;
 
-		this.deactivateTabs();
+			this.deactivateTabs();
 
-		tab.removeAttribute('tabindex');
-		tab.setAttribute('aria-selected', 'true');
+			tab.removeAttribute('tabindex');
+			tab.setAttribute('aria-selected', 'true');
 
-		var controls = tab.getAttribute('aria-controls');
-		document.getElementById(controls).removeAttribute('hidden');
+			var controls = tab.getAttribute('aria-controls');
+			document.getElementById(controls).removeAttribute('hidden');
 
-		if(setFocus){
-			tab.focus();
+			if(setFocus){
+				tab.focus();
+			}
+		},
+		deactivateTabs : function(){
+			var i;
+			for( i=0 ; i < this.tabs.length ; i++){
+				this.tabs[i].setAttribute('tabindex', '-1');
+				this.tabs[i].setAttribute('aria-selected', 'false');
+		    	this.tabs[i].removeEventListener('focus', this.focusEventHandler);
+			}
+			for( i=0 ; i<this.tabpanels.length ; i++){
+				this.tabpanels[i].setAttribute('hidden', 'hidden');
+			}
+		},
+		focusFirstTab : function(){
+			this.tabs[0].focus();
+		},
+		focusLastTab : function(){
+			this.tabs[this.tabs.length-1].focus();
+		},
+		determineDeletable : function( event ){
+			var target = event.target;
+			if(target.getAttribute('data-deletable') !== null){
+				this.deleteTab(target);
+				this.getElements();
+				this.activateTab(this.tabs[0]);
+			}
+		},
+		deleteTab : function( target ){
+			var panel = document.getElementById(target.getAttribute('aria-controls'));
+			target.parentElement.removeChild(target);
+			panel.parentElement.removeChild(panel);
+		},
+		keys : {
+			end: 35,
+			home: 36,
+			left: 37,
+			up: 38,
+			right: 39,
+			down: 40,
+			delete: 46 //91
+		},
+		direction : {
+			37 : -1, 	// left
+			38 : -1,	// up
+			39 : 1,		// right
+			40 : 1 		// down
 		}
-	};
-	tabsCC.prototype.deactivateTabs = function(){
-		var i;
-		for( i=0 ; i < this.tabs.length ; i++){
-			this.tabs[i].setAttribute('tabindex', '-1');
-			this.tabs[i].setAttribute('aria-selected', 'false');
-	    	this.tabs[i].removeEventListener('focus', this.focusEventHandler);
-		}
-		for( i=0 ; i<this.tabpanels.length ; i++){
-			this.tabpanels[i].setAttribute('hidden', 'hidden');
-		}
-	};
-	tabsCC.prototype.focusFirstTab = function(){
-		this.tabs[0].focus();
-	};
-	tabsCC.prototype.focusLastTab = function(){
-		this.tabs[this.tabs.length-1].focus();
-	};
-	tabsCC.prototype.determineDeletable = function( event ){
-		var target = event.target;
-		if(target.getAttribute('data-deletable') !== null){
-			this.deleteTab(target);
-			this.getElements();
-			this.activateTab(this.tabs[0]);
-		}
-	};
-	tabsCC.prototype.deleteTab = function( target ){
-		var panel = document.getElementById(target.getAttribute('aria-controls'));
-		target.parentElement.removeChild(target);
-		panel.parentElement.removeChild(panel);
-	};
-	tabsCC.prototype.keys = {
-		end: 35,
-		home: 36,
-		left: 37,
-		up: 38,
-		right: 39,
-		down: 40,
-		delete: 46 //91
-	};
-	tabsCC.prototype.direction = {
-		37 : -1, 	// left
-		38 : -1,	// up
-		39 : 1,		// right
-		40 : 1 		// down
-	};
+	}
+	
 
 	// TabsCC 실행
 	var tabsCC = new tabsCC( document.getElementById('tabsC') );
