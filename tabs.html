@@ -198,11 +198,11 @@
 
 	/* Tabs Component Control */
 	// GTE IE9
-	var tabsCC = function( tabsComponent ){
+	var TabsCC = function( tabsComponent ){
 		this.compnt = tabsComponent;
 	  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
 	};
-	tabsCC.prototype = {
+	TabsCC.prototype = {
 		init : function(){
 			this.getElements();
 			this.bind();
@@ -378,7 +378,7 @@
 	
 
 	// TabsCC 실행
-	var tabsCC = new tabsCC( document.getElementById('tabsC') );
+	var tabsCC = new TabsCC( document.getElementById('tabsC') );
 	tabsCC.init();
 
 </script>
