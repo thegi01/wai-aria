@@ -44,12 +44,12 @@
 	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>
 	
 	<div class="demo">	
-		<dl class="accordion">
+		<dl class="accordion" id="accordionC">
 			
 			<dt role="heading" aria-level="3">
-				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false" data-defaultopen="true">Button 1</a>
+				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="true" aria-disabled="true" data-defaultopen="true">Button 1</a>
 			</dt>
-			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
+			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="false">
 				resigon 1 <br>
 				<a href="">test</a>
 			</dd>
@@ -99,10 +99,66 @@
 
 <!-- javacript -->
 <script>
+
+	/* 2017.06.21 js 재수정 */
+	var AccordionCC = function( accordionCompnt ){
+		this.compnt = accordionCompnt;
+	};
+	AccordionCC.prototype = {
+		init : function(){
+			this.getElements();
+			this.bind();
+		},
+		getElements : function(){
+			this.buttons = this.compnt.querySelectorAll('[role="button"]');
+			// this.panels = this.compnt.querySelectorAll('[role="region"]');
+			this.expandedHeading = this.buttons[0];
+		},
+		bind : function(){
+			for(var i=0 ; i<this.buttons.length ; i++){
+				this.addListeners(i);
+			}
+		},
+		addListeners : function( index ){
+			var button = this.buttons[index];
+			button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
+		},
+		clickEventListener : function( button ){
+			event.preventDefault()
+			this.toggle( button );
+		},
+		expand : function( button ){
+			button.setAttribute('aria-expanded', 'true');
+			button.setAttribute('aria-disabled', 'true');
+			var controls = button.getAttribute('aria-controls');
+			document.getElementById(controls).setAttribute('aria-hidden', 'false');
+		},
+		collapse : function( button ){
+			button.setAttribute('aria-expanded', 'false');
+			button.setAttribute('aria-disabled', 'false');
+			var controls = button.getAttribute('aria-controls');
+			document.getElementById(controls).setAttribute('aria-hidden', 'true');
+		},
+		toggle : function( button ){
+			var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
+			if(isOpen) return;
+			this.expand( button );
+			this.collapse( this.expandedHeading );
+			this.expandedHeading = button;
+		}
+	}
+
+	var accordionCC = new AccordionCC( document.getElementById('accordionC') );
+	accordionCC.init();
+
+
+
+
+	/* old */
 	window.onload = function(){
 
 		/* accordion in wai-aria */
-
+/*
 		var accordion = {
 			expandedHeading : undefined,
 			expand : function( object ){
@@ -150,7 +206,7 @@
 			    }
 			};
 		}
-
+*/
 
 		/*var accordionExpadedHeading;
 
