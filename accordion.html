@@ -151,7 +151,7 @@
 			<dt role="heading" aria-level="3">
 				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false">Button 1</a>
 			</dt>
-			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="false">
+			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
 				resigon 1 <br>
 				<a href="">test</a>
 			</dd>
@@ -177,18 +177,20 @@
 			/* 2017.06.21 js 재수정 */
 			var AccordionCC = function( accordionCompnt ){
 				this.compnt = accordionCompnt;
+				this.allowToggle = true;
+				this.getElements();
 			};
 			AccordionCC.prototype = {
-				init : function( index, boolean ){
-					this.getElements();
-					this.bind();
-					this.allowToggle = boolean;
-					this.expand(this.buttons[index]);
-					this.expandedHeading = this.buttons[index];
-				},
 				getElements : function(){
 					this.buttons = this.compnt.querySelectorAll('[role="button"]');
 					this.expandedHeading = this.buttons[0];
+				},
+				init : function( index ){
+					index = index ||  0;
+					this.expand( this.buttons[index] );
+					this.expandedHeading = this.buttons[index];
+					
+					this.bind();
 				},
 				bind : function(){
 					for(var i=0 ; i<this.buttons.length ; i++){
@@ -207,7 +209,7 @@
 				keydownEventListener : function( button ){
 					var key = event.keyCode;
 					switch( key ) {
-						case this.keys.space :
+						case keyCodes.space :
 							this.toggle( button );
 							break;
 					}
@@ -241,14 +243,17 @@
 						this.collapse();
 						this.expandedHeading = button;
 					}
-				},
-				keys : {
-					space : 32
 				}
 			}
 
+			var keyCodes = {
+				space: 32
+			}
+
 			var accordionCC = new AccordionCC( document.getElementById('accordionC') );
-			accordionCC.init( 0, true ); // init index, allowToggle
+			// accordionCC.allowToggle = false; // allowToggle, default : true
+			accordionCC.init( 1 ); // Visible heading index, default : 0
+
 		</script>
 	</div>
 	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>

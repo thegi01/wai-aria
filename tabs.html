@@ -138,8 +138,8 @@
 		<div class="tabs" id="tabsC">
 			<div role="tablist">
 				<button role="tab" aria-selected="true" aria-controls="nils-tab" id="nils">Nils Frahm</button>
-				<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios" tabindex="-1">Helios</button>
-				<button role="tab" aria-selected="false" aria-controls="complexcomplex" id="complex" tabindex="-1" data-deletable="true">Joke</button>
+				<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios">Helios</button>
+				<button role="tab" aria-selected="false" aria-controls="complexcomplex" id="complex" data-deletable="true">Joke</button>
 			</div>
 			<div role="tabpanel" id="nils-tab" aria-labelledby="nils">
 				<p>Nils Frahm is a German musician, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.</p>
@@ -201,16 +201,19 @@
 	var TabsCC = function( tabsComponent ){
 		this.compnt = tabsComponent;
 	  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
+	  	this.getElements();
 	};
 	TabsCC.prototype = {
-		init : function(){
-			this.getElements();
-			this.bind();
-			this.determineDelay();
-		},
 		getElements : function(){
 			this.tabs = this.compnt.querySelectorAll('[role="tab"]');
 			this.tabpanels = this.compnt.querySelectorAll('[role="tabpanel"]');
+		},
+		init : function( index ){
+			index = index || 0;
+			this.activateTab( this.tabs[index], false );
+			
+	  		this.bind();
+	  		this.determineDelay();
 		},
 		bind : function(){
 			for( i=0 ; i<this.tabs.length ; i++ ){
@@ -230,16 +233,16 @@
 		keydownEventListener : function( event ){
 			var key = event.keyCode;
 			switch( key ){
-				case this.keys.end:
+				case keyCodes.end:
 					event.preventDefault();
 					this.activateTab( tabs[tabs.length-1] );
 					break;
-				case this.keys.home:
+				case keyCodes.home:
 					event.preventDefault();
 					this.activateTab( tabs[0] );
 					break;
-				case this.keys.up:
-				case this.keys.down:
+				case keyCodes.up:
+				case keyCodes.down:
 					this.determineOrientation.call(this, event);
 					break;
 			};
@@ -247,11 +250,11 @@
 		keyupEventListener : function( event ){
 			var key = event.keyCode;
 			switch( key ){
-				case this.keys.left:
-				case this.keys.right:
+				case keyCodes.left:
+				case keyCodes.right:
 					this.determineOrientation.call( this, event );
 					break;
-				case this.keys.delete:
+				case keyCodes.delete:
 					this.determineDeletable.call(this, event);
 					break;
 			}
@@ -273,12 +276,12 @@
 				vertical = this.tablist.getAttribute('aria-orientation') == 'vertical',
 				proceed = false;
 			if( vertical ){
-				if( key === this.keys.up || key === this.keys.down){
+				if( key === keyCodes.up || key === keyCodes.down){
 					event.preventDefault();
 					proceed = true;
 				}
 			} else {
-				if( key == this.keys.left || key === this.keys.right ){
+				if( key == keyCodes.left || key === keyCodes.right ){
 					proceed = true;
 				}
 			}
@@ -296,9 +299,9 @@
 				if( target.index !== undefined){
 					if (this.tabs[target.index + this.direction[pressed]]) {
 						this.tabs[target.index + this.direction[pressed]].focus();
-					} else if( pressed === this.keys.left || pressed == this.keys.up ){
+					} else if( pressed === keyCodes.left || pressed == keyCodes.up ){
 						this.focusLastTab();
-					} else if( pressed === this.keys.right || pressed === this.keys.down ){
+					} else if( pressed === keyCodes.right || pressed === keyCodes.down ){
 						this.focusFirstTab();
 					}
 				}
@@ -359,15 +362,6 @@
 			target.parentElement.removeChild(target);
 			panel.parentElement.removeChild(panel);
 		},
-		keys : {
-			end: 35,
-			home: 36,
-			left: 37,
-			up: 38,
-			right: 39,
-			down: 40,
-			delete: 46 //91
-		},
 		direction : {
 			37 : -1, 	// left
 			38 : -1,	// up
@@ -375,11 +369,25 @@
 			40 : 1 		// down
 		}
 	}
+
+	var keyCodes = {
+		end: 35,
+		home: 36,
+		left: 37,
+		up: 38,
+		right: 39,
+		down: 40,
+		delete: 46 //91
+	}
 	
 
 	// TabsCC 실행
 	var tabsCC = new TabsCC( document.getElementById('tabsC') );
-	tabsCC.init();
+	tabsCC.init( 1 ); // Visible tab index, default : 0
+
+
+
+
 
 </script>
 <!-- //javacript -->
