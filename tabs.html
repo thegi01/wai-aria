@@ -199,7 +199,7 @@
 	/* Tabs Component Control */
 	// GTE IE9
 	var tabsCC = function( tabsComponent ){
-		this.component = tabsComponent;
+		this.compnt = tabsComponent;
 	  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
 	};
 	tabsCC.prototype = {
@@ -209,8 +209,8 @@
 			this.determineDelay();
 		},
 		getElements : function(){
-			this.tabs = this.component.querySelectorAll('[role="tab"]');
-			this.tabpanels = this.component.querySelectorAll('[role="tabpanel"]');
+			this.tabs = this.compnt.querySelectorAll('[role="tab"]');
+			this.tabpanels = this.compnt.querySelectorAll('[role="tabpanel"]');
 		},
 		bind : function(){
 			for( i=0 ; i<this.tabs.length ; i++ ){
@@ -259,7 +259,7 @@
 		determineDelay : function(){
 			var hasDelay = this.tablist.hasAttribute('data-delay');
 			this.delay = 0;
-			if(hasDelay){
+			if( hasDelay ){
 				var delayValue = this.tablist.getAttribute('data-delay');
 				if(delayValue){
 					this.delay = delayValue;
@@ -269,10 +269,10 @@
 			}
 		},
 		determineOrientation : function( event ){
-			var key = event.keyCode;
-			var vertical = this.tablist.getAttribute('aria-orientation') == 'vertical';
-			var proceed = false;
-			if(vertical){
+			var key = event.keyCode,
+				vertical = this.tablist.getAttribute('aria-orientation') == 'vertical',
+				proceed = false;
+			if( vertical ){
 				if( key === this.keys.up || key === this.keys.down){
 					event.preventDefault();
 					proceed = true;
@@ -282,7 +282,7 @@
 					proceed = true;
 				}
 			}
-			if(proceed){
+			if( proceed ){
 				this.switchTabOnArrowPress.call( this, event );
 			}
 		},
@@ -306,9 +306,7 @@
 		},
 		focusEventHandler : function( event ){
 			var target = event.target;
-			setTimeout(
-				this.checkTabFocus.bind(this, target)
-			, this.delay );
+			setTimeout( this.checkTabFocus.bind(this, target), this.delay );
 		},
 		checkTabFocus : function( target ){
 			var focused = document.activeElement;
@@ -333,7 +331,7 @@
 		},
 		deactivateTabs : function(){
 			var i;
-			for( i=0 ; i < this.tabs.length ; i++){
+			for( i=0 ; i<this.tabs.length ; i++){
 				this.tabs[i].setAttribute('tabindex', '-1');
 				this.tabs[i].setAttribute('aria-selected', 'false');
 		    	this.tabs[i].removeEventListener('focus', this.focusEventHandler);
