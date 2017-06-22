@@ -23,34 +23,172 @@
 <body>
 
 	<main class="wrap ex">
-		<h1>Accordion | WAI-ARIA</h1>
+		<h1>Accordion (Sections With Show/Hide Functionality)</h1>
 		
+		<p>
+			An accordion is a vertically stacked set of elements, such as labels or thumbnails, that allow the user to toggle the display of sections of content. <br>
+			Each labeling element can be expanded or collapsed to reveal or hide its associated content. <br>
+			Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
+		</p>
+		<h3>Terms for understanding accordions include:</h3>
+		<ul>
+			<li>
+				<p><strong>Accordion Header:</strong></p>
+				<p>
+					Label for or thumbnail representing a section of content that also serves as a control for showing, and in some implementations, hiding the section of content.
+				</p>
+			</li>
+			<li>
+				<p><strong>Accordion Panel:</strong></p>
+				<p>
+					Section of content associated with an accordion header. <br>
+					In some accordions, there are additional elements that are always visible adjacent to the accordion header. <br>
+					For instance, a menubutton may accompany each accordion header to provide access to actions that apply to that section. <br>
+					And, in some cases, a snippet of the hidden content may also be visually persistent.
+				</p>
+			</li>
+		</ul>
+
+
 		<section>
-			<h2>Accordion (Sections With Show/Hide Functionality)</h2>
-			<p>
-				An accordion is a vertically stacked set of elements, such as labels or thumbnails, that allow the user to toggle the display of sections of content. <br>
-				Each labeling element can be expanded or collapsed to reveal or hide its associated content. <br>
-				Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
-			</p>
-			<div>
-				<h4>Terms for understanding accordions include:</h4>
-				<ul>
-					<li>
-						<p><strong>Accordion Header:</strong></p>
-						<p>
-							Label for or thumbnail representing a section of content that also serves as a control for showing, and in some implementations, hiding the section of content.
-						</p>
-					</li>
-					<li>
-						<p><strong>Accordion Panel:</strong></p>
-						<p>
-							Section of content associated with an accordion header. <br>
-							In some accordions, there are additional elements that are always visible adjacent to the accordion header. <br>
-							For instance, a menubutton may accompany each accordion header to provide access to actions that apply to that section. <br>
-							And, in some cases, a snippet of the hidden content may also be visually persistent.
-						</p>
-					</li>
-				</ul>
+			<h2>Example</h2>
+			<div class="demo">	
+			    <style>
+					role[heading] {
+
+					}
+					role[region] {
+						display: none;
+					}
+					role[region][aria-expanded=true] {
+						display: block;
+					}
+					role[region][aria-disabled="true"] {
+						pointer-events: none;
+					}
+					*[aria-disabled="true"] {
+						pointer-events: none;
+						cursor: pointer;
+					}
+					*[aria-hidden="true"] {
+						display: none;
+					}
+					.demo {
+						margin-bottom: 1em;
+						padding: 0 1em;
+						border: 1px solid #ccc;
+					}	
+					.demo dt a[aria-expanded="true"] {
+						font-weight: bold;
+					}
+			    </style>
+				<dl class="accordion" id="accordion">
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="accordion-button-0" aria-controls="accordion-region-0" aria-expanded="false">Button 1</a>
+					</dt>
+					<dd role="region" id="accordion-region-0" aria-labelledby="accordion-button-0" aria-hidden="true">
+						resigon 1 <br>
+						<a href="">test</a>
+					</dd>
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="accordion-button-1" aria-controls="accordion-region-1" aria-expanded="false">Button 2</a>
+					</dt>
+					<dd role="region" id="accordion-region-1" aria-labelledby="accordion-button-1" aria-hidden="true">
+						resigon 2 <br>
+						<a href="">test</a>
+					</dd>
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="accordion-button-2" aria-controls="accordion-region-2" aria-expanded="false">Button 3</a>
+					</dt>
+					<dd role="region" id="accordion-region-2" aria-labelledby="accordion-button-2" aria-hidden="true">
+						resigon 3 <br>
+						<a href="">test</a>
+					</dd>
+				</dl>
+				<script>
+
+					/* 2017.06.21 js 재수정 */
+					var AccordionCC = function( accordionCompnt ){
+						this.compnt = accordionCompnt;
+						this.allowToggle = true;
+						this.getElements();
+					};
+					AccordionCC.prototype = {
+						getElements : function(){
+							this.buttons = this.compnt.querySelectorAll('[role="button"]');
+							this.expandedHeading = this.buttons[0];
+						},
+						init : function( index ){
+							index = index ||  0;
+							this.expand( this.buttons[index] );
+							this.expandedHeading = this.buttons[index];
+
+							this.bind();
+						},
+						bind : function(){
+							for(var i=0 ; i<this.buttons.length ; i++){
+								this.addListeners(i);
+							}
+						},
+						addListeners : function( index ){
+							var button = this.buttons[index];
+							button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
+							button.addEventListener( 'keydown', this.keydownEventListener.bind(this, button) );
+						},
+						clickEventListener : function( button ){
+							event.preventDefault();
+							this.toggle( button );
+						},
+						keydownEventListener : function( button ){
+							var key = event.keyCode;
+							switch( key ) {
+								case keyCodes.space :
+									event.preventDefault();
+									this.toggle( button );
+									break;
+							}
+						},
+						expand : function( button ){
+							button.setAttribute('aria-expanded', 'true');
+							if(!this.allowToggle) {
+								button.setAttribute('aria-disabled', 'true');
+							}
+							var controls = button.getAttribute('aria-controls');
+							document.getElementById(controls).setAttribute('aria-hidden', 'false');
+						},
+						collapse : function(){
+							var button = this.expandedHeading;
+							if(button){
+								button.setAttribute('aria-expanded', 'false');
+								if(!this.allowToggle){
+									button.setAttribute('aria-disabled', 'false');
+								}
+								var controls = button.getAttribute('aria-controls');
+								document.getElementById(controls).setAttribute('aria-hidden', 'true');
+							}
+						},
+						toggle : function( button ){
+							var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
+							if(isOpen && this.allowToggle){
+								this.collapse( this.expandedHeading );
+								this.expandedHeading = null;
+							} else if(!isOpen) {
+								this.expand( button );
+								this.collapse();
+								this.expandedHeading = button;
+							}
+						}
+					}
+
+					var keyCodes = {
+						space: 32
+					}
+
+					var accordionCC = new AccordionCC( document.getElementById('accordion') );
+					// accordionCC.allowToggle = false; // allowToggle, default : true
+					accordionCC.init( 1 ); // Visible heading index, default : 0
+
+				</script>
 			</div>
 		</section>
 		
@@ -133,154 +271,18 @@
 		</section>
 
 		<section>
-			<h2>Example</h2>
-			<div class="demo">	
-			    <style>
-					role[heading] {
-
-					}
-					role[region] {
-						display: none;
-					}
-					role[region][aria-expanded=true] {
-						display: block;
-					}
-					role[region][aria-disabled="true"] {
-						pointer-events: none;
-					}
-					*[aria-disabled="true"] {
-						pointer-events: none;
-						cursor: pointer;
-					}
-					*[aria-hidden="true"] {
-						display: none;
-					}
-					.demo {
-						margin: 1em;
-						padding: 0 1em;
-						border: 1px solid #ccc;
-					}	
-					.demo dt a[aria-expanded="true"] {
-						font-weight: bold;
-					}
-			    </style>
-				<dl class="accordion" id="accordionC">
-					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false">Button 1</a>
-					</dt>
-					<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
-						resigon 1 <br>
-						<a href="">test</a>
-					</dd>
-
-					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="demoButton1" aria-controls="demoRegion1" aria-expanded="false">Button 2</a>
-					</dt>
-					<dd role="region" id="demoRegion1" aria-labelledby="demoButton1" aria-hidden="true">
-						resigon 2 <br>
-						<a href="">test</a>
-					</dd>
-
-					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="demoButton2" aria-controls="demoRegion2" aria-expanded="false">Button 3</a>
-					</dt>
-					<dd role="region" id="demoRegion2" aria-labelledby="demoButton2" aria-hidden="true">
-						resigon 3 <br>
-						<a href="">test</a>
-					</dd>
-				</dl>
-				<script>
-
-					/* 2017.06.21 js 재수정 */
-					var AccordionCC = function( accordionCompnt ){
-						this.compnt = accordionCompnt;
-						this.allowToggle = true;
-						this.getElements();
-					};
-					AccordionCC.prototype = {
-						getElements : function(){
-							this.buttons = this.compnt.querySelectorAll('[role="button"]');
-							this.expandedHeading = this.buttons[0];
-						},
-						init : function( index ){
-							index = index ||  0;
-							this.expand( this.buttons[index] );
-							this.expandedHeading = this.buttons[index];
-
-							this.bind();
-						},
-						bind : function(){
-							for(var i=0 ; i<this.buttons.length ; i++){
-								this.addListeners(i);
-							}
-						},
-						addListeners : function( index ){
-							var button = this.buttons[index];
-							button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
-							button.addEventListener( 'keydown', this.keydownEventListener.bind(this, button) );
-						},
-						clickEventListener : function( button ){
-							event.preventDefault();
-							this.toggle( button );
-						},
-						keydownEventListener : function( button ){
-							var key = event.keyCode;
-							switch( key ) {
-								case keyCodes.space :
-									this.toggle( button );
-									break;
-							}
-						},
-						expand : function( button ){
-							button.setAttribute('aria-expanded', 'true');
-							if(!this.allowToggle) {
-								button.setAttribute('aria-disabled', 'true');
-							}
-							var controls = button.getAttribute('aria-controls');
-							document.getElementById(controls).setAttribute('aria-hidden', 'false');
-						},
-						collapse : function(){
-							var button = this.expandedHeading;
-							if(button){
-								button.setAttribute('aria-expanded', 'false');
-								if(!this.allowToggle){
-									button.setAttribute('aria-disabled', 'false');
-								}
-								var controls = button.getAttribute('aria-controls');
-								document.getElementById(controls).setAttribute('aria-hidden', 'true');
-							}
-						},
-						toggle : function( button ){
-							var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
-							if(isOpen && this.allowToggle){
-								this.collapse( this.expandedHeading );
-								this.expandedHeading = null;
-							} else if(!isOpen) {
-								this.expand( button );
-								this.collapse();
-								this.expandedHeading = button;
-							}
-						}
-					}
-
-					var keyCodes = {
-						space: 32
-					}
-
-					var accordionCC = new AccordionCC( document.getElementById('accordionC') );
-					// accordionCC.allowToggle = false; // allowToggle, default : true
-					accordionCC.init( 1 ); // Visible heading index, default : 0
-
-				</script>
-			</div>
-			<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>
-		</section>
-
-		<section>
 			<h2>Issue</h2>
 			<ol>
 				<li>aria 속성이 모바일에서 어떻게 읽히는지 확인</li>
 			</ol>
+		</section>
+
+		<section>
+			<h2>URL</h2>
+			<ul>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#accordion" target="_blank">W3 Practices</a></li>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></li>
+			</ul>
 		</section>
 		
 	</main>

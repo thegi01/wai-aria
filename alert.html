@@ -39,8 +39,6 @@
     </style>
 </head>
 <body>
-    
-
     <main>
         <h1>Alert</h1>
 
@@ -50,9 +48,34 @@
             It is important to note that, at this time, screen readers do not inform users of alerts that are present on the page before page load completes. <br>
         </p>
         <p>
-            Because alerts are intended to provice important and potentially time-sensitive information widtout interfering with the user's ability to continue working, it is crucial they do dot affect keyboard focus. <br>
+            Because alerts are intended to provice important and potentially time-sensitive information without interfering with the user's ability to continue working, it is crucial they do dot affect keyboard focus. <br>
             The alert dialog is designed for situations where interrupting work flow is necessary.
         </p>
+
+        <section>
+            <h2>Example</h2>
+
+            <script type="text/template" id="alert-template">
+                <div role="alert">
+                    <p>Hej, hello, ciao, こんにちは, 안녕</p>
+                </div>
+            </script>
+
+            <button id="alert-trigger">Trigger an alert</button>
+
+            <div id="alert-div">
+            </div>
+            
+            <script>
+                var addAlert = function( template ){
+                    document.getElementById('alert-div').innerHTML = template;
+                };
+
+                var button = document.getElementById('alert-trigger');
+                var template = document.getElementById('alert-template').innerHTML;
+                button.addEventListener( 'click', addAlert.bind(undefined, template) );
+            </script>
+        </section>
 
         <section>
             <h2 id="kbd-label">Keyboard Interaction</h2>
@@ -99,26 +122,13 @@
                 </table>
             </div>
         </section>
-
+        
         <section>
-            <h2>Example</h2>
-            <button id="alert-trigger">Trigger an alert</button>
-            <div id="example">
-            </div>
-            <script type="text/template" id="alert-template">
-                <div role="alert">
-                    <p>Hej, hello, ciao, こんにちは, 안녕</p>
-                </div>
-            </script>
-            <script>
-                var addAlert = function(event){
-                    var example = document.getElementById('example');
-                    var template = document.getElementById('alert-template').innerHTML;
-                    example.innerHTML = template;
-                };
-                var button = document.getElementById('alert-trigger');
-                button.addEventListener('click', addAlert);
-            </script>
+            <h2>URL</h2>
+            <ul>
+                <li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#alert" target="_blank">W3 Practices</a></li>
+                <li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/alert/index.html" target="_blank">W3 Example</a></li>
+            </ul>
         </section>
     </main>
 </body>

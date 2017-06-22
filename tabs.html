@@ -49,135 +49,7 @@
 				the previously displayed tab panel is hidden,<br>
 				the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
 		</p>
-	
-		<section>
-			<h2 id="rps-label">WAI-ARIA Roles, States and Properties</h2>
-			<table aria-labelledby="rps_label">
-				<thead>
-					<tr>
-						<th>Role</th>
-						<th>Property/State</th>
-						<th>Element</th>
-						<th>Usage</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>tablist</td>
-						<td></td>
-						<td></td>
-						<td>
-							<ul>
-							  <li>Serves as the container for the set of tabs.</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>tab</td>
-						<td></td>
-						<td></td>
-						<td>
-							<ul>
-							  <li>Contains title for tab panel, activates tab panel when activated.</li>
-							</ul>
-						</td>
-						</tr>
-					<tr>
-						<td>tabpanel</td>
-						<td></td>
-						<td></td>
-						<td>
-							<ul>
-							  <li>Contains the tab’s associated content.</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>aria-controls</td>
-						<td>element with <code>role</code> of <code>tab</code></td>
-						<td>
-							<ul>
-							  <li></li>
-							</ul>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
 
-		<section>
-			<h2 id="kbd-label">Keyboard Support</h2>
-			<style>
-				th, td {
-					padding: 0.5em 2em 0.5em;
-					border: 1px solid transparent;
-					text-align: left;
-				}
-				table {
-					border-collapse: collapse;
-					border-spacing: 0;
-				}
-				thead th {
-					border-bottom: solid thin #000;
-				}
-				tr:nth-child(odd) td, tr:nth-child(odd) th {
-					background-color: #FEFEFE;
-				}
-				tr:nth-child(even) td, tr:nth-child(even) th {
-					background-color: #F1F1F1;
-				}
-			</style>
-			<table aria-labelledby="kbd-label">
-				<thead>
-					<tr>
-						<th>Key</th>
-						<th>Function</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th><kbd>tab</kbd></th>
-						<td>Moves focus to the active tab or first focusable in the tab panel.</td>
-					</tr>
-					<tr>
-						<th><kbd>left arrow</kbd></th>
-						<td>Moves focus to the previous tab.</td>
-					</tr>
-					<tr>
-						<th><kbd>right arrow</kbd></th>
-						<td>Moves focus to the next tab.</td>
-					</tr>
-					<tr>
-						<th><kbd>home</kbd></th>
-						<td>Moves focus to the first tab.</td>
-					</tr>
-					<tr>
-						<th><kbd>end</kbd></th>
-						<td>Moves focus to the last tab.</td>
-					</tr>
-					<tr>
-						<th><kbd>delete</kbd></th>
-						<td>If deletion on the selected tab is allowed this will that tab element and its associated tab panel.</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<h3>NOTE</h3>
-			<ol>
-				<li>
-					If the tabs in a tab list are arranged vertically:
-					<ol>
-						<li><kbd>Down Arrow</kbd> performs as <kbd>Right Arrow</kbd> is described above.</li>
-						<li><kbd>Up Arrow</kbd> performs as <kbd>Left Arrow</kbd> is described above.</li>
-					</ol>
-				</li>
-				<li>
-					If the tab list is horizontal, it does not listen for <kbd>Down Arrow</kbd> or <kbd>Up Arrow</kbd> so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
-				</li>
-	        </ol>
-		</section>
-		
 		<section>
 			<h2 id="ex-label">W3 Tabs Widget Demonstrates : Design pattern for tabs</h2>
 			<div aria-labelledby="ex-label" role="reigon">	
@@ -226,7 +98,7 @@
 							    margin-top: 1em;
 							}
 					    </style>
-						<div class="tabs" id="tabsC">
+						<div class="tabs" id="tabs">
 							<div role="tablist">
 								<button role="tab" aria-selected="true" aria-controls="nils-tab" id="nils">Nils Frahm</button>
 								<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios">Helios</button>
@@ -435,14 +307,149 @@
 							
 
 							// TabsCC 실행
-							var tabsCC = new TabsCC( document.getElementById('tabsC') );
+							var tabsCC = new TabsCC( document.getElementById('tabs') );
 							tabsCC.init( 1 ); // Visible tab index, default : 0
 						</script>
 				</div>
 			</div>
-			<p><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#tabpanel" target="_blank">W3 URL</a></p>
-			<p><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/tabs/tabs.html" target="_blank">W3 Tabs Widget Example URL</a></p>
 		</section>
+	
+		<section>
+			<h2 id="rps-label">WAI-ARIA Roles, States and Properties</h2>
+			<table aria-labelledby="rps_label">
+				<thead>
+					<tr>
+						<th>Role</th>
+						<th>Property/State</th>
+						<th>Element</th>
+						<th>Usage</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>tablist</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Serves as the container for the set of tabs.</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>tab</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Contains title for tab panel, activates tab panel when activated.</li>
+							</ul>
+						</td>
+						</tr>
+					<tr>
+						<td>tabpanel</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Contains the tab’s associated content.</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>aria-controls</td>
+						<td>element with <code>role</code> of <code>tab</code></td>
+						<td>
+							<ul>
+							  <li></li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section>
+			<h2 id="kbd-label">Keyboard Support</h2>
+			<style>
+				th, td {
+					padding: 0.5em 2em 0.5em;
+					border: 1px solid transparent;
+					text-align: left;
+				}
+				table {
+					border-collapse: collapse;
+					border-spacing: 0;
+				}
+				thead th {
+					border-bottom: solid thin #000;
+				}
+				tr:nth-child(odd) td, tr:nth-child(odd) th {
+					background-color: #FEFEFE;
+				}
+				tr:nth-child(even) td, tr:nth-child(even) th {
+					background-color: #F1F1F1;
+				}
+			</style>
+			<table aria-labelledby="kbd-label">
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Function</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th><kbd>tab</kbd></th>
+						<td>Moves focus to the active tab or first focusable in the tab panel.</td>
+					</tr>
+					<tr>
+						<th><kbd>left arrow</kbd></th>
+						<td>Moves focus to the previous tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>right arrow</kbd></th>
+						<td>Moves focus to the next tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>home</kbd></th>
+						<td>Moves focus to the first tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>end</kbd></th>
+						<td>Moves focus to the last tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>delete</kbd></th>
+						<td>If deletion on the selected tab is allowed this will that tab element and its associated tab panel.</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>NOTE</h3>
+			<ol>
+				<li>
+					If the tabs in a tab list are arranged vertically:
+					<ol>
+						<li><kbd>Down Arrow</kbd> performs as <kbd>Right Arrow</kbd> is described above.</li>
+						<li><kbd>Up Arrow</kbd> performs as <kbd>Left Arrow</kbd> is described above.</li>
+					</ol>
+				</li>
+				<li>
+					If the tab list is horizontal, it does not listen for <kbd>Down Arrow</kbd> or <kbd>Up Arrow</kbd> so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
+				</li>
+	        </ol>
+		</section>
+
+		<section>
+			<h2>URL</h2>
+			<ul>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#tabpanel" target="_blank">W3 Practices</a></li>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/tabs/tabs.html" target="_blank">W3 Example</a></li>
+			</ul>
+		</section>
+
 		
 	</main>
 </body>
