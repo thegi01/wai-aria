@@ -7,390 +7,443 @@
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="googlebot" content="noindex,nofollow">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+    <style>
+    	body {
+    		margin: 0 4em 0 1em;
+    		padding: 0.5em 0.7em;
+    	}
+    	h2 {
+    		margin-top: 2em;
+    	}
+    	ul {
+    		margin: 0;
+    	}
+    </style>
 </head>
 <body>
-
-	<h1 class="h1">Tabs | WAI-ARIA</h1>
-
-	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#tabpanel" target="_blank">W3 URL</a></div>
-	<ul>
-		<li> 
-			<p><strong>Tabs and tabbed Interface</strong></p>
-		 	<p>A set of tab elements and their associated tab panels. </p>
-		</li>
-		<li>
-			<p><strong>Tab List</strong></p>
-			<p>A set of tab elements contained in s tablist element</p>
-		</li>
-		<li>
-			<p><strong>tab</strong></p>
-			<p>An element in the tab list that serves as a label for one of tab panels and can be activated to display that panel</p>
-		</li>
-		<li>
-			<p><strong>tabpanel</strong></p>
-			<p>The element that contains the content associated widh a tab</p>
-		</li>
-	</ul>
-	<div>
-		When a tabbed interface is initialized, 
-			one tab panel is displayed 
-			and its associated tab is styled to indicate that it is active.
-		When the user activates one of the other tab elements, 
-			the previously displayed tab panel is hidden,
-			the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
-	</div>
-
-	<h3>Keyboard Interaction</h3>
-	<ul>
-		<li>Tab</li>
-		<li>Left Arrow, Right Arrow (Up Arrow, Down Arrow) </li>
-		<li>
-			space or enter <br>
-			Home(Optional) <br>
-			End(Optional) <br>
-			Shift + 10 <br>
-			Delete(Optinal)
-		</li>
-	</ul>
-
-	<h3>WAI-ARIA Roles, States and Properties</h3>
-	<ul>
-		<li> The element that serves ad the container for the set of tabs has role tablist. </li>
-		<li>
-			Each element that serves as a tab has role tab
-			and is contained within the element width role tablist.
-		</li>
-		<li>
-			Each element that contains the content panel for a tab has role tabpanel.
-		</li>
-		<li>
-			Each element with role tab has the proeprty aria-contorls referring to its associated tabpanel element.
-		</li>
-		<li>
-			The active tab element has the state aria-selected set to true and all other tab elements have it set to false.
-		</li>
-		<li>
-			Each element with role tabpanel has the properth aria-albelledby referring to its associated tab element.
-		</li>
-		<li>
-			If a tab element has a pop-up menu, it has the property aria-haspopup set to true.
-		</li>
-		<li>
-			If the tablist element is vertically oriented, it has the property aria-orientation set to vertical. <br>
-			The default value of aria-orientation for a tablist element is horizontal.
-		</li>
-	</ul>
-
-
-	<h2>W3 Tabs Widget Demonstrates : Design pattern for tabs</h2>
-	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/tabs/tabs.html" target="_blank">W3 Tabs Widget Example URL</a></div>
-
-	<div class="demo">	
-
-		<h3>Example</h3>
-
-		    <style>
-				.tabs {
-				    width: 20em;
-				    font-family: "lucida grande", sans-serif;
-				}
-				[role="tab"] {
-				    margin: 0 0 -2px;
-				    border: 2px solid #444;
-				    border-radius: 0.4em 0.4em 0 0;
-				    font-family: inherit;
-				    font-size: inherit;
-				    background: #fff;
-				}
-				[role="tab"][aria-selected="true"] {
-				    border-color: hsl(218, 96%, 38%);
-				    color: #fff;
-				    background: hsl(212, 96%, 38%);
-				    outline: 0;
-				}
-				[role="tab"]:hover,
-				[role="tab"]:focus {
-				    border-color: hsl(20, 96%, 38%);
-				    color: #000;
-				    background: hsl(20, 96%, 70%);
-				    outline: 0;
-				}
-				[role="tabpanel"] {
-				    position: relative;
-				    z-index: 2;
-				    padding: 0.5em;
-				    border: 2px solid #444;
-				    border-radius: 0 0.4em 0.4em 0.4em;
-				}
-				[role="tabpanel"]:focus {
-				    border-color: hsl(20, 96%, 38%);
-				    outline: 0;
-				}
-				[role="tabpanel"] p {
-				    margin: 0;
-				}
-				[role="tabpanel"] * + p {
-				    margin-top: 1em;
-				}
-		    </style>
-
-		<div class="tabs" id="tabsC">
-			<div role="tablist">
-				<button role="tab" aria-selected="true" aria-controls="nils-tab" id="nils">Nils Frahm</button>
-				<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios">Helios</button>
-				<button role="tab" aria-selected="false" aria-controls="complexcomplex" id="complex" data-deletable="true">Joke</button>
-			</div>
-			<div role="tabpanel" id="nils-tab" aria-labelledby="nils">
-				<p>Nils Frahm is a German musician, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.</p>
-			</div>
-			<div role="tabpanel" id="helios-tab" aria-labelledby="helios" hidden="">
-				<p>Helios (Keith Kenniff) is an American composer, multi-instrumentalist, and electronic music producer. He composes ambient/electronic music under the moniker Helios and post-classical piano music under Goldmund. He is also one half of the indie band Mint Julep, and ambient project "A Pale Fire". Keith is also a composer for film, television, dance and performance art. In 2010 he created the record label Unseen.</p>
-			</div>
-			<div role="tabpanel" id="complexcomplex" aria-labelledby="complex" hidden="">
-				<p>Fear of complicated buildings:</p>
-				<p>A complex complex complex.</p>
-			</div>
-		</div>
-
-		<div><a href="#href">Focus test</a></div>
-
-		<h3>Keyboard Support</h3>
-		<table aria-labelledby="kbd_label">
-		          <thead>
-		            <tr>
-		              <th>Key</th>
-		              <th>Function</th>
-		            </tr>
-		          </thead>
-		          <tbody>
-		            <tr>
-		              <th><kbd>tab</kbd></th>
-		              <td>Moves focus to the active tab or first focusable in the tab panel.</td>
-		            </tr>
-		            <tr>
-		              <th><kbd>left arrow</kbd></th>
-		              <td>Moves focus to the previous tab.</td>
-		            </tr>
-		            <tr>
-		              <th><kbd>right arrow</kbd></th>
-		              <td>Moves focus to the next tab.</td>
-		            </tr>
-		            <tr>
-		              <th><kbd>home</kbd></th>
-		              <td>Moves focus to the first tab.</td>
-		            </tr>
-		            <tr>
-		              <th><kbd>end</kbd></th>
-		              <td>Moves focus to the last tab.</td>
-		            </tr>
-		            <tr>
-		              <th><kbd>delete</kbd></th>
-		              <td>If deletion on the selected tab is allowed this will that tab element and its associated tab panel.</td>
-		            </tr>
-		          </tbody>
-		        </table>
-		
-	</div>
-
-<!-- javacript -->
-<script>
-
-	/* Tabs Component Control */
-	// GTE IE9
-	var TabsCC = function( tabsComponent ){
-		this.compnt = tabsComponent;
-	  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
-	  	this.getElements();
-	};
-	TabsCC.prototype = {
-		getElements : function(){
-			this.tabs = this.compnt.querySelectorAll('[role="tab"]');
-			this.tabpanels = this.compnt.querySelectorAll('[role="tabpanel"]');
-		},
-		init : function( index ){
-			index = index || 0;
-			this.activateTab( this.tabs[index], false );
-			
-	  		this.bind();
-	  		this.determineDelay();
-		},
-		bind : function(){
-			for( i=0 ; i<this.tabs.length ; i++ ){
-				this.addListeners(i);
-			}
-		},
-		addListeners : function( index ){
-			this.tabs[index].addEventListener( 'click', this.clickEventListener.bind(this) );
-			this.tabs[index].addEventListener( 'keydown', this.keydownEventListener.bind(this) );
-			this.tabs[index].addEventListener( 'keyup', this.keyupEventListener.bind(this) );
-			this.tabs[index].index = index;
-		},
-		clickEventListener : function( event ){
-			var tab = event.target;
-			this.activateTab( tab, false );
-		},
-		keydownEventListener : function( event ){
-			var key = event.keyCode;
-			switch( key ){
-				case keyCodes.end:
-					event.preventDefault();
-					this.activateTab( tabs[tabs.length-1] );
-					break;
-				case keyCodes.home:
-					event.preventDefault();
-					this.activateTab( tabs[0] );
-					break;
-				case keyCodes.up:
-				case keyCodes.down:
-					this.determineOrientation.call(this, event);
-					break;
-			};
-		},
-		keyupEventListener : function( event ){
-			var key = event.keyCode;
-			switch( key ){
-				case keyCodes.left:
-				case keyCodes.right:
-					this.determineOrientation.call( this, event );
-					break;
-				case keyCodes.delete:
-					this.determineDeletable.call(this, event);
-					break;
-			}
-		},
-		determineDelay : function(){
-			var hasDelay = this.tablist.hasAttribute('data-delay');
-			this.delay = 0;
-			if( hasDelay ){
-				var delayValue = this.tablist.getAttribute('data-delay');
-				if(delayValue){
-					this.delay = delayValue;
-				} else {
-					this.delay = 3000;
-				}
-			}
-		},
-		determineOrientation : function( event ){
-			var key = event.keyCode,
-				vertical = this.tablist.getAttribute('aria-orientation') == 'vertical',
-				proceed = false;
-			if( vertical ){
-				if( key === keyCodes.up || key === keyCodes.down){
-					event.preventDefault();
-					proceed = true;
-				}
-			} else {
-				if( key == keyCodes.left || key === keyCodes.right ){
-					proceed = true;
-				}
-			}
-			if( proceed ){
-				this.switchTabOnArrowPress.call( this, event );
-			}
-		},
-		switchTabOnArrowPress : function( event ){
-			var pressed = event.keyCode;
-			for( var i=0 ; i<this.tabs.length ; i++){
-				this.tabs[i].addEventListener( 'focus', this.focusEventHandler.bind(this) );
-			}
-			if( this.direction[pressed] ){
-				var target = event.target;
-				if( target.index !== undefined){
-					if (this.tabs[target.index + this.direction[pressed]]) {
-						this.tabs[target.index + this.direction[pressed]].focus();
-					} else if( pressed === keyCodes.left || pressed == keyCodes.up ){
-						this.focusLastTab();
-					} else if( pressed === keyCodes.right || pressed === keyCodes.down ){
-						this.focusFirstTab();
-					}
-				}
-			}
-		},
-		focusEventHandler : function( event ){
-			var target = event.target;
-			setTimeout( this.checkTabFocus.bind(this, target), this.delay );
-		},
-		checkTabFocus : function( target ){
-			var focused = document.activeElement;
-			if(target === focused){
-				this.activateTab(target, false);
-			}
-		},
-		activateTab : function( tab, sefFocus ){
-			var setFocus = setFocus || true;
-
-			this.deactivateTabs();
-
-			tab.removeAttribute('tabindex');
-			tab.setAttribute('aria-selected', 'true');
-
-			var controls = tab.getAttribute('aria-controls');
-			document.getElementById(controls).removeAttribute('hidden');
-
-			if(setFocus){
-				tab.focus();
-			}
-		},
-		deactivateTabs : function(){
-			var i;
-			for( i=0 ; i<this.tabs.length ; i++){
-				this.tabs[i].setAttribute('tabindex', '-1');
-				this.tabs[i].setAttribute('aria-selected', 'false');
-		    	this.tabs[i].removeEventListener('focus', this.focusEventHandler);
-			}
-			for( i=0 ; i<this.tabpanels.length ; i++){
-				this.tabpanels[i].setAttribute('hidden', 'hidden');
-			}
-		},
-		focusFirstTab : function(){
-			this.tabs[0].focus();
-		},
-		focusLastTab : function(){
-			this.tabs[this.tabs.length-1].focus();
-		},
-		determineDeletable : function( event ){
-			var target = event.target;
-			if(target.getAttribute('data-deletable') !== null){
-				this.deleteTab(target);
-				this.getElements();
-				this.activateTab(this.tabs[0]);
-			}
-		},
-		deleteTab : function( target ){
-			var panel = document.getElementById(target.getAttribute('aria-controls'));
-			target.parentElement.removeChild(target);
-			panel.parentElement.removeChild(panel);
-		},
-		direction : {
-			37 : -1, 	// left
-			38 : -1,	// up
-			39 : 1,		// right
-			40 : 1 		// down
-		}
-	}
-
-	var keyCodes = {
-		end: 35,
-		home: 36,
-		left: 37,
-		up: 38,
-		right: 39,
-		down: 40,
-		delete: 46 //91
-	}
+	<main>
+		<h1 class="h1">Tabs | WAI-ARIA</h1>
+		<ul>
+			<li> 
+				<p><strong>Tabs and tabbed Interface</strong></p>
+			 	<p>A set of tab elements and their associated tab panels. </p>
+			</li>
+			<li>
+				<p><strong>Tab List</strong></p>
+				<p>A set of tab elements contained in s tablist element</p>
+			</li>
+			<li>
+				<p><strong>tab</strong></p>
+				<p>An element in the tab list that serves as a label for one of tab panels and can be activated to display that panel</p>
+			</li>
+			<li>
+				<p><strong>tabpanel</strong></p>
+				<p>The element that contains the content associated widh a tab</p>
+			</li>
+		</ul>
+		<p>
+			When a tabbed interface is initialized, 
+				one tab panel is displayed <br>
+				and its associated tab is styled to indicate that it is active.<br>
+			When the user activates one of the other tab elements, <br>
+				the previously displayed tab panel is hidden,<br>
+				the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
+		</p>
 	
+		<section>
+			<h2 id="rps-label">WAI-ARIA Roles, States and Properties</h2>
+			<table aria-labelledby="rps_label">
+				<thead>
+					<tr>
+						<th>Role</th>
+						<th>Property/State</th>
+						<th>Element</th>
+						<th>Usage</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>tablist</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Serves as the container for the set of tabs.</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>tab</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Contains title for tab panel, activates tab panel when activated.</li>
+							</ul>
+						</td>
+						</tr>
+					<tr>
+						<td>tabpanel</td>
+						<td></td>
+						<td></td>
+						<td>
+							<ul>
+							  <li>Contains the tab’s associated content.</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>aria-controls</td>
+						<td>element with <code>role</code> of <code>tab</code></td>
+						<td>
+							<ul>
+							  <li></li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 
-	// TabsCC 실행
-	var tabsCC = new TabsCC( document.getElementById('tabsC') );
-	tabsCC.init( 1 ); // Visible tab index, default : 0
+		<section>
+			<h2 id="kbd-label">Keyboard Support</h2>
+			<style>
+				th, td {
+					padding: 0.5em 2em 0.5em;
+					border: 1px solid transparent;
+					text-align: left;
+				}
+				table {
+					border-collapse: collapse;
+					border-spacing: 0;
+				}
+				thead th {
+					border-bottom: solid thin #000;
+				}
+				tr:nth-child(odd) td, tr:nth-child(odd) th {
+					background-color: #FEFEFE;
+				}
+				tr:nth-child(even) td, tr:nth-child(even) th {
+					background-color: #F1F1F1;
+				}
+			</style>
+			<table aria-labelledby="kbd-label">
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Function</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th><kbd>tab</kbd></th>
+						<td>Moves focus to the active tab or first focusable in the tab panel.</td>
+					</tr>
+					<tr>
+						<th><kbd>left arrow</kbd></th>
+						<td>Moves focus to the previous tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>right arrow</kbd></th>
+						<td>Moves focus to the next tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>home</kbd></th>
+						<td>Moves focus to the first tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>end</kbd></th>
+						<td>Moves focus to the last tab.</td>
+					</tr>
+					<tr>
+						<th><kbd>delete</kbd></th>
+						<td>If deletion on the selected tab is allowed this will that tab element and its associated tab panel.</td>
+					</tr>
+				</tbody>
+			</table>
 
+			<h3>NOTE</h3>
+			<ol>
+				<li>
+					If the tabs in a tab list are arranged vertically:
+					<ol>
+						<li><kbd>Down Arrow</kbd> performs as <kbd>Right Arrow</kbd> is described above.</li>
+						<li><kbd>Up Arrow</kbd> performs as <kbd>Left Arrow</kbd> is described above.</li>
+					</ol>
+				</li>
+				<li>
+					If the tab list is horizontal, it does not listen for <kbd>Down Arrow</kbd> or <kbd>Up Arrow</kbd> so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
+				</li>
+	        </ol>
+		</section>
+		
+		<section>
+			<h2 id="ex-label">W3 Tabs Widget Demonstrates : Design pattern for tabs</h2>
+			<div aria-labelledby="ex-label" role="reigon">	
+				<div class="demo">
+					    <style>
+							.tabs {
+							    width: 20em;
+							    font-family: "lucida grande", sans-serif;
+							}
+							[role="tab"] {
+							    margin: 0 0 -2px;
+							    border: 2px solid #444;
+							    border-radius: 0.4em 0.4em 0 0;
+							    font-family: inherit;
+							    font-size: inherit;
+							    background: #fff;
+							}
+							[role="tab"][aria-selected="true"] {
+							    border-color: hsl(218, 96%, 38%);
+							    color: #fff;
+							    background: hsl(212, 96%, 38%);
+							    outline: 0;
+							}
+							[role="tab"]:hover,
+							[role="tab"]:focus {
+							    border-color: hsl(20, 96%, 38%);
+							    color: #000;
+							    background: hsl(20, 96%, 70%);
+							    outline: 0;
+							}
+							[role="tabpanel"] {
+							    position: relative;
+							    z-index: 2;
+							    padding: 0.5em;
+							    border: 2px solid #444;
+							    border-radius: 0 0.4em 0.4em 0.4em;
+							}
+							[role="tabpanel"]:focus {
+							    border-color: hsl(20, 96%, 38%);
+							    outline: 0;
+							}
+							[role="tabpanel"] p {
+							    margin: 0;
+							}
+							[role="tabpanel"] * + p {
+							    margin-top: 1em;
+							}
+					    </style>
+						<div class="tabs" id="tabsC">
+							<div role="tablist">
+								<button role="tab" aria-selected="true" aria-controls="nils-tab" id="nils">Nils Frahm</button>
+								<button role="tab" aria-selected="false" aria-controls="helios-tab" id="helios">Helios</button>
+								<button role="tab" aria-selected="false" aria-controls="complexcomplex" id="complex" data-deletable="true">Joke</button>
+							</div>
+							<div role="tabpanel" id="nils-tab" aria-labelledby="nils">
+								<p>
+									Nils Frahm is a German musician, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.
+								</p>
+							</div>
+							<div role="tabpanel" id="helios-tab" aria-labelledby="helios" hidden="">
+								<p>
+									Helios (Keith Kenniff) is an American composer, multi-instrumentalist, and electronic music producer. He composes ambient/electronic music under the moniker Helios and post-classical piano music under Goldmund. He is also one half of the indie band Mint Julep, and ambient project "A Pale Fire". Keith is also a composer for film, television, dance and performance art. In 2010 he created the record label Unseen.
+									<a href="">test</a>
+								</p>
+							</div>
+							<div role="tabpanel" id="complexcomplex" aria-labelledby="complex" hidden="">
+								<p>Fear of complicated buildings:</p>
+								<p>A complex complex complex.</p>
+							</div>
+						</div>
+						<script>
+							/* Tabs Component Control */
+							// GTE IE9
+							var TabsCC = function( tabsComponent ){
+								this.compnt = tabsComponent;
+							  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
+							  	this.getElements();
+							};
+							TabsCC.prototype = {
+								getElements : function(){
+									this.tabs = this.compnt.querySelectorAll('[role="tab"]');
+									this.tabpanels = this.compnt.querySelectorAll('[role="tabpanel"]');
+								},
+								init : function( index ){
+									index = index || 0;
+									this.activateTab( this.tabs[index], false );
 
+							  		this.bind();
+							  		this.determineDelay();
+								},
+								bind : function(){
+									for( i=0 ; i<this.tabs.length ; i++ ){
+										this.addListeners(i);
+									}
+								},
+								addListeners : function( index ){
+									this.tabs[index].addEventListener( 'click', this.clickEventListener.bind(this) );
+									this.tabs[index].addEventListener( 'keydown', this.keydownEventListener.bind(this) );
+									this.tabs[index].addEventListener( 'keyup', this.keyupEventListener.bind(this) );
+									this.tabs[index].index = index;
+								},
+								clickEventListener : function( event ){
+									var tab = event.target;
+									this.activateTab( tab, false );
+								},
+								keydownEventListener : function( event ){
+									var key = event.keyCode;
+									switch( key ){
+										case keyCodes.end:
+											event.preventDefault();
+											this.activateTab( tabs[tabs.length-1] );
+											break;
+										case keyCodes.home:
+											event.preventDefault();
+											this.activateTab( tabs[0] );
+											break;
+										case keyCodes.up:
+										case keyCodes.down:
+											this.determineOrientation.call(this, event);
+											break;
+									};
+								},
+								keyupEventListener : function( event ){
+									var key = event.keyCode;
+									switch( key ){
+										case keyCodes.left:
+										case keyCodes.right:
+											this.determineOrientation.call( this, event );
+											break;
+										case keyCodes.delete:
+											this.determineDeletable.call(this, event);
+											break;
+									}
+								},
+								determineDelay : function(){
+									var hasDelay = this.tablist.hasAttribute('data-delay');
+									this.delay = 0;
+									if( hasDelay ){
+										var delayValue = this.tablist.getAttribute('data-delay');
+										if(delayValue){
+											this.delay = delayValue;
+										} else {
+											this.delay = 3000;
+										}
+									}
+								},
+								determineOrientation : function( event ){
+									var key = event.keyCode,
+										vertical = this.tablist.getAttribute('aria-orientation') == 'vertical',
+										proceed = false;
+									if( vertical ){
+										if( key === keyCodes.up || key === keyCodes.down){
+											event.preventDefault();
+											proceed = true;
+										}
+									} else {
+										if( key == keyCodes.left || key === keyCodes.right ){
+											proceed = true;
+										}
+									}
+									if( proceed ){
+										this.switchTabOnArrowPress.call( this, event );
+									}
+								},
+								switchTabOnArrowPress : function( event ){
+									var pressed = event.keyCode;
+									for( var i=0 ; i<this.tabs.length ; i++){
+										this.tabs[i].addEventListener( 'focus', this.focusEventHandler.bind(this) );
+									}
+									if( this.direction[pressed] ){
+										var target = event.target;
+										if( target.index !== undefined){
+											if (this.tabs[target.index + this.direction[pressed]]) {
+												this.tabs[target.index + this.direction[pressed]].focus();
+											} else if( pressed === keyCodes.left || pressed == keyCodes.up ){
+												this.focusLastTab();
+											} else if( pressed === keyCodes.right || pressed === keyCodes.down ){
+												this.focusFirstTab();
+											}
+										}
+									}
+								},
+								focusEventHandler : function( event ){
+									var target = event.target;
+									setTimeout( this.checkTabFocus.bind(this, target), this.delay );
+								},
+								checkTabFocus : function( target ){
+									var focused = document.activeElement;
+									if(target === focused){
+										this.activateTab(target, false);
+									}
+								},
+								activateTab : function( tab, sefFocus ){
+									var setFocus = setFocus || true;
 
+									this.deactivateTabs();
 
+									tab.removeAttribute('tabindex');
+									tab.setAttribute('aria-selected', 'true');
 
-</script>
-<!-- //javacript -->
+									var controls = tab.getAttribute('aria-controls');
+									document.getElementById(controls).removeAttribute('hidden');
 
+									if(setFocus){
+										tab.focus();
+									}
+								},
+								deactivateTabs : function(){
+									var i;
+									for( i=0 ; i<this.tabs.length ; i++){
+										this.tabs[i].setAttribute('tabindex', '-1');
+										this.tabs[i].setAttribute('aria-selected', 'false');
+								    	this.tabs[i].removeEventListener('focus', this.focusEventHandler);
+									}
+									for( i=0 ; i<this.tabpanels.length ; i++){
+										this.tabpanels[i].setAttribute('hidden', 'hidden');
+									}
+								},
+								focusFirstTab : function(){
+									this.tabs[0].focus();
+								},
+								focusLastTab : function(){
+									this.tabs[this.tabs.length-1].focus();
+								},
+								determineDeletable : function( event ){
+									var target = event.target;
+									if(target.getAttribute('data-deletable') !== null){
+										this.deleteTab(target);
+										this.getElements();
+										this.activateTab(this.tabs[0]);
+									}
+								},
+								deleteTab : function( target ){
+									var panel = document.getElementById(target.getAttribute('aria-controls'));
+									target.parentElement.removeChild(target);
+									panel.parentElement.removeChild(panel);
+								},
+								direction : {
+									37 : -1, 	// left
+									38 : -1,	// up
+									39 : 1,		// right
+									40 : 1 		// down
+								}
+							}
+
+							var keyCodes = {
+								end: 35,
+								home: 36,
+								left: 37,
+								up: 38,
+								right: 39,
+								down: 40,
+								delete: 46 //91
+							}
+							
+
+							// TabsCC 실행
+							var tabsCC = new TabsCC( document.getElementById('tabsC') );
+							tabsCC.init( 1 ); // Visible tab index, default : 0
+						</script>
+				</div>
+			</div>
+			<p><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#tabpanel" target="_blank">W3 URL</a></p>
+			<p><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/tabs/tabs.html" target="_blank">W3 Tabs Widget Example URL</a></p>
+		</section>
+		
+	</main>
 </body>
 </html>

@@ -7,266 +7,282 @@
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="googlebot" content="noindex,nofollow">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<style>
+		body {
+			margin: 0 4em 0 1em;
+			padding: 0.5em 0.7em;
+		}
+		h2 {
+			margin-top: 2em;
+		}
+		ul {
+			margin: 0;
+		}
+	</style>
 </head>
 <body>
 
-<div class="wrap ex">
-	<h1>Accordion | WAI-ARIA</h1>
-
-	<h2>Accordion (Sections With Show/Hide Functionality)</h2>
-	<p>
-		An accordion is a vertically stacked set of elements, such as labels or thumbnails, that allow the user to toggle the display of sections of content. <br>
-		Each labeling element can be expanded or collapsed to reveal or hide its associated content. <br>
-		Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
-	</p>
-	<div>
-		<h4>Terms for understanding accordions include:</h4>
-		<ul>
-			<li>
-				<p><strong>Accordion Header:</strong></p>
-				<p>
-					Label for or thumbnail representing a section of content that also serves as a control for showing, and in some implementations, hiding the section of content.
-				</p>
-			</li>
-			<li>
-				<p><strong>Accordion Panel:</strong></p>
-				<p>
-					Section of content associated with an accordion header. <br>
-					In some accordions, there are additional elements that are always visible adjacent to the accordion header. <br>
-					For instance, a menubutton may accompany each accordion header to provide access to actions that apply to that section. <br>
-					And, in some cases, a snippet of the hidden content may also be visually persistent.
-				</p>
-			</li>
-		</ul>
-	</div>
-
-
-	<h2>WAI-ARIA Roles, States, and Properties:</h2>
-	<ul>
-		<li>
-			Each accordion header is contained in an element with role button. <br>
-			The button label is the label for the associated accordion panel.
-		</li>
-		<li>
-			Each accordion header button is wrapped in an element with role heading that has a value set for aria-level that is appropriate for the information architecture of the page. <br>
-			If the native host language has an element with an implicit heading and aria-level, such as an HTML heading tag, a native host language element may be used. <br>
-			The button element is the only element inside the heading element. That is, if there are other visually persistent elements, they are not included inside the heading element.
-		</li>
-		<li>
-			If the accordion panel associated with an accordion header is visible, the header button element has aria-expanded set to true. <br>
-			If the panel is not visible, aria-expanded is set to false.
-		</li>
-		<li>
-			The accordion header button element has aria-controls set to the ID of the element containing the accordion panel content.
-		</li>
-		<li>
-			If the accordion panel associated with an accordion header is visible, and <span style="text-decoration:underline">if the accordion does not permit the panel to be collapsed, the header button element has aria-disabled set to true.</span>
-		</li>
-	</ul>
-	
-	<h2>Keyboard Interaction</h2>
-	<ul>
-		<li>
-			<p><strong>Enter or Space : </strong></p>
+	<main class="wrap ex">
+		<h1>Accordion | WAI-ARIA</h1>
+		
+		<section>
+			<h2>Accordion (Sections With Show/Hide Functionality)</h2>
 			<p>
-				When focus is on the accordion header for a collapsed panel, expands the associated panel. <br>
-				If the implementation allows only one panel to be expanded, and if another panel is expanded, collapses that panel. <br>
-				When focus is on the accordion header for an expanded panel, collapses the panel if the implementation supports collapsing. <br>
-				Some implementations require one panel to be expanded at all times and allow only one panel to be expanded; <br>
-				so, they do not support a collapse function.
+				An accordion is a vertically stacked set of elements, such as labels or thumbnails, that allow the user to toggle the display of sections of content. <br>
+				Each labeling element can be expanded or collapsed to reveal or hide its associated content. <br>
+				Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
 			</p>
-		</li>
-		<li>
-			<p><strong>Down Arrow (Optional) : </strong></p>
-			<p>
-				If focus is on an accordion header, moves focus to the next accordion header. <br>
-				If focus is on the last accordion header, either does nothing or moves focus to the first accordion header.
-			</p>
-		</li>
-		<li>
-			<p><strong>Up Arrow (Optional):</strong></p>
-			<p> 
-				If focus is on an accordion header, moves focus to the previous accordion header. <br>
-			 	If focus is on the first accordion header, either does nothing or moves focus to the last accordion header.
-			 </p>
-		</li>
-		<li>
-			<p><strong>Home (Optional):</strong></p>
-			<p> When focus is on an accordion header, moves focus to the first accordion header.</p>
-		</li>
-		<li>
-			<p><strong>End (Optional): </strong></p>
-			<p>When focus is on an accordion header, moves focus to the last accordion header.</p>
-		</li>
-		<li>
-			<p><strong>Control + Page Down (Optional): </strong></p>
-			<p> 
-				If focus is inside an accordion panel or on an accordion header, moves focus to the next accordion header. <br>
-				If focus is in the last accordion header or panel, either does nothing or moves focus to the first accordion header.
-			</p>
-		</li>
-		<li>
-			<p><strong>Control + Page Up (Optional): </strong></p>
-			<p>
-				If focus is inside an accordion panel, moves focus to the header for that panel. <br>
-				If focus is on an accordion header, moves focus to the previous accordion header. <br>
-				If focus is on the first accordion header, either does nothing or moves focus to the last accordion header.
-			</p>
-		</li>
-	</ul>
+			<div>
+				<h4>Terms for understanding accordions include:</h4>
+				<ul>
+					<li>
+						<p><strong>Accordion Header:</strong></p>
+						<p>
+							Label for or thumbnail representing a section of content that also serves as a control for showing, and in some implementations, hiding the section of content.
+						</p>
+					</li>
+					<li>
+						<p><strong>Accordion Panel:</strong></p>
+						<p>
+							Section of content associated with an accordion header. <br>
+							In some accordions, there are additional elements that are always visible adjacent to the accordion header. <br>
+							For instance, a menubutton may accompany each accordion header to provide access to actions that apply to that section. <br>
+							And, in some cases, a snippet of the hidden content may also be visually persistent.
+						</p>
+					</li>
+				</ul>
+			</div>
+		</section>
+		
+		<section>
+			<h2>WAI-ARIA Roles, States, and Properties:</h2>
+			<ul>
+				<li>
+					Each accordion header is contained in an element with role button. <br>
+					The button label is the label for the associated accordion panel.
+				</li>
+				<li>
+					Each accordion header button is wrapped in an element with role heading that has a value set for aria-level that is appropriate for the information architecture of the page. <br>
+					If the native host language has an element with an implicit heading and aria-level, such as an HTML heading tag, a native host language element may be used. <br>
+					The button element is the only element inside the heading element. That is, if there are other visually persistent elements, they are not included inside the heading element.
+				</li>
+				<li>
+					If the accordion panel associated with an accordion header is visible, the header button element has aria-expanded set to true. <br>
+					If the panel is not visible, aria-expanded is set to false.
+				</li>
+				<li>
+					The accordion header button element has aria-controls set to the ID of the element containing the accordion panel content.
+				</li>
+				<li>
+					If the accordion panel associated with an accordion header is visible, and <span style="text-decoration:underline">if the accordion does not permit the panel to be collapsed, the header button element has aria-disabled set to true.</span>
+				</li>
+			</ul>
+		</section>
 
-	
-	<h2>Example</h2>
-	<div class="demo">	
-	    <style>
-			role[heading] {
+		<section>
+			<h2>Keyboard Interaction</h2>
+			<ul>
+				<li>
+					<p><strong>Enter or Space : </strong></p>
+					<p>
+						When focus is on the accordion header for a collapsed panel, expands the associated panel. <br>
+						If the implementation allows only one panel to be expanded, and if another panel is expanded, collapses that panel. <br>
+						When focus is on the accordion header for an expanded panel, collapses the panel if the implementation supports collapsing. <br>
+						Some implementations require one panel to be expanded at all times and allow only one panel to be expanded; <br>
+						so, they do not support a collapse function.
+					</p>
+				</li>
+				<li>
+					<p><strong>Down Arrow (Optional) : </strong></p>
+					<p>
+						If focus is on an accordion header, moves focus to the next accordion header. <br>
+						If focus is on the last accordion header, either does nothing or moves focus to the first accordion header.
+					</p>
+				</li>
+				<li>
+					<p><strong>Up Arrow (Optional):</strong></p>
+					<p> 
+						If focus is on an accordion header, moves focus to the previous accordion header. <br>
+					 	If focus is on the first accordion header, either does nothing or moves focus to the last accordion header.
+					 </p>
+				</li>
+				<li>
+					<p><strong>Home (Optional):</strong></p>
+					<p> When focus is on an accordion header, moves focus to the first accordion header.</p>
+				</li>
+				<li>
+					<p><strong>End (Optional): </strong></p>
+					<p>When focus is on an accordion header, moves focus to the last accordion header.</p>
+				</li>
+				<li>
+					<p><strong>Control + Page Down (Optional): </strong></p>
+					<p> 
+						If focus is inside an accordion panel or on an accordion header, moves focus to the next accordion header. <br>
+						If focus is in the last accordion header or panel, either does nothing or moves focus to the first accordion header.
+					</p>
+				</li>
+				<li>
+					<p><strong>Control + Page Up (Optional): </strong></p>
+					<p>
+						If focus is inside an accordion panel, moves focus to the header for that panel. <br>
+						If focus is on an accordion header, moves focus to the previous accordion header. <br>
+						If focus is on the first accordion header, either does nothing or moves focus to the last accordion header.
+					</p>
+				</li>
+			</ul>
+		</section>
 
-			}
-			role[region] {
-				display: none;
-			}
-			role[region][aria-expanded=true] {
-				display: block;
-			}
-			role[region][aria-disabled="true"] {
-				pointer-events: none;
-			}
-			*[aria-disabled="true"] {
-				pointer-events: none;
-				cursor: pointer;
-			}
-			*[aria-hidden="true"] {
-				display: none;
-			}
-			.demo {
-				margin: 1em;
-				padding: 0 1em;
-				border: 1px solid #ccc;
-			}	
-			.demo dt a[aria-expanded="true"] {
-				font-weight: bold;
-			}
-	    </style>
-		<dl class="accordion" id="accordionC">
-			<dt role="heading" aria-level="3">
-				<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false">Button 1</a>
-			</dt>
-			<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
-				resigon 1 <br>
-				<a href="">test</a>
-			</dd>
+		<section>
+			<h2>Example</h2>
+			<div class="demo">	
+			    <style>
+					role[heading] {
 
-			<dt role="heading" aria-level="3">
-				<a role="button" href="#" id="demoButton1" aria-controls="demoRegion1" aria-expanded="false">Button 2</a>
-			</dt>
-			<dd role="region" id="demoRegion1" aria-labelledby="demoButton1" aria-hidden="true">
-				resigon 2 <br>
-				<a href="">test</a>
-			</dd>
-
-			<dt role="heading" aria-level="3">
-				<a role="button" href="#" id="demoButton2" aria-controls="demoRegion2" aria-expanded="false">Button 3</a>
-			</dt>
-			<dd role="region" id="demoRegion2" aria-labelledby="demoButton2" aria-hidden="true">
-				resigon 3 <br>
-				<a href="">test</a>
-			</dd>
-		</dl>
-		<script>
-
-			/* 2017.06.21 js 재수정 */
-			var AccordionCC = function( accordionCompnt ){
-				this.compnt = accordionCompnt;
-				this.allowToggle = true;
-				this.getElements();
-			};
-			AccordionCC.prototype = {
-				getElements : function(){
-					this.buttons = this.compnt.querySelectorAll('[role="button"]');
-					this.expandedHeading = this.buttons[0];
-				},
-				init : function( index ){
-					index = index ||  0;
-					this.expand( this.buttons[index] );
-					this.expandedHeading = this.buttons[index];
-					
-					this.bind();
-				},
-				bind : function(){
-					for(var i=0 ; i<this.buttons.length ; i++){
-						this.addListeners(i);
 					}
-				},
-				addListeners : function( index ){
-					var button = this.buttons[index];
-					button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
-					button.addEventListener( 'keydown', this.keydownEventListener.bind(this, button) );
-				},
-				clickEventListener : function( button ){
-					event.preventDefault();
-					this.toggle( button );
-				},
-				keydownEventListener : function( button ){
-					var key = event.keyCode;
-					switch( key ) {
-						case keyCodes.space :
+					role[region] {
+						display: none;
+					}
+					role[region][aria-expanded=true] {
+						display: block;
+					}
+					role[region][aria-disabled="true"] {
+						pointer-events: none;
+					}
+					*[aria-disabled="true"] {
+						pointer-events: none;
+						cursor: pointer;
+					}
+					*[aria-hidden="true"] {
+						display: none;
+					}
+					.demo {
+						margin: 1em;
+						padding: 0 1em;
+						border: 1px solid #ccc;
+					}	
+					.demo dt a[aria-expanded="true"] {
+						font-weight: bold;
+					}
+			    </style>
+				<dl class="accordion" id="accordionC">
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="demoButton0" aria-controls="demoRegion0" aria-expanded="false">Button 1</a>
+					</dt>
+					<dd role="region" id="demoRegion0" aria-labelledby="demoButton0" aria-hidden="true">
+						resigon 1 <br>
+						<a href="">test</a>
+					</dd>
+
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="demoButton1" aria-controls="demoRegion1" aria-expanded="false">Button 2</a>
+					</dt>
+					<dd role="region" id="demoRegion1" aria-labelledby="demoButton1" aria-hidden="true">
+						resigon 2 <br>
+						<a href="">test</a>
+					</dd>
+
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="demoButton2" aria-controls="demoRegion2" aria-expanded="false">Button 3</a>
+					</dt>
+					<dd role="region" id="demoRegion2" aria-labelledby="demoButton2" aria-hidden="true">
+						resigon 3 <br>
+						<a href="">test</a>
+					</dd>
+				</dl>
+				<script>
+
+					/* 2017.06.21 js 재수정 */
+					var AccordionCC = function( accordionCompnt ){
+						this.compnt = accordionCompnt;
+						this.allowToggle = true;
+						this.getElements();
+					};
+					AccordionCC.prototype = {
+						getElements : function(){
+							this.buttons = this.compnt.querySelectorAll('[role="button"]');
+							this.expandedHeading = this.buttons[0];
+						},
+						init : function( index ){
+							index = index ||  0;
+							this.expand( this.buttons[index] );
+							this.expandedHeading = this.buttons[index];
+
+							this.bind();
+						},
+						bind : function(){
+							for(var i=0 ; i<this.buttons.length ; i++){
+								this.addListeners(i);
+							}
+						},
+						addListeners : function( index ){
+							var button = this.buttons[index];
+							button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
+							button.addEventListener( 'keydown', this.keydownEventListener.bind(this, button) );
+						},
+						clickEventListener : function( button ){
+							event.preventDefault();
 							this.toggle( button );
-							break;
-					}
-				},
-				expand : function( button ){
-					button.setAttribute('aria-expanded', 'true');
-					if(!this.allowToggle) {
-						button.setAttribute('aria-disabled', 'true');
-					}
-					var controls = button.getAttribute('aria-controls');
-					document.getElementById(controls).setAttribute('aria-hidden', 'false');
-				},
-				collapse : function(){
-					var button = this.expandedHeading;
-					if(button){
-						button.setAttribute('aria-expanded', 'false');
-						if(!this.allowToggle){
-							button.setAttribute('aria-disabled', 'false');
+						},
+						keydownEventListener : function( button ){
+							var key = event.keyCode;
+							switch( key ) {
+								case keyCodes.space :
+									this.toggle( button );
+									break;
+							}
+						},
+						expand : function( button ){
+							button.setAttribute('aria-expanded', 'true');
+							if(!this.allowToggle) {
+								button.setAttribute('aria-disabled', 'true');
+							}
+							var controls = button.getAttribute('aria-controls');
+							document.getElementById(controls).setAttribute('aria-hidden', 'false');
+						},
+						collapse : function(){
+							var button = this.expandedHeading;
+							if(button){
+								button.setAttribute('aria-expanded', 'false');
+								if(!this.allowToggle){
+									button.setAttribute('aria-disabled', 'false');
+								}
+								var controls = button.getAttribute('aria-controls');
+								document.getElementById(controls).setAttribute('aria-hidden', 'true');
+							}
+						},
+						toggle : function( button ){
+							var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
+							if(isOpen && this.allowToggle){
+								this.collapse( this.expandedHeading );
+								this.expandedHeading = null;
+							} else if(!isOpen) {
+								this.expand( button );
+								this.collapse();
+								this.expandedHeading = button;
+							}
 						}
-						var controls = button.getAttribute('aria-controls');
-						document.getElementById(controls).setAttribute('aria-hidden', 'true');
 					}
-				},
-				toggle : function( button ){
-					var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
-					if(isOpen && this.allowToggle){
-						this.collapse( this.expandedHeading );
-						this.expandedHeading = null;
-					} else if(!isOpen) {
-						this.expand( button );
-						this.collapse();
-						this.expandedHeading = button;
+
+					var keyCodes = {
+						space: 32
 					}
-				}
-			}
 
-			var keyCodes = {
-				space: 32
-			}
+					var accordionCC = new AccordionCC( document.getElementById('accordionC') );
+					// accordionCC.allowToggle = false; // allowToggle, default : true
+					accordionCC.init( 1 ); // Visible heading index, default : 0
 
-			var accordionCC = new AccordionCC( document.getElementById('accordionC') );
-			// accordionCC.allowToggle = false; // allowToggle, default : true
-			accordionCC.init( 1 ); // Visible heading index, default : 0
+				</script>
+			</div>
+			<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>
+		</section>
 
-		</script>
-	</div>
-	<div><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/accordion/accordion1.html" target="_blank">W3 Example</a></div>
-</div>
-
-
-
-
-
-<h2>Issue</h2>
-<ol>
-	<li>aria 속성이 모바일에서 어떻게 읽히는지 확인</li>
-</ol>
-
+		<section>
+			<h2>Issue</h2>
+			<ol>
+				<li>aria 속성이 모바일에서 어떻게 읽히는지 확인</li>
+			</ol>
+		</section>
+		
+	</main>
 </body>
 </html>
