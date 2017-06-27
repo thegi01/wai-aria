@@ -11,7 +11,7 @@
   - Alert and Message Dialogs : https://thegi01.github.io/wai-aria/alert-dialog.html
 
   #### Issue 
-    - js : ie 하위버전 호환성 
+    - js : lte ie8
 
 
 ### 참조 url
