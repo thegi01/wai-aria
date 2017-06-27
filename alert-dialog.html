@@ -102,7 +102,7 @@
             "user strict";
 
             var dialogCC = {
-                dialog : document.querySelector('[role="alertdialog"]'),
+                compnt : document.querySelector('[role="alertdialog"]'),
                 clickEventListener : function( event ){
                     var target = event.target;
                     var message = target.getAttribute('data-dialog-message');
@@ -115,7 +115,7 @@
                     content.setAttribute('role', 'document');
                     content.setAttribute('tabindex', '0');
 
-                    var labelId= this.dialog.getAttribute('aria-labelledby');
+                    var labelId= this.compnt.getAttribute('aria-labelledby');
                     var label = document.createElement('p');
                     label.textContent = message;
                     label.setAttribute('id', labelId);
@@ -130,29 +130,29 @@
                     content.appendChild(label);
                     content.appendChild(button);
 
-                    this.dialog.appendChild(content);
-                    this.dialog.setAttribute('open', 'true');
-                    this.dialog.setAttribute('aria-hidden', 'false');
+                    this.compnt.appendChild(content);
+                    this.compnt.setAttribute('open', 'true');
+                    this.compnt.setAttribute('aria-hidden', 'false');
 
                     this.opener = opener;
 
                     content.focus();
 
-                    this.dialog.parentNode.addEventListener('keydown', this.escape.bind(this));
+                    this.compnt.parentNode.addEventListener('keydown', this.escape.bind(this));
                 },
                 close : function(){
-                    this.dialog.removeAttribute('open');
-                    this.dialog.setAttribute('aria-hidden', 'true');
+                    this.compnt.removeAttribute('open');
+                    this.compnt.setAttribute('aria-hidden', 'true');
 
-                    this.dialog.parentNode.removeEventListener('keydown', this.escape);
+                    this.compnt.parentNode.removeEventListener('keydown', this.escape);
 
-                    [].slice.call( this.dialog.querySelectorAll('button') ).map(function(button){
+                    [].slice.call( this.compnt.querySelectorAll('button') ).map(function(button){
                         button.removeEventListener('click', this.clickEventListener);
                         button.removeEventListener('keydown', this.refocus);
                     });
 
-                    while (this.dialog.firstChild){
-                        this.dialog.removeChild(this.dialog.firstChild);
+                    while (this.compnt.firstChild){
+                        this.compnt.removeChild(this.compnt.firstChild);
                     }
 
                     this.opener.focus();
@@ -161,7 +161,7 @@
                 refocus : function( event ){
                     var key = event.which || event.keyCode;
                     if( key == keyCodes.tab ){
-                        this.dialog.querySelector('[tabindex="0"]').focus();
+                        this.compnt.querySelector('[tabindex="0"]').focus();
                         event.preventDefault();
                     }
                 },
