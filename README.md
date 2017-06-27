@@ -10,6 +10,9 @@
 
   - Alert and Message Dialogs : https://thegi01.github.io/wai-aria/alert-dialog.html
 
+  #### Issue 
+    - js : ie 하위버전 호환성 
+
 
 ### 참조 url
 
@@ -21,6 +24,9 @@
   
  - ARIA Landmarks Example : 
     https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/landmarks/index.html
+
+
+
 
 
  
