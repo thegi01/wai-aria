@@ -2,177 +2,320 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Alert Dialog (Modal) | WAI-ARIA</title>
+    <title>Alert and Message Dialogs | WAI-ARIA</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta name="robots" content="noindex,nofollow">
     <meta name="googlebot" content="noindex,nofollow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <style>
-        :root {
-          font-size: 100%;
-          font-family: verdana, sans-serif;
-          line-height: 1.6;
-          margin: 1em;
-          padding: 1em;
-        }
-
-        html {
-          box-sizing: border-box;
-        }
-
-        body {
-          background: #eee;
-        }
-
-        *, *:before, *:after {
-          box-sizing: inherit;
-        }
-
-        body * + * {
-          margin: 1.5rem, 1.25rem, 1.25rem;
-        }
-
-        [aria-hidden="true"] {
-          display: none;
-        }
-
-        ul {
-          margin: 0 0 1rem 0;
-          padding: 0;
-        }
-
-        li {
-          margin: 0 0 0 1rem;
-          padding: 0;
-        }
-
-        abbr {
-          border-bottom: 1px dotted blue;
-          text-decoration: none;
-        }
-
-        kbd {
-          font-size: 1rem;
-        }
-
-
-        /** alertdialog rules **/
-
-        [role="alertdialog"] {
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 0.25em;
-            padding: 1.5em 2em 2em;
-            position: fixed;
-
-            /* pseudo-responsive settings */
-
-            bottom: 10%;
-            left: 10%;
-            right: 10%;
-            top: 10%;
-        }
-
-        /**
-         * Hide all subsequent siblings of alertdialog, which is a direct child of
-         * the body element.
-         */
-        [open] ~ * {
-            visibility: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <dialog role="alertdialog" aria-hidden="true" aria-labelledby="dialogue-label">
-        <!-- We make the alertdialog a direct child of the body, 
-        so we can hide its siblings when opend.
-        The "dailgue-label" element is generated when the user opens the dialog, and placed inside the dialig itself. -->
-        <div role="document" tabindex="0">
-            <p id="dialogue-label">Click button to close the dialog</p>
-            <button role="button" type="button" id="buttonCloseDialog">Close</button>
+    <h1>Alert and Message Dialogs</h1>
+    <p>
+        An alert dialog is a modal dialog that interrupts the user's workflow to communicate an important message and acquire a response. <br>
+        Examples include action comfirmation prompts and error message confirmations. <br>
+        The alertdialog role enables assistive technologies and browers to distinguish alert dialogs from other dialogs so they have the option of giving alert dialog special treatment, such as playing a system alert sound.
+    </p>
+
+    <section>
+        <h2>Example</h2>
+        <style>
+            .demo {
+                padding: 1em;
+                border-radius: 0.4em;
+                border: 2px solid #333;
+                background-color: #f8f8f8;
+            }
+
+            /** alertdialog rules **/
+            [role="alertdialog"] {
+                background: #fff;
+                border: 1px solid #ccc;
+                border-radius: 0.25em;
+                padding: 1.5em 2em 2em;
+                position: fixed;
+                /* pseudo-responsive settings */
+                bottom: 10%;
+                left: 10%;
+                right: 10%;
+                top: 10%;
+            }
+            /**
+            * Hide all subsequent siblings of alertdialog, which is a direct child of
+            * the body element.
+            */
+            [open] ~ * {
+                visibility: hidden;
+            }
+            </style>
+        <div class="demo">
+
+            <dialog role="alertdialog" aria-hidden="true" aria-labelledby="dialogue-label">
+                <!-- We make the alertdialog a direct child of the body, 
+                    so we can hide its siblings when opend.
+                    The "dailgue-label" element is generated when the user opens the dialog, and placed inside the dialig itself. -->
+            </dialog>
+
+            <header role="banner">
+                <h1>
+                    <abbr title="Web Accessibility Initiative">WAI</abbr><span>&ndash;</span><abbr title="Accessible Rich Internet Applications">ARIA</abbr>
+                    Alert Dialog (Modal)
+                </h1>
+                <p>
+                    &hellip; per <abbr title="Wrold-Wide Web Consortium">W3C</abbr> 
+                    best practice spec at
+                    <a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">https://www.w3.org/TR/wai-aria-practices/#alertdialog</a>
+                </p>
+            </header>
+            <main role="main">
+                <section>
+                    <h2>Alert Dialog Behavior</h2>
+                    <p>
+                        Focus is maintained in the dialog while it is open, i.e., 
+                        the <kbd>Tab</kbd> key is cancelled when user tab's out of the last element (button) in the dialog.
+                    </p>
+                    <p>
+                        Focus is returned to the element (button) that initiated the dialog.
+                    </p>
+                    <p>
+                        To open the dialog, navigate to the <kbd>Open</kbd> button, 
+                        then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
+                    </p>
+                    <p>
+                        To close the dialog, either press <kbd>Escape</kbd> key, or navigate to the <kbd>Close</kbd> button,
+                        then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
+                    </p>
+                    <button type="button" data-dialog-message="Click button to close the dialog"> 
+                        Open 1
+                    </button>
+                    <button type="button" data-dialog-message="Click button to close the dialog"> 
+                        Open 2
+                    </button>
+                </section>
+            </main>
+            <footer role="contintinfo">
+                &copy; 2017
+            </footer>
         </div>
-    </dialog>
+        <script>
+            "user strict";
 
-    <header role="banner">
-        <h1>
-            <abbr title="Web Accessibility Initiative">WAI</abbr><span>&ndash;</span><abbr title="Accessible Rich Internet Applications">ARIA</abbr>
-            Alert Dialog (Modal)
-        </h1>
-        <p>
-            &hellip; per <abbr title="Wrold-Wide Web Consortium">W3C</abbr> 
-            best practice spec at
-            <a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">https://www.w3.org/TR/wai-aria-practices/#alertdialog</a>
-        </p>
-    </header>
+            var dialogCC = {
+                dialog : document.querySelector('[role="alertdialog"]'),
+                clickEventListener : function( event ){
+                    var target = event.target;
+                    var message = target.getAttribute('data-dialog-message');
+                    if(message){
+                        dialogCC.open(target, message);  // 추후 정리요~
+                    }
+                },
+                open : function( opener, message ){
+                    var content = document.createElement('div');
+                    content.setAttribute('role', 'document');
+                    content.setAttribute('tabindex', '0');
 
-    <main role="main">
-        <section>
-            <h2>Alert Dialog Behavior</h2>
-            <p>
-                Focus is maintained in the dialog while it is open, i.e., 
-                the <kbd>Tab</kbd> key is cancelled when user tab's out of the last element (button) in the dialog.
-            </p>
-            <p>
-                Focus is returned to the element (button) that initiated the dialog.
-            </p>
-            <p>
-                To open the dialog, navigate to the <kbd>Open</kbd> button, 
-                then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
-            </p>
-            <p>
-                To close the dialog, either press <kbd>Escape</kbd> key, or navigate to the <kbd>Close</kbd> button,
-                then either click it, or press the <kbd>Space</kbd> bar or <kbd>Enter</kbd> key.
-            </p>
-            <button type="button" data-dialog-messge="Click button to close the dialog" id="buttonOpenDialog"> <!-- aria-label ??? -->
-                Open
-            </button>
-        </section>
-    </main>
+                    var labelId= this.dialog.getAttribute('aria-labelledby');
+                    var label = document.createElement('p');
+                    label.textContent = message;
+                    label.setAttribute('id', labelId);
 
-    <footer role="contintinfo">
-        &copy; 2017
-    </footer>
+                    var button = document.createElement('button');
+                    button.setAttribute('role', 'button');
+                    button.setAttribute('type', 'button');
+                    button.textContent = 'Close';
+                    button.addEventListener('click', this.close.bind(this));
+                    button.addEventListener('keydown', this.refocus.bind(this));
+
+                    content.appendChild(label);
+                    content.appendChild(button);
+
+                    this.dialog.appendChild(content);
+                    this.dialog.setAttribute('open', 'true');
+                    this.dialog.setAttribute('aria-hidden', 'false');
+
+                    this.opener = opener;
+
+                    content.focus();
+
+                    this.dialog.parentNode.addEventListener('keydown', this.escape.bind(this));
+                },
+                close : function(){
+                    this.dialog.removeAttribute('open');
+                    this.dialog.setAttribute('aria-hidden', 'true');
+
+                    this.dialog.parentNode.removeEventListener('keydown', this.escape);
+
+                    [].slice.call( this.dialog.querySelectorAll('button') ).map(function(button){
+                        button.removeEventListener('click', this.clickEventListener);
+                        button.removeEventListener('keydown', this.refocus);
+                    });
+
+                    while (this.dialog.firstChild){
+                        this.dialog.removeChild(this.dialog.firstChild);
+                    }
+
+                    this.opener.focus();
+                    this.opener = undefined;
+                },
+                refocus : function( event ){
+                    var key = event.which || event.keyCode;
+                    if( key == keyCodes.tab ){
+                        this.dialog.querySelector('[tabindex="0"]').focus();
+                        event.preventDefault();
+                    }
+                },
+                escape : function( event ){
+                    var key = event.which || event.keyCode;
+                    if( key == keyCodes.escape ){
+                        this.close();
+                    }
+                }
+            };
+
+            var keyCodes = {
+                tab : 9,
+                escape : 27
+            };
+
+            document.addEventListener('DOMContentLoaded', function(){
+                var buttons = [].slice.call( document.querySelectorAll('[data-dialog-message]') );
+                buttons.map(function(button){
+                    button.addEventListener('click', dialogCC.clickEventListener );
+                });
+            });
+
+           /* W3
+           var dialog = document.querySelector('[role="alertdialog');
+            var handleClick = function( event ){
+                var target = event.target;
+                var message = target.getAttribute('data-dialog-message');
+
+                if(message){
+                    handleOpen(target, message);
+                }
+            };
+            var handleOpen = function( opener, message ){
+                var content = document.createElement('div');
+                content.setAttribute('role', 'document');
+                content.setAttribute('tabindex', '0');
+
+                var labelId= dialog.getAttribute('aria-labelledby');
+                var label = document.createElement('p');
+                label.textContent = message;
+                label.setAttribute('id', labelId);
+
+                var button = document.createElement('button');
+                button.setAttribute('role', 'button');
+                button.setAttribute('type', 'button');
+                button.textContent = 'Close';
+                button.addEventListener('click', handleClose);
+                button.addEventListener('keydown', handleRefocus);
+
+                content.appendChild(label);
+                content.appendChild(button);
+
+                dialog.appendChild(content);
+                dialog.opener = opener;
+                dialog.setAttribute('open', 'true');
+                dialog.setAttribute('aria-hidden', 'false');
+
+                content.focus();
+
+                dialog.parentNode.addEventListener('keydown', handleEscape);
+            };
+            var handleClose = function(){
+                dialog.removeAttribute('open');
+                dialog.setAttribute('aria-hidden', 'true');
+
+                dialog.parentNode.removeEventListener('keydown', handleEscape);
+
+                [].slice.call( dialog.querySelectorAll('button') ).map(function(button){
+                    button.removeEventListener('click', handleClick);
+                    button.removeEventListener('keydown', handleRefocus);
+                });
+
+                while (dialog.firstChild){
+                    dialog.removeChild(dialog.firstChild);
+                }
+
+                dialog.opener.focus();
+                dialog.opener = undefined;
+            };
+            var handleRefocus = function( event ){
+                var k = event.which || event.keyCode;
+                if( k == '9' ){
+                    dialog.querySelector('[tabindex="0"]').focus();
+                    event.preventDefault();
+                }
+            };
+            var handleEscape = function( event ){
+                var k = event.which || event.keyCode;
+                if( k == '27' ){
+                    handleClose();
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', function(){
+                var buttons = [].slice.call( document.querySelectorAll('[data-dialog-message]') );
+                buttons.map(function(button){
+                    button.addEventListener('click', handleClick);
+                });
+            }); */
+              
+        </script>
+    </section>
+
+    <section>
+        <h2>Keyboard Interaction</h2>
+        <ul>
+            <li>
+                <kbd>Tab</kbd>
+                <p>Moves focus to the next focusable element inside the dialog.</p>
+                <p>If focus is on the last element, moves focus to the first focusable element inside the dialog.</p>
+            </li>
+            <li>
+                <kbd>Shift + Tab</kbd>
+                <p>Moves focus to the previous focusable element inside the dialog.</p>
+                <p>If focus is on the first element, moves focus to the last focusable elelemt inside the dialog.</p>
+            </li>
+            <li>
+                <kbd>Escape</kbd>
+                <p>Close the dialog.</p>
+            </li>
+        </ul>
+        <h6>NOTE</h6>
+        <ol>
+            <li>
+                When a dialog opens, focus is typically set on the first focusable elelement.
+            </li>
+            <li>
+                When a dialog closes, focus returns to the element that had focus before the dialog was invoked. <br>
+                This is often the control that opened the dialog.
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>WAI-ARIA Roles, States, and properties</h2>
+        <ul>
+            <li>
+                The elememt that contains all elements of the dialog, including the alert message and any dialog buttons, has role <strong>alertdialog</strong>.
+            </li>
+            <li>
+                The element with role <strong>alertdialog</strong> has either: <br>
+                <ul>
+                    <li>A value for <strong>aria-labelledby</strong> that refers to the element containing the title of the dialog if the dialog has a visible title.</li>
+                    <li>A vlaue for <strong>aria-label</strong> if the dialog does not have a visible title.</li>
+                </ul>
+            </li>
+            <li>
+                The element with role <strong>alertdialog</strong> has a value set for aria-describedby that refers to the element containing the alert message.
+            </li>
+        </ul>
+    </section>
 
     
-<script>
-    window.onload = function(){
-        "use strict";
-
-        var alertDialog = {
-            object : document.querySelector('[role="alertdialog"]'),
-            opener : undefined,
-            open : function( opener ){
-                this.object.setAttribute('open', 'true');
-                this.object.setAttribute('aria-hidden', 'false');
-                this.object.querySelector('[tabindex="0"]').focus();
-                this.opener = opener;
-            },
-            close : function(){
-                this.object.removeAttribute('open');
-                this.object.setAttribute('aria-hidden', 'true');
-                this.opener.focus();
-                this.opener = undefined;
-            },
-            escape : function( event ){
-                var k = event.which || event.keyCode;
-                if (k == '27') {
-                  this.close();
-                }
-            }
-        };
-
-        document.getElementById('buttonOpenDialog').onclick = function(){
-            alertDialog.open( this );
-        };
-        document.getElementById('buttonCloseDialog').onclick = function(){
-            alertDialog.close();
-        };
-        document.onkeydown = function( event ){
-            alertDialog.escape( event );
-        }
-    };
-</script>
-
+   
 </body>
 </html>

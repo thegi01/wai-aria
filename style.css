@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+:root {
+    font-size: 100%;
+    font-family: verdana, sans-serif;
+    line-height: 1.6;
+    margin: 1em;
+    padding: 1em;
+}
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+body * + * {
+    margin: 1.5rem, 1.25rem, 1.25rem;
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+ul {
+    margin: 0 0 1rem 0;
+    padding: 0;
+}
+li {
+    margin: 0 0 0 1rem;
+    padding: 0;
+}
+abbr {
+    border-bottom: 1px dotted blue;
+    text-decoration: none;
+}
+kbd {
+    font-size: 1rem;
+}
+
+
+
+[aria-hidden="true"] {
+    display: none;
+}
