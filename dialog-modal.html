@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog(Modal) | WAI-ARIA</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body:not(.toc-inline) {
+          padding: 0;
+        }
+
+        #base-window-div {
+            box-sizing: border-box;
+            height: 100%;
+            width: 100%;
+            /* Use overflow scroll and webkit-overflow-scrolling to add momentum scroll*/
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+            padding: 1.6em 0 2em;
+        }
+
+        #base-window-div main, #base-window-div nav {
+            max-width: 50em;
+            margin: auto;
+            padding-right: 1.5em;
+            padding-left: 50px;
+            padding-left: calc(26px + 1.5em);
+        }
+
+        @media screen and (min-width: 78em) {
+            body:not(.toc-inline) #base-window-div main, body:not(.toc-inline) #base-window-div nav  {
+                padding-left: 29em;
+            }
+
+            body:not(.toc-inline) {
+              padding: 0;
+            }
+        }
+
+        body:not(.toc-inline) #main_content main, body:not(.toc-inline) #main_content nav  {
+            padding-left: 1.5em;
+        }
+
+
+        [aria-hidden="true"] {
+            display: none
+        }
+
+        #dialog-div[aria-hidden="false"] {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        [role="dialog"][aria-hidden="false"] {
+            display: block;
+            width: 50%;
+            margin-bottom: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 5px;
+            border: thin #000 solid;
+            background-color: #fff;
+            position: absolute;
+            top: 25%;
+            left: 25%;
+        }
+
+        @media screen and (max-width: 640px) {
+            [role="dialog"][aria-hidden="false"] {
+                box-sizing: border-box;
+                top: 0px;
+                left: 0px;
+                margin-bottom: 0px;
+                min-height: 100%;
+                width: 100%;
+            }
+        }
+
+        [role="dialog"][aria-hidden="false"] h2:first-of-type {
+            text-align:center;
+        }
+
+        .dialog-form {
+            margin: 15px;
+        }
+
+        .dialog-form .label-text {
+            box-sizing: border-box;
+            padding-right: 0.5em;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            width: 30%;
+            text-align: right;
+        }
+
+        .dialog-form .label-info {
+            box-sizing: border-box;
+            padding-right: 0.5em;
+            font-size: 12px;
+          width: 30%;
+          text-align: right;
+          display: inline-block;
+        }
+
+        .dialog-form-item {
+            margin: 10px 0;
+            font-size: 0;
+        }
+
+        .dialog-form-actions {
+            text-align: right;
+            padding: 0 20px 20px;
+        }
+
+        .dialog-close-button {
+            float:right;
+            position:absolute;
+            top:10px;
+            left:92%;
+            height:25px;
+        }
+
+        .dialog-close-button img {
+            border:0;
+        }
+
+        .dialog-desc {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="base-window-div">
+        <main>
+            <h1>Dialog(Modal)</h1>
+            <p>
+                A dialog is a window overlayed on either the primary window or another dialog window. <br>
+                Like non-modal dialogs, modal dialogs have their own tab sequencem, i,e, <br>
+                <kbd>Tab</kbd> and <kbd>Shift + Tab</kbd> do not move focus outisde the dialog. <br>
+                However, the window under a modal dialog is typically inert; <br>
+                users cannot interact with content outside the dialog window. <br>
+                So, unlike non-modal dialogs, a modal dialog does not provide means for moving keyboard focus outside the dialog window without closing the dialog.
+            </p>
+            <p>
+                The alertdialog role is a special-case dialog role designed specifically for dialogs that divert users' attention to a brief, important message. <br>
+                Its usage is described in the alert dialog design pattern.
+            </p>
+
+            <section>
+                <h2>Keyboard Interaction</h2>
+                <ul>
+                    <li><kbd>Tab</kbd>:
+                        <ul>
+                            <li>Moves focus to the next focusabe element inside the dialog.</li>
+                            <li>If focus is on the last element, moves focus to the first focusabe element inside the dialog.</li>
+                        </ul>
+                    </li>
+                    <li><kbd>Shift + Tab</kbd> :
+                        <ul>
+                            <li>Moves focus to the previous focusable element inside the dialog.</li>
+                            <li>If focus is on the first element, moves focus to the last focusable element inside the dialog.</li>
+                        </ul>
+                    </li>
+                    <li><kbd>Escape</kbd> : Close the dialog. </li>
+                </ul>
+                <h6>Note</h6>
+                <ol>
+                    <li>When a dialog opens, focus is typically set on the first focusable element.</li>
+                    <li>
+                        When a dialog closes, focus returns to the element that had focus before the dialog was invoked. <br>
+                        This is often the control that opened the dialog.
+                    </li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>WAI-ARIA Roles, States, and Properties</h2>
+                <ul>
+                    <li>The element that serves as the dialog container has a role of <strong>dialog</strong>. </li>
+                    <li>
+                        The dialog has either : <br>
+                        <ul>
+                            <li>The <strong>aria-albelledby</strong> proeprty set to refer to the visible dialog title.</li>
+                            <li>A label specified width <strong>aria-label</strong></li>
+                        </ul>
+                    </li>
+                    <li>
+                        The <strong>aria-describedby</strong> property can be set on the element with the dialog role to indicate which element or elements in the dialog contain content that describes the primary purpose or message of the dialog. <br>
+                        Specifying descriptive elements enables screen readers to anounce the description along with the dialog title and initially focused element when the dialog opens.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Example</h2>
+                
+                <div id="ex1">
+                    <button type="button" onclick="openDialog('dialog1', this)">Add Delivery Address</button>
+                    <!-- Important: Note that the dialog container divs are all in a div at the end of the body that is outside the div containing all content for the base window layer. -->
+                </div>
+
+            </section>
+
+            <section>
+                <h2>Issue</h2>
+                <ol>
+                    <li>class="hidden" -> aria-hidden</li>
+                </ol>
+            </section>
+        </main>
+    </div>
+
+    <div id="dialog-div" aria-hidden="true">
+        <div role="dialog" id="dialog1" aria-labelledby="dialog1-label" aria-modal="true" aria-hidden="false">
+            <div role="document" tabindex="0">
+                <h2 id="dialog1-label">Add Delivery Address</h2>
+                <div class="dialog-form">
+                    <div class="dialog-form-item">
+                        <label>
+                            <span class="label-text">Street : </span>
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div class="dialog-form-item">
+                        <label>
+                            <span class="label-text">City : </span>
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div class="dialog-form-item">
+                        <label>
+                            <span class="label-text">State : </span>
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div class="dialog-form-item">
+                        <label>
+                            <span class="label-text">Zip : </span>
+                            <input type="text">
+                        </label>
+                    </div>
+                    <div class="dialog-form-item">
+                        <label>
+                            <span class="label-text">Special instructions : </span>
+                            <input type="text">
+                        </label>
+                        <div class="label-info" id="special_instructions_desc">
+                            For example, gate code or other information to help the driver find you
+                        </div>
+                    </div>
+                </div>
+                <div class="dialog-form-action">
+                    <button type="button" onclick="openDialog('dailog2', this, 'dialog2-para1)">Verify Address</button>
+                    <button type="button" onclick="replaceDialog('dailog3, undefined, 'dialog3-close-btn)">Add</button>
+                    <button type="button" onclick="closeDialog('dialog1')">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div role="dialog" id="dialog2" aria-labelledby="dialog2-label" aria-describedby="dialog2-desc" aria-modal="true" aria-hidden="true">
+            <h2 id="dialog2-label">Verification Result</h2>
+            <div id="dialog2-desc" class="dialog-desc">
+                <p tabindex="-1" id='dialog2-para1'>
+                    This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid.
+                </p>
+                <p>
+                    For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where:
+                </p>
+            </div>
+            <div class="dialog-form-action">
+                <a href="#" onclick="openDialog('dialog4', this)">link to help</a>
+                <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
+                <button type="button" onclick="closeDialog(this)">Close</button>
+            </div>
+        </div> 
+        <div role="dialog" id="dialog3" aria-labelledby="dialog3-label" aria-describedby="dialog3-desc" aria-modal="true" aria-hidden="true">
+            <h2 id="dialog3-label">Address Added</h2>
+            <p id="dialog3-desc" class="dialog-desc">
+                The address you provided has been added to your list of delivery addresses. <br>
+                It is ready for immediate use. If you wish to remove it, you can do so from your profile.
+            </p>
+            <div class="dialog-form-action">
+                <button type="button" id="dialog3-close-btn" onclick="closeDialog(this)">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var ModalDialog = function(){
+            this.compnt = document.getElementById('dialog-div');
+        };
+        ModalDialog.prototype = {
+            open : function( dialogId, opener ){
+                var dialog = document.getElementById(dialogId);
+                dialog.setAttribute('aria-hidden', false);
+                this.compnt.setAttribute('aria-hidden', false);
+                dialog.querySelector('[tabindex="0"]').focus();
+                dialog.opener = opener;
+            },
+            close : function( dialogId ){
+                var dialog = document.getElementById(dialogId);
+                dialog.setAttribute('aria-hidden', true);
+                this.compnt.setAttribute('aria-hidden', true);
+                dialog.opener.focus();
+            }
+        }
+
+
+
+
+        var openDialog = function( dialogId, opener ){
+            var newModalDialog = new ModalDialog();
+            newModalDialog.open( dialogId, opener );
+        };
+        var closeDialog = function( dialogId ){
+            var newModalDialog = new ModalDialog();
+            newModalDialog.close( dialogId );
+        };
+
+    </script>
+</body>
+</html>

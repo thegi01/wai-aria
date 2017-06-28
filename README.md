@@ -12,6 +12,7 @@
 
   #### Issue 
     - js : lte ie8
+    - To components
 
 
 ### 참조 url
