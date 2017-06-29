@@ -130,7 +130,7 @@
             font-size: 0;
         }
 
-        .dialog-form-actions {
+        .dialog-actions {
             text-align: right;
             padding: 0 20px 20px;
         }
@@ -169,6 +169,20 @@
                 The alertdialog role is a special-case dialog role designed specifically for dialogs that divert users' attention to a brief, important message. <br>
                 Its usage is described in the alert dialog design pattern.
             </p>
+
+            <section>
+                <h2>Example</h2>
+                
+                <div id="ex1">
+                    <button type="button" onclick="openDialog('dialog1', this)">Add Delivery Address</button>
+                    <!-- Important: Note that the dialog container divs are all in a div at the end of the body that is outside the div containing all content for the base window layer. -->
+                </div>
+                
+                <h6>Issue</h6>
+                <ol>
+                    <li>class="hidden" -> aria-hidden</li>
+                </ol>
+            </section>
 
             <section>
                 <h2>Keyboard Interaction</h2>
@@ -215,22 +229,6 @@
                 </ul>
             </section>
 
-            <section>
-                <h2>Example</h2>
-                
-                <div id="ex1">
-                    <button type="button" onclick="openDialog('dialog1', this)">Add Delivery Address</button>
-                    <!-- Important: Note that the dialog container divs are all in a div at the end of the body that is outside the div containing all content for the base window layer. -->
-                </div>
-
-            </section>
-
-            <section>
-                <h2>Issue</h2>
-                <ol>
-                    <li>class="hidden" -> aria-hidden</li>
-                </ol>
-            </section>
         </main>
     </div>
 
@@ -273,71 +271,120 @@
                         </div>
                     </div>
                 </div>
-                <div class="dialog-form-action">
-                    <button type="button" onclick="openDialog('dailog2', this, 'dialog2-para1)">Verify Address</button>
-                    <button type="button" onclick="replaceDialog('dailog3, undefined, 'dialog3-close-btn)">Add</button>
+                <div class="dialog-action">
+                    <button type="button" onclick="openDialog('dialog2', this)" id="dialog1-btn-1">Verify Address</button>
+                    <button type="button" onclick="replaceDialog('dialog3', 'dialog1')">Add</button>
                     <button type="button" onclick="closeDialog('dialog1')">Cancel</button>
                 </div>
+                <button type="button" data-focus="last" onclick="closeDialog('dialog1')">Close</button>
             </div>
         </div>
         <div role="dialog" id="dialog2" aria-labelledby="dialog2-label" aria-describedby="dialog2-desc" aria-modal="true" aria-hidden="true">
-            <h2 id="dialog2-label">Verification Result</h2>
-            <div id="dialog2-desc" class="dialog-desc">
-                <p tabindex="-1" id='dialog2-para1'>
-                    This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid.
-                </p>
-                <p>
-                    For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where:
-                </p>
-            </div>
-            <div class="dialog-form-action">
-                <a href="#" onclick="openDialog('dialog4', this)">link to help</a>
-                <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
-                <button type="button" onclick="closeDialog(this)">Close</button>
+            <div role="document" tabindex="0">
+                <h2 id="dialog2-label">Verification Result</h2>
+                <div id="dialog2-desc" class="dialog-desc">
+                    <p>
+                        This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid.
+                    </p>
+                    <p>
+                        For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where:
+                    </p>
+                </div>
+                <div class="dialog-action">
+                    <a href="#" onclick="openDialog('dialog4', this)">link to help</a>
+                    <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
+                    <button type="button" data-focus="last" onclick="closeDialog('dialog2')">Close</button>
+                </div>
             </div>
         </div> 
         <div role="dialog" id="dialog3" aria-labelledby="dialog3-label" aria-describedby="dialog3-desc" aria-modal="true" aria-hidden="true">
-            <h2 id="dialog3-label">Address Added</h2>
-            <p id="dialog3-desc" class="dialog-desc">
-                The address you provided has been added to your list of delivery addresses. <br>
-                It is ready for immediate use. If you wish to remove it, you can do so from your profile.
-            </p>
-            <div class="dialog-form-action">
-                <button type="button" id="dialog3-close-btn" onclick="closeDialog(this)">OK</button>
+            <div role="document" tabindex="0">
+                <h2 id="dialog3-label">Address Added</h2>
+                <p id="dialog3-desc" class="dialog-desc">
+                    The address you provided has been added to your list of delivery addresses. <br>
+                    It is ready for immediate use. If you wish to remove it, you can do so from your profile.
+                </p>
+                <div class="dialog-action">
+                    <button type="button" data-focus="last" onclick="closeDialog('dialog3')">OK</button>
+                </div>
+            </div>
+        </div>
+        <div id="dialog4" role="dialog" aria-labelledby="dialog4-label" aria-describedby="dialog4-desc" aria-modal="true" aria-hidden="true">
+            <div role="document" tabindex="0">
+                <h2 id="dialog4-label">End of the Road!</h2>
+                <p id="dialog4-desc" class="dialog-desc">
+                    You activated a fake link or button that goes nowhere!
+                    The link or button is present for demonstration purposes only.
+                </p>
+                <div class="dialog-actions">
+                    <button type="button" data-focus="last" onclick="closeDialog('dialog4')">Close</button>
+                </div>
             </div>
         </div>
     </div>
     
     <script>
-        var ModalDialog = function(){
+        var DialogModal = function(){
             this.compnt = document.getElementById('dialog-div');
+            this.opened = 0;
         };
-        ModalDialog.prototype = {
-            open : function( dialogId, opener ){
-                var dialog = document.getElementById(dialogId);
+        DialogModal.prototype = {
+            open : function( dialog, opener ){
                 dialog.setAttribute('aria-hidden', false);
-                this.compnt.setAttribute('aria-hidden', false);
+                if(this.opened === 0){
+                    this.compnt.setAttribute('aria-hidden', false);
+                }
                 dialog.querySelector('[tabindex="0"]').focus();
                 dialog.opener = opener;
+                var lastFocus = dialog.querySelector('[data-focus="last"]');
+                lastFocus.addEventListener('keydown', this.refocus.bind(this, dialog) );
+                ++this.opened;
             },
-            close : function( dialogId ){
-                var dialog = document.getElementById(dialogId);
+            close : function( dialog ){
+                this.closeOnly( dialog );
+                this.openerFocus( dialog );
+            },
+            closeOnly : function( dialog ){
                 dialog.setAttribute('aria-hidden', true);
-                this.compnt.setAttribute('aria-hidden', true);
+                if(this.opened === 1){
+                    this.compnt.setAttribute('aria-hidden', true);
+                }
+                --this.opened;
+            },
+            openerFocus : function( dialog ){
                 dialog.opener.focus();
+                dialog.opener = undefined;
+            },
+            refocus : function( dialog ) {
+                var key = event.which || event.keyCode;
+                if( key == keyCodes.tab ){
+                    dialog.querySelector('[tabindex="0"]').focus();
+                    event.preventDefault();
+                }
+            },
+            replace : function( dialog1, dialog2 ){
+                this.open( dialog1, dialog2.opener );
+                this.closeOnly( dialog2 );
             }
         }
-
-
-
-
+        var newDialogModal = new DialogModal();
         var openDialog = function( dialogId, opener ){
-            var newModalDialog = new ModalDialog();
-            newModalDialog.open( dialogId, opener );
+            var dialog = document.getElementById( dialogId );
+            newDialogModal.open( dialog, opener );
         };
         var closeDialog = function( dialogId ){
-            var newModalDialog = new ModalDialog();
-            newModalDialog.close( dialogId );
+            var dialog = document.getElementById( dialogId );
+            newDialogModal.close( dialog );
+        };
+        var replaceDialog = function( dialogId1, dialogId2 ){
+            var dialog1 = document.getElementById( dialogId1 ),
+                dialog2 = document.getElementById( dialogId2 );
+            newDialogModal.replace( dialog1, dialog2 );
+        }
+
+        var keyCodes = {
+            tab : 9,
+            escape : 27
         };
 
     </script>
