@@ -101,6 +101,11 @@
         [role="dialog"][aria-hidden="false"] h2:first-of-type {
             text-align:center;
         }
+    
+        [role="dialog"] h2 {
+            margin: 0;
+            padding: 1em;
+        }
 
         .dialog-form {
             margin: 15px;
@@ -229,96 +234,96 @@
                 </ul>
             </section>
 
+            <section>
+                <h2>URL</h2>
+                <ul>
+                    <li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#dialog_modal" target="_blank">W3 Practices</a></li>
+                    <li><a href="http://w3c.github.io/aria-practices/examples/dialog-modal/dialog.html" target="_blank">W3 Example</a></li>
+                </ul>
+            </section>
+
         </main>
     </div>
 
     <div id="dialog-div" aria-hidden="true">
         <div role="dialog" id="dialog1" aria-labelledby="dialog1-label" aria-modal="true" aria-hidden="false">
-            <div role="document" tabindex="0">
-                <h2 id="dialog1-label">Add Delivery Address</h2>
-                <div class="dialog-form">
-                    <div class="dialog-form-item">
-                        <label>
-                            <span class="label-text">Street : </span>
-                            <input type="text">
-                        </label>
-                    </div>
-                    <div class="dialog-form-item">
-                        <label>
-                            <span class="label-text">City : </span>
-                            <input type="text">
-                        </label>
-                    </div>
-                    <div class="dialog-form-item">
-                        <label>
-                            <span class="label-text">State : </span>
-                            <input type="text">
-                        </label>
-                    </div>
-                    <div class="dialog-form-item">
-                        <label>
-                            <span class="label-text">Zip : </span>
-                            <input type="text">
-                        </label>
-                    </div>
-                    <div class="dialog-form-item">
-                        <label>
-                            <span class="label-text">Special instructions : </span>
-                            <input type="text">
-                        </label>
-                        <div class="label-info" id="special_instructions_desc">
-                            For example, gate code or other information to help the driver find you
-                        </div>
+            <h2 id="dialog1-label">Add Delivery Address</h2>
+            <div class="dialog-form">
+                <div class="dialog-form-item">
+                    <label>
+                        <span class="label-text">Street : </span>
+                        <input type="text" data-focus="first">
+                    </label>
+                </div>
+                <div class="dialog-form-item">
+                    <label>
+                        <span class="label-text">City : </span>
+                        <input type="text">
+                    </label>
+                </div>
+                <div class="dialog-form-item">
+                    <label>
+                        <span class="label-text">State : </span>
+                        <input type="text">
+                    </label>
+                </div>
+                <div class="dialog-form-item">
+                    <label>
+                        <span class="label-text">Zip : </span>
+                        <input type="text">
+                    </label>
+                </div>
+                <div class="dialog-form-item">
+                    <label>
+                        <span class="label-text">Special instructions : </span>
+                        <input type="text">
+                    </label>
+                    <div class="label-info" id="special_instructions_desc">
+                        For example, gate code or other information to help the driver find you
                     </div>
                 </div>
-                <div class="dialog-action">
-                    <button type="button" onclick="openDialog('dialog2', this)" id="dialog1-btn-1">Verify Address</button>
-                    <button type="button" onclick="replaceDialog('dialog3', 'dialog1')">Add</button>
-                    <button type="button" onclick="closeDialog('dialog1')">Cancel</button>
-                </div>
-                <button type="button" data-focus="last" onclick="closeDialog('dialog1')">Close</button>
             </div>
+            <div class="dialog-action">
+                <button type="button" onclick="openDialog('dialog2', this)" id="dialog1-btn-1">Verify Address</button>
+                <button type="button" onclick="replaceDialog('dialog3', 'dialog1')">Add</button>
+                <button type="button" onclick="closeDialog('dialog1')">Cancel</button>
+            </div>
+            <button type="button" data-focus="last" onclick="closeDialog('dialog1')">Close</button>
         </div>
         <div role="dialog" id="dialog2" aria-labelledby="dialog2-label" aria-describedby="dialog2-desc" aria-modal="true" aria-hidden="true">
-            <div role="document" tabindex="0">
-                <h2 id="dialog2-label">Verification Result</h2>
-                <div id="dialog2-desc" class="dialog-desc">
-                    <p>
-                        This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid.
-                    </p>
-                    <p>
-                        For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where:
-                    </p>
-                </div>
-                <div class="dialog-action">
-                    <a href="#" onclick="openDialog('dialog4', this)">link to help</a>
-                    <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
-                    <button type="button" data-focus="last" onclick="closeDialog('dialog2')">Close</button>
-                </div>
+            <h2 id="dialog2-label">Verification Result</h2>
+            <div id="dialog2-desc" class="dialog-desc">
+                <p>
+                    This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid.
+                </p>
+                <p>
+                    For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where:
+                </p>
+            </div>
+            <div class="dialog-action">
+                <a href="#" data-focus="first" onclick="openDialog('dialog4', this)">link to help</a>
+                <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
+                <button type="button" data-focus="last" onclick="closeDialog('dialog2')">Close</button>
             </div>
         </div> 
         <div role="dialog" id="dialog3" aria-labelledby="dialog3-label" aria-describedby="dialog3-desc" aria-modal="true" aria-hidden="true">
-            <div role="document" tabindex="0">
-                <h2 id="dialog3-label">Address Added</h2>
-                <p id="dialog3-desc" class="dialog-desc" style="height:500px;">
-                    The address you provided has been added to your list of delivery addresses. <br>
-                    It is ready for immediate use. If you wish to remove it, you can do so from your profile.
-                </p>
-                <div class="dialog-action">
-                    <button type="button" data-focus="last" onclick="closeDialog('dialog3')">OK</button>
-                </div>
+            <h2 id="dialog3-label">Address Added</h2>
+            <p id="dialog3-desc" class="dialog-desc" style="height:500px;">
+                The address you provided has been added to your list of delivery addresses. <br>
+                It is ready for immediate use. If you wish to remove it, you can do so from your profile.
+            </p>
+            <div class="dialog-action">
+                <button type="button" data-focus="last" onclick="closeDialog('dialog3')">OK</button>
             </div>
         </div>
         <div id="dialog4" role="dialog" aria-labelledby="dialog4-label" aria-describedby="dialog4-desc" aria-modal="true" aria-hidden="true">
-            <div role="document" tabindex="0">
-                <h2 id="dialog4-label">End of the Road!</h2>
-                <p id="dialog4-desc" class="dialog-desc">
-                    You activated a fake link or button that goes nowhere!
-                    The link or button is present for demonstration purposes only.
-                </p>
-                <div class="dialog-actions">
-                    <button type="button" data-focus="last" onclick="closeDialog('dialog4')">Close</button>
-                </div>
+            <h2 id="dialog4-label">End of the Road!</h2>
+            <p id="dialog4-desc" class="dialog-desc">
+                You activated a fake link or button that goes nowhere!
+                The link or button is present for demonstration purposes only.
+            </p>
+            <div class="dialog-actions">
+                <button type="button" data-focus="last" onclick="closeDialog('dialog4')">Close</button>
             </div>
         </div>
     </div>
@@ -330,19 +335,28 @@
         };
         DialogModal.prototype = {
             open : function( dialog, opener ){
+                dialog.firstFocusable = dialog.querySelector('[data-focus="first"]') ? dialog.querySelector('[data-focus="first"]') : undefined,
+                dialog.lastFocusable = dialog.querySelector('[data-focus="last"]');
                 dialog.setAttribute('aria-hidden', false);
                 if(this.opened === 0){
                     this.compnt.setAttribute('aria-hidden', false);
                 }
-                dialog.querySelector('[tabindex="0"]').focus();
+                if( dialog.firstFocusable ){
+                    dialog.firstFocusable.focus();
+                    dialog.firstFocusable.addEventListener( 'keydown', this.firstFcousableEventListener.bind(this, dialog) );
+                } else {
+                    dialog.lastFocusable.focus();
+                }
+                dialog.lastFocusable.addEventListener( 'keydown', this.lastFocusableEventListener.bind(this, dialog) );
                 dialog.opener = opener;
-                var lastFocus = dialog.querySelector('[data-focus="last"]');
-                lastFocus.addEventListener('keydown', this.refocus.bind(this, dialog) );
                 ++this.opened;
             },
             close : function( dialog ){
                 this.closeOnly( dialog );
-                this.openerFocus( dialog );
+                dialog.opener.focus();
+                dialog.opener = undefined;
+                dialog.firstFocusable = undefined;
+                dialog.lastFocusable = undefined;
             },
             closeOnly : function( dialog ){
                 dialog.setAttribute('aria-hidden', true);
@@ -351,35 +365,38 @@
                 }
                 --this.opened;
             },
-            openerFocus : function( dialog ){
-                dialog.opener.focus();
-                dialog.opener = undefined;
-            },
-            refocus : function( dialog ) {
-                var key = event.which || event.keyCode;
-                if( key == keyCodes.tab ){
-                    dialog.querySelector('[tabindex="0"]').focus();
-                    event.preventDefault();
-                }
-            },
             replace : function( dialog1, dialog2 ){
                 this.open( dialog1, dialog2.opener );
                 this.closeOnly( dialog2 );
+            },
+            lastFocusableEventListener : function( dialog ){
+                var key = event.which || event.keyCode;
+                if( dialog.firstFocusable && !event.shiftKey && key === keyCodes.tab ){
+                    event.preventDefault();
+                    dialog.firstFocusable.focus();
+                }
+            },
+            firstFcousableEventListener : function( dialog ){
+                var key = event.which || event.keyCode;
+                if( event.shiftKey && key === keyCodes.tab){
+                    event.preventDefault();
+                    dialog.lastFocusable.focus();
+                }
             }
         }
-        var newDialogModal = new DialogModal();
+        var baseDialogModal = new DialogModal();
         var openDialog = function( dialogId, opener ){
             var dialog = document.getElementById( dialogId );
-            newDialogModal.open( dialog, opener );
+            baseDialogModal.open( dialog, opener );
         };
         var closeDialog = function( dialogId ){
             var dialog = document.getElementById( dialogId );
-            newDialogModal.close( dialog );
+            baseDialogModal.close( dialog );
         };
         var replaceDialog = function( dialogId1, dialogId2 ){
             var dialog1 = document.getElementById( dialogId1 ),
                 dialog2 = document.getElementById( dialogId2 );
-            newDialogModal.replace( dialog1, dialog2 );
+            baseDialogModal.replace( dialog1, dialog2 );
         }
 
         var keyCodes = {
