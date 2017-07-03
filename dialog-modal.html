@@ -62,14 +62,22 @@
             display: none
         }
 
-        #dialog-div[aria-hidden="false"] {
+        #dialogs-div[aria-hidden="false"] {
             position: absolute;
             width: 100%;
-            height: 100vh;
+            height: 100%;
             top: 0;
             left: 0;
             overflow: scroll;
             -webkit-overflow-scrolling: touch;
+        }
+
+        .dialog-dimmed {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             background: rgba(0, 0, 0, 0.3);
         }
         
@@ -85,6 +93,7 @@
             position: absolute;
             top: 25%;
             left: 25%;
+            z-index: 10;
         }
 
         @media screen and (max-width: 640px) {
@@ -246,7 +255,7 @@
         </main>
     </div>
 
-    <div id="dialog-div" aria-hidden="true">
+    <div id="dialogs-div" aria-hidden="true">
         <div role="dialog" id="dialog1" aria-labelledby="dialog1-label" aria-modal="true" aria-hidden="false">
             <h2 id="dialog1-label">Add Delivery Address</h2>
             <div class="dialog-form">
@@ -327,12 +336,14 @@
                 <button type="button" data-focus="last" onclick="closeDialog('dialog4')">Close</button>
             </div>
         </div>
+        <div id="dialog-dimmed" class="dialog-dimmed"></div>
     </div>
     
     <script>
         var DialogModal = function(){
-            this.compnt = document.getElementById('dialog-div');
-            this.opened = 0;
+            this.compnt = document.getElementById('dialogs-div');
+            this.dimmed = document.getElementById('dialog-dimmed');
+            this.opened = [];
         };
         DialogModal.prototype = {
             open : function( dialog, opener ){
@@ -342,10 +353,10 @@
                 dialog.focusableLast = focusableArr[ focusableArr.length-1 ];
 
                 dialog.setAttribute('aria-hidden', false);
-                if(this.opened === 0){
+                if(this.opened.length === 0){
                     this.compnt.setAttribute('aria-hidden', false);
                 }
-                ++this.opened;
+                this.opened.push(dialog);
 
                 dialog.firstFocusable.focus();
 
@@ -354,7 +365,8 @@
                 dialog.addEventListener( 'keydown', this.dialogKeydownListener.bind(this, dialog) );
 
                 dialog.opener = opener;
-                
+
+                this.dimmed.addEventListener('click', this.dimmedClickListener.bind(this, dialog) );
             },
             close : function( dialog ){
                 this.closeOnly( dialog );
@@ -364,14 +376,18 @@
             },
             closeOnly : function( dialog ){
                 dialog.setAttribute('aria-hidden', true);
-                if(this.opened === 1){
+                if(this.opened.length === 1){
                     this.compnt.setAttribute('aria-hidden', true);
+                    this.dimmed.removeEventListener('click', this.dimmedClickListener );
                 }
-                --this.opened;
+                var i = this.opened.indexOf( dialog );
+                if(i != -1) {
+                    this.opened.splice(i, 1);
+                }
 
-                dialog.firstFocusable.removeEventListener( 'keydown', this.focusableFirstKeydownListener );
-                dialog.focusableLast.removeEventListener( 'keydown', this.focusableLastKeydownListener );
-
+                // dialog.firstFocusable.removeEventListener( 'keydown', this.focusableFirstKeydownListener );
+                // dialog.focusableLast.removeEventListener( 'keydown', this.focusableLastKeydownListener );
+                dialog.removeEventListener( 'keydown', this.dialogKeydownListener );
                 dialog.firstFocusable = undefined;
                 dialog.focusableLast = undefined;
             },
@@ -399,6 +415,11 @@
                     event.preventDefault();
                     this.close( dialog );
                 }
+            },
+            dimmedClickListener : function( ){
+                this.opened.forEach(function( item ){
+                    this.close( item );
+                }.bind(this));
             }
         }
         var baseDialogModal = new DialogModal();
