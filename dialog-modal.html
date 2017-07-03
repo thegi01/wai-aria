@@ -21,7 +21,7 @@
             overflow: hidden;
         }
 
-        body:not(.toc-inline) {
+        body {
           padding: 0;
         }
 
@@ -44,16 +44,16 @@
         }
 
         @media screen and (min-width: 78em) {
-            body:not(.toc-inline) #base-window-div main, body:not(.toc-inline) #base-window-div nav  {
+            body #base-window-div main, body #base-window-div nav  {
                 padding-left: 29em;
             }
 
-            body:not(.toc-inline) {
+            body {
               padding: 0;
             }
         }
 
-        body:not(.toc-inline) #main_content main, body:not(.toc-inline) #main_content nav  {
+        body #main_content main, body #main_content nav  {
             padding-left: 1.5em;
         }
 
@@ -62,7 +62,7 @@
             display: none
         }
 
-        #dialogs-div[aria-hidden="false"] {
+        .dialogs-div[aria-hidden="false"] {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -255,14 +255,14 @@
         </main>
     </div>
 
-    <div id="dialogs-div" aria-hidden="true">
+    <div id="dialogs-div" class="dialogs-div" aria-hidden="true">
         <div role="dialog" id="dialog1" aria-labelledby="dialog1-label" aria-modal="true" aria-hidden="false">
             <h2 id="dialog1-label">Add Delivery Address</h2>
             <div class="dialog-form">
                 <div class="dialog-form-item">
                     <label>
                         <span class="label-text">Street : </span>
-                        <input type="text" data-focus="first">
+                        <input type="text">
                     </label>
                 </div>
                 <div class="dialog-form-item">
@@ -298,7 +298,7 @@
                 <button type="button" onclick="replaceDialog('dialog3', 'dialog1')">Add</button>
                 <button type="button" onclick="closeDialog('dialog1')">Cancel</button>
             </div>
-            <button type="button" data-focus="last" onclick="closeDialog('dialog1')">Close</button>
+            <button type="button" onclick="closeDialog('dialog1')">Close</button>
         </div>
         <div role="dialog" id="dialog2" aria-labelledby="dialog2-label" aria-describedby="dialog2-desc" aria-modal="true" aria-hidden="true">
             <h2 id="dialog2-label">Verification Result</h2>
@@ -311,9 +311,9 @@
                 </p>
             </div>
             <div class="dialog-action">
-                <a href="#" data-focus="first" onclick="openDialog('dialog4', this)">link to help</a>
+                <a href="#" onclick="openDialog('dialog4', this)">link to help</a>
                 <button type="button" onclick="openDialog('dialog4', this)">accepting an alternative form</button>
-                <button type="button" data-focus="last" onclick="closeDialog('dialog2')">Close</button>
+                <button type="button" onclick="closeDialog('dialog2')">Close</button>
             </div>
         </div> 
         <div role="dialog" id="dialog3" aria-labelledby="dialog3-label" aria-describedby="dialog3-desc" aria-modal="true" aria-hidden="true">
@@ -323,7 +323,7 @@
                 It is ready for immediate use. If you wish to remove it, you can do so from your profile.
             </p>
             <div class="dialog-action">
-                <button type="button" data-focus="last" onclick="closeDialog('dialog3')">OK</button>
+                <button type="button" onclick="closeDialog('dialog3')">OK</button>
             </div>
         </div>
         <div id="dialog4" role="dialog" aria-labelledby="dialog4-label" aria-describedby="dialog4-desc" aria-modal="true" aria-hidden="true">
@@ -333,7 +333,7 @@
                 The link or button is present for demonstration purposes only.
             </p>
             <div class="dialog-actions">
-                <button type="button" data-focus="last" onclick="closeDialog('dialog4')">Close</button>
+                <button type="button" onclick="closeDialog('dialog4')">Close</button>
             </div>
         </div>
         <div id="dialog-dimmed" class="dialog-dimmed"></div>
@@ -378,11 +378,11 @@
                 dialog.setAttribute('aria-hidden', true);
                 if(this.opened.length === 1){
                     this.compnt.setAttribute('aria-hidden', true);
-                    this.dimmed.removeEventListener('click', this.dimmedClickListener );
+                    this.dimmed.removeEventListener('click', this.dimmedClickListener);
                 }
-                var i = this.opened.indexOf( dialog );
-                if(i != -1) {
-                    this.opened.splice(i, 1);
+                var i = this.opened.indexOf( dialog );;
+                if( i != -1 ){
+                    this.opened.splice(i, 1)
                 }
 
                 // dialog.firstFocusable.removeEventListener( 'keydown', this.focusableFirstKeydownListener );
