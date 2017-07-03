@@ -1,123 +1,247 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Button | WAI-ARIA</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="googlebot" content="noindex,nofollow">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <style>
-        [role="button"] {
-          display: inline-block;
-          padding: 5px 10px;
-          border: 2px solid #555;
-          border-radius: 5px;
-          color: #000;
-          background: #ddd;
-        }
-
-        [role="button"]:hover,
-        [role="button"]:focus {
-            background-color: #eee;
-            cursor: default;
-        }
-
-        [role="button"]:active {
-          background-color: #bbb;
-        }
-
-        [role="button"][aria-pressed="true"] {
-          color: #fff;
-          background: #333;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Button | WAI-ARIA</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-   <h1>WAI-ARIA Button Example</h1>
+	<main class="wrap ex">
+		<h1>Button</h1>
+		
+		<p>
+			A button is a widget that enables users to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation. <br>
+			A common convention for informing users that a button launches a dialog is to append "…" (ellipsis) to the button label, e.g., "Save as…".
+		</p>
 
-   <h2>Push button</h2>
-   <div tabindex="0" role="button" id="buttonPrint">
-       Print page
-   </div>
+		<div>
+			<p>In addition to the ordinary button widget, WAI-ARIA supports 2 other types of buttons: </p>
+			<ul>
+				<li>
+					<strong>Toggle button : </strong>
+					A two-state button that can be either off (not pressed) or on(pressed). <br>
+					To tell assistive technologies that a button is a toggle button, speicify a value for the attribute <strong>aria-prseed.</strong> <br>
+					For example, a button labelled mute in an audio player could indicate that sound is muted by setting the pressed state true. <br>
+					Important : it is cirtical the label on a toggle does not change when its state changes. <br>
+					In this exampel, when the pressed state is true, the label remains "Mute" so a screen reader would say something like "Mute toggle button pressed". <br>
+					Alternatively, if the design were to call for the button label to change from "Mute" to "Unmute", the aria-pressed attribute would not be needed.
+				</li>
+				<li>
+					<strong>Menu button : </strong>
+					as described in the menu button pattern, a button is revealed to assistive technologies as a menu button if it has the property aria-haspopup set to true.
+				</li>
+			</ul>
+			<h6>Note</h6>
+			<p>
+				The types of actions performed by buttons are distinctly diffrent from the function of a link. <br>
+				It is important that both the appearance and role of a widget match the function it provides. <br>
+				Nevertheless, elements occasionally have the visual style of a link but perform the action of a button. <br>
+				In such cases, giving the element role button helps assistvie technology users understand the function of the element. <br>
+				However, a better soluton is to adjust the visual design so it matches the function and ARIA role.
+			</p>
+		</div>
 
-   <h3>Push button</h3>
-   <a tabindex="0" role="button" id="buttonAlert">
-       Show alert
-   </a>
+		<section>
+			<h2>Example</h2>
+			<style>
+				[role="button"] {
+				  display: inline-block;
+				  padding: 5px 10px;
+				  border: 2px solid #555;
+				  border-radius: 5px;
+				  color: #000;
+				  background: #ddd;
+				}
 
-   <h2>Toggle button</h2>
-   <span tabindex="0" role="button" id="buttonToggle" aria-pressed="false">
-       Mute
-   </span>
+				[role="button"]:hover,
+				[role="button"]:focus {
+				  	background-color: #eee;
+					cursor: default;
+				}
 
-<script>
-    "use strict";
+				[role="button"]:active {
+				  background-color: #bbb;
+				}
 
-    var init = function(){
+				[role="button"][aria-pressed="true"] {
+				  color: #fff;
+				  background: #333;
+				}
 
-        document.getElementById('buttonPrint').addEventListener('click', printButtonHandler );
-        document.getElementById('buttonPrint').addEventListener('keydown', printButtonHandler );
+				.demo .ex {
+					margin: 2em 0;
+					padding: 0 2em;
+					border: thin solid #333;
+				}
+			</style>
+			<div class="demo">	
+				<section class="ex">
+					<h4>div element</h4>
+					<div tabindex="0" role="button" id="button-print">Print Page</div>
+					<h5>Accessibility Feature</h5>
+					<ul>
+						<li>div element with role="button". </li>
+						<li>div element has onclick event to handle mouse clicks.</li>
+						<li>div element has onkeydown event to handle keyboard support.</li>
+						<li>div element has tabindex="0" to become part of tab order of the page.</li>
+					</ul>
+				</section>
+				<section class="ex">
+					<h4>span element</h4>
+					<span tabindex="0" role="button" id="button-toggle" aria-pressed="false">Mute</span>
+					<h5>Accessibility Feature</h5>
+					<ul>
+						<li>span element with role="button".</li>
+						<li>span element has onclick event to handle mouse clicks.</li>
+						<li>span element has onkeydown event to ahndle keyboard support.</li>
+						<li>Toggle status using the aria-pressed attribute.</li>
+					</ul>
+				</section>
+				<section class="ex">
+					<h4>a element</h4>
+					<a tabindex="0" role="button" id="button-alert">Show alert</a>
+					<h5>Accessibility Feature</h5>
+					<ul>
+						<li>a element has onclick event to handle mouse clicks.</li>
+						<li>a element has onkeydown event to handle keyboard support.</li>
+						<li>a element has tabindex="0" to become part of tab order of the page.</li>
+					</ul>
+				</section>
+			</div>
+			<script>
+				var keyCodes = {
+					enter : 13,
+				    space : 32
+				};
+				
+				var buttonPrintEventHandler = function( event ){
+					var type = event.type;
+					if( type === 'click'){
+						window.print();
+					} else if( type === 'keydown' ){
+						var key = event.which || event.keyCode;
+						if( key === keyCodes.enter || key === keyCodes.space ){
+							event.preventDefault();
+							window.print();
+						}
+					}
+				};
+				var buttonToggleEventHandler = function( event ){
+					var type = event.type;
+					if( type === 'click' ){
+						buttonToggleState( event );
+					} else if( type === 'keydown' ){
+						var key = event.which || event.keyCode;
+						if( key === keyCodes.enter || key === keyCodes.space ){
+							event.preventDefault();
+							buttonToggleState( event  );
+						}
+					}
+				};
+				var buttonToggleState = function( event ){
+					var button = event.target;
+					var newState = ( button.getAttribute('aria-pressed') === 'true' ) ? 'false' : 'true';
+					button.setAttribute('aria-pressed', newState);
+				};
+				var buttonAlertEventHandler = function( event ){
+					var type = event.type;
+					var message = 'Hej, hello, ciao, こんにちは';
+					if( type === 'click' ){
+						alert( message );
+					} else if( type === 'keydown' ){
+						var key = event.which || event.keyCode;
+						if( key === keyCodes.enter || key === keyCodes.space ){
+							event.preventDefault();
+							alert( message );
+						}
+					}
+				};
 
-        document.getElementById('buttonAlert').addEventListener('click', alertButtonHandler );
-        document.getElementById('buttonAlert').addEventListener('keydown', alertButtonHandler );
+				document.getElementById('button-print').addEventListener( 'click', buttonPrintEventHandler );
+				document.getElementById('button-print').addEventListener( 'keydown', buttonPrintEventHandler );
 
-        document.getElementById('buttonToggle').addEventListener('click', toggleButtonHandler );
-        document.getElementById('buttonToggle').addEventListener('keydown', toggleButtonHandler );
+				document.getElementById('button-toggle').addEventListener( 'click', buttonToggleEventHandler );
+				document.getElementById('button-toggle').addEventListener( 'keydown', buttonToggleEventHandler );
 
-    };
+				document.getElementById('button-alert').addEventListener( 'click', buttonAlertEventHandler );
+				document.getElementById('button-alert').addEventListener( 'keydown', buttonAlertEventHandler );
 
-    var printButtonHandler = function( event ){
-        var type = event.type;
-        if( type === 'keydown' ){
-            // if either enter or space  is preseed, excute the function
-            if( event.keyCode === 13 || event.keyCode === 32 ) {
-                window.print();
-                event.preventDefault();
-            } 
-        } else if( type === 'click') {
-            window.print();
-        }
-    };
+			</script>
+		</section>
 
-    var alertButtonHandler = function( event ){
-        var type = event.type;
-        var message = '안녕~'
-        // if either enter or space  is pressed, excute the function
-        if( type === 'keydown' ){
-            if( event.keyCode === 13 || event.keyCode === 32 ) {
-                alert( message );
-                event.preventDefault();
-            }
-        } else if( type === 'click'){
-            alert( message );
-        }
-    };
+		<section>
+			<h2>Keyboard Interaction</h2>
+			<p>When the button is focus : </p>
+			<ul>
+				<li>
+					<kbd>Space</kbd>: Activate the button.
+				</li>
+				<li>
+					<kbd>Enter</kbd>: Activate the button.
+				</li>
+				<li>
+					Following button activation, focus is set depending on the type of action the button performs. For example :
+					<ul>
+						<li>
+							If activating the button opens a dialog, the focus moves inside the dialog.
+						</li>
+						<li>
+							If activating the button closes a dialog, focus typically returnd to the button that opened the dialog unless the function performed in the dialog context logically leads to a diffrent element. <br>
+							For example, activating a cancel button in a dialog returns focus to the button that opened the dialog. <br>
+							However, if the dialog were confirming the action of deleting the page from which it was opend, the focus would logically move to new context.
+						</li>
+						<li>
+							If activating the button does not dismiss the current context, then focus typically remains on the button after activation, e.g., an Apply or Recalculate button.
+						</li>
+						<li>
+							If the button action indicates a context chanae, such as move to next steo in a wizard or add another search criteria, then it is often appropriate to move focus to the starting point for that action.
+						</li>
+						<li>
+							If the button is activated with a shortcut key, the focus usaully remains in the context from which the shortcut key was activated. <br>
+							For example, if <kbd>Alt + U</kbd> were assigned to an "Up" button that moves the currently focused item in a list one position higher in the list, pressing <kbd>Alt + U</kbd> when the focus is in the list would not move the focus from the list.
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</section>
 
-    var toggleButtonHandler = function( event ){
-        var type = event.type;
-        // if either enter or space  is pressed, excute the function
-        if( type === 'keydown' ){
-            if( event.keyCode === 13 || event.keyCode === 32 ) {
-                toggleButton( event );
-                event.preventDefault();
-            }
-        } else if( type === 'click'){
-            toggleButton( event );
-        }
-    };
-
-    var toggleButton = function( event ){
-        var button = event.target;
-        var currentState = button.getAttribute('aria-pressed');
-        currentState = ( currentState === 'false' ) ? 'true' : 'false';
-        button.setAttribute( 'aria-pressed', currentState );
-    };
-
-    window.onload = init;
-
-</script>
-
+		<section>
+			<h2>WAI-ARIA Roles, States, and Properties</h2>
+			<ul>
+				<li>
+					The button has role of <strong>button</strong>.
+				</li>
+				<li>
+					The button has an accessible label. <br>
+					By default, the accessible name is computed from any text content inside the button elelment. <br>
+					However, it can also be provided with <strong>aria-labelledby</strong> or <strong>aria-label</strong>.
+				</li>
+				<li>
+					If a description of the button's fucntion is present, the button element has <strong>aria-describedby</strong> set to the ID of the element containing the description.
+				</li>
+				<li>
+					When the action associated with a button is unavailable, the button has <strong>aria-disabled</strong> set to true.
+				</li>
+				<li>
+					If the button is a toggle button, it has an <strong>aria-pressed</strong> state. <br>
+					Whten the button is toggled on, the value of the this state is true, and when toggled off, the state is false.
+				</li>
+			</ul>
+		</section>
+		
+		<section>
+			<h2>URL</h2>
+			<ul>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#breadcrumb" target="_blank">W3 Practices</a></li>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/breadcrumb/index.html" target="_blank">W3 Example</a></li>
+			</ul>
+		</section>
+		
+	</main>
 </body>
 </html>
