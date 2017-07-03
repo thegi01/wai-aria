@@ -239,6 +239,7 @@
                 <ul>
                     <li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#dialog_modal" target="_blank">W3 Practices</a></li>
                     <li><a href="http://w3c.github.io/aria-practices/examples/dialog-modal/dialog.html" target="_blank">W3 Example</a></li>
+                    <li><a href="https://bitsofco.de/accessible-modal-dialog/">Another Example</a></li>
                 </ul>
             </section>
 
@@ -335,28 +336,31 @@
         };
         DialogModal.prototype = {
             open : function( dialog, opener ){
-                dialog.firstFocusable = dialog.querySelector('[data-focus="first"]') ? dialog.querySelector('[data-focus="first"]') : undefined,
-                dialog.lastFocusable = dialog.querySelector('[data-focus="last"]');
+                var focusable = dialog.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]')
+                var focusableArr = Array.prototype.slice.call(focusable);
+                dialog.firstFocusable = focusableArr[0];
+                dialog.focusableLast = focusableArr[ focusableArr.length-1 ];
+
                 dialog.setAttribute('aria-hidden', false);
                 if(this.opened === 0){
                     this.compnt.setAttribute('aria-hidden', false);
                 }
-                if( dialog.firstFocusable ){
-                    dialog.firstFocusable.focus();
-                    dialog.firstFocusable.addEventListener( 'keydown', this.firstFcousableEventListener.bind(this, dialog) );
-                } else {
-                    dialog.lastFocusable.focus();
-                }
-                dialog.lastFocusable.addEventListener( 'keydown', this.lastFocusableEventListener.bind(this, dialog) );
-                dialog.opener = opener;
                 ++this.opened;
+
+                dialog.firstFocusable.focus();
+
+                dialog.firstFocusable.addEventListener( 'keydown', this.focusableFirstKeydownListener.bind(this, dialog) );
+                dialog.focusableLast.addEventListener( 'keydown', this.focusableLastKeydownListener.bind(this, dialog) );
+                dialog.addEventListener( 'keydown', this.dialogKeydownListener.bind(this, dialog) );
+
+                dialog.opener = opener;
+                
             },
             close : function( dialog ){
                 this.closeOnly( dialog );
+
                 dialog.opener.focus();
                 dialog.opener = undefined;
-                dialog.firstFocusable = undefined;
-                dialog.lastFocusable = undefined;
             },
             closeOnly : function( dialog ){
                 dialog.setAttribute('aria-hidden', true);
@@ -364,23 +368,36 @@
                     this.compnt.setAttribute('aria-hidden', true);
                 }
                 --this.opened;
+
+                dialog.firstFocusable.removeEventListener( 'keydown', this.focusableFirstKeydownListener );
+                dialog.focusableLast.removeEventListener( 'keydown', this.focusableLastKeydownListener );
+
+                dialog.firstFocusable = undefined;
+                dialog.focusableLast = undefined;
             },
-            replace : function( dialog1, dialog2 ){
-                this.open( dialog1, dialog2.opener );
-                this.closeOnly( dialog2 );
+            replace : function( dialogNew, dialogOld ){
+                this.open( dialogNew, dialogOld.opener );
+                this.closeOnly( dialogOld );
             },
-            lastFocusableEventListener : function( dialog ){
+            focusableLastKeydownListener : function( dialog ){
                 var key = event.which || event.keyCode;
-                if( dialog.firstFocusable && !event.shiftKey && key === keyCodes.tab ){
+                if( !event.shiftKey && key === keyCodes.tab ){
                     event.preventDefault();
                     dialog.firstFocusable.focus();
                 }
             },
-            firstFcousableEventListener : function( dialog ){
+            focusableFirstKeydownListener : function( dialog ){
                 var key = event.which || event.keyCode;
                 if( event.shiftKey && key === keyCodes.tab){
                     event.preventDefault();
-                    dialog.lastFocusable.focus();
+                    dialog.focusableLast.focus();
+                }
+            },
+            dialogKeydownListener : function( dialog ){
+                var key = event.which || event.keyCode;
+                if( key === keyCodes.escape ) {
+                    event.preventDefault();
+                    this.close( dialog );
                 }
             }
         }
