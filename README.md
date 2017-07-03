@@ -10,6 +10,8 @@
 
   - Alert and Message Dialogs : https://thegi01.github.io/wai-aria/alert-dialog.html
 
+  - Dialog(Modal) : https://thegi01.github.io/wai-aria/dialog-modal.html
+
   #### Issue 
     - js : lte ie8
     - To components
