@@ -1,68 +1,378 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Checkbox | WAI-ARIA</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="googlebot" content="noindex,nofollow">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <style>
-        [role='checkbox'] {
-           margin: 0;
-           padding: 0.25em;
-           padding-left: 0.5em;
-           border: 2px transparent solid;
-           width: 12em;
-        }
-
-        [role='checkbox'][aria-checked='false']:before{
-           content: url('https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/checkbox/checkbox-1//images/checkbox-unchecked.png');
-           position: relative;
-           top: 2px;
-           left: -0.25em;
-        }
-
-        [role='checkbox'][aria-checked='true']:before{
-           content: url('https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/checkbox/checkbox-1//images/checkbox-checked.png');
-           position: relative;
-           top: 2px;
-           left: -0.25em;
-        }
-
-        [role='checkbox']:hover {
-           background-color: #ddd;
-        }
-
-        [role='checkbox'].focus {
-           border-color: black;
-           background-color: #eee;
-        }
-
-    </style>
+	<meta charset="UTF-8">
+	<title>Checkbox | WAI-ARIA</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>WAI-ARIA Checkbox Example (Two state)</h1>
+	<main>
+		<h1>Checkbox</h1>
+		
+		<p>
+			WAI-ARIA supports two types of checkbox widgets:
+		</p>
+		<ol>
+			<li>
+				<strong>Dual-state : </strong> 
+				The most common type of checkbox, it allows the user to toggle between two choices -- checked and not checked.
+			</li>
+			<li>
+				<strong>Tri-state</strong>
+				This type of checkbox supports an additional third state known as partially checked.
+			</li>
+		</ol>
 
-    <h2>Sandwich Condiments</h2>
-    <div>
-        <div role="checkbox" aria-checked="true" tabindex="0">Lecture</div>
-        <div role="checkbox" aria-checked="false" tabindex="0">Tomato</div>
-        <div role="checkbox" aria-checked="false" tabindex="0">Mustard</div>
-        <div role="checkbox" aria-checked="false" tabindex="0">Sprouts</div>
-    </div>
+		<p>
+			One common use of a tri-state checkbox can be found in software installers where a single tri-state checkbox is used to represent and control the state of an entire group of install options. <br>
+			And, each option in the group can be individually turned on of off with a dual state checkbox.
+		</p>
+		<ul>
+			<li>
+				If all options in the group are checked, the overall state is represented by the tri-state checkbox displaying as checked.
+			</li>
+			<li>
+				If some of the option in the group are checked, the overall state is repersented with the tri-state checkbox displaying as partially checked.
+			</li>
+			<li>
+				If none of the options in the group are checked, the overall state of the group is represented with the tri-state chekcbox displaying as not checked.
+			</li>
+		</ul>
 
-<script>
-    "use strict";
+		<p>
+			The user can use the tri-state checkbox to chnage all options in the group with a single action:
+		</p>
+		<ul>
+			<li>
+				Checking the overall checkbox checks all options in the group.
+			</li>
+			<li>
+				Unchecking the overall checkbox will uncheck all options in the group.
+			</li>
+			<li>
+				And, In some implementations, the system may remember which options were checked the last time the overall status was partially checked. <br>
+				If this feature is provided, activating the overall checkbox a third time recreates that partially checked state where only some options in the group are checked.
+			</li>
+		</ul>
 
-    var init = function(){
 
-    };
+		<section>
+			<h2>Example 1 : Simple Two-State Checkbox Example</h2>
+			<style>
+				.ex1 [role='checkbox'] {
+				   margin: 0;
+				   padding: 0.25em;
+				   padding-left: 0.5em;
+				   border: 2px transparent solid;
+				   width: 12em;
+				}
+				
+				.ex1 [role='checkbox']:before {
+					content: '';
+					display: inline-block;
+					position: relative; top: 2px; left: -0.5em;
+					width: 1em; height: 1em;
+					border: 1px solid #ccc;
+				}
 
-    window.onload = init;
+				.ex1 [role='checkbox'][aria-checked='true']:before{
+					background-color: green;
+					border-color: #000;
+				}
 
-</script>
+				.ex1 [role='checkbox']:hover {
+				   background-color: #DDDDDD;
+				}
 
+				.ex1 [role='checkbox'].focus {
+				   border-color: black;
+				   background-color: #EEEEEE;
+				}
+
+			</style>
+
+			<div id="ex1" class="ex1">
+				<h3>Sandwich Condiments</h3>
+				<div>
+					<div role="checkbox" aria-checked="false" tabindex="0">Lettuce</div>
+					<div role="checkbox" aria-checked="true" tabindex="0">Tomato</div>
+					<div role="checkbox" aria-checked="false" tabindex="0">Mustard</div>
+					<div role="checkbox" aria-checked="false" tabindex="0">Sprouts</div>
+				</div>
+			</div>
+
+			<script>
+				var Checkbox = function( node ){
+					this.node = node;
+					this.node.addEventListener( 'click', this.toggleState.bind(this) );
+					this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
+				};
+				Checkbox.prototype = {
+					toggleState : function(){
+						var value = this.node.getAttribute('aria-checked');
+						value = ( value == 'true' ) ? 'false' : 'true';
+						this.node.setAttribute('aria-checked', value);
+					},
+					keydownHandler : function( event ){
+						var key = event.which || event.keyCode;
+						switch( key ){
+							case keyCodes.enter :
+							case keyCodes.space :
+								event.preventDefault();
+								this.toggleState();
+								break;
+						}
+					}
+				};
+				var keyCodes = {
+					enter : 13,
+					space : 32
+				};
+
+				var checkboxes = document.querySelectorAll('#ex1 [role="checkbox"]');
+				checkboxes.forEach(function(item, index, array){
+					var newCheckbox = new Checkbox( checkboxes[index] );
+				});
+
+			</script>
+		</section>
+
+		<section>
+			<h2>Example 2 : Tri-State Checkbox Example</h2>
+			<style>
+				.ex2 ul.checkboxes {
+				   margin: 0;
+				   padding: 0;
+				   margin-left: 2em;
+				   list-style: none;
+				}
+
+				.ex2 ul.checkboxes li {
+				   padding: 0.25em;
+				}
+
+				.ex2 [role='checkbox'] {
+				   margin: 0;
+				   padding: 0.25em;
+				   padding-left: 0.5em;
+				   border: 2px transparent solid;
+				   width: 12em;
+				}
+				.ex2 ul.checkboxes label {
+				   margin: 0;
+				   padding: 0.25em;
+				   border: 2px transparent solid;
+				   width: 12em;
+				}
+				
+				.ex2 [role='checkbox']:before {
+					content: '';
+					display: inline-block;
+					position: relative; top: 2px; left: -0.5em;
+					width: 1em; height: 1em;
+					border: 1px solid #ccc;
+				}
+
+				.ex2 [role='checkbox'][aria-checked='true']:before{
+					background-color: green;
+					border-color: #000;
+				}
+
+				/*.ex2 [role='checkbox'][aria-checked='false']:before{
+				   content: url('../images/checkbox-unchecked.png');
+				   position: relative;
+				   top: 2px;
+				   left: -0.25em;
+				}
+
+				.ex2 [role='checkbox'][aria-checked='true']:before{
+				   content: url('../images/checkbox-checked.png');
+				   position: relative;
+				   top: 2px;
+				   left: -0.25em;
+				}*/
+
+				.ex2 [role='checkbox'][aria-checked='mixed']:before{
+				   /*content: url('../images/checkbox-mixed.png');*/
+				   /*position: relative;
+				   top: 2px;
+				   left: -0.25em;*/
+				   background-color: orange;
+				   border-color: #000;
+				}
+
+				.ex2 ul.checkboxes label:hover,
+				.ex2 [role='checkbox']:hover {
+				   background-color: #DDDDDD;
+				}
+
+				.ex2 ul.checkboxes label.focus,
+				.ex2 [role='checkbox'].focus {
+				   border-color: black;
+				   background-color: #EEEEEE;
+				}
+
+			</style>
+			<div id="ex2" class="ex2">
+				<fieldset>
+					<legend>Sandwich Condiments</legend>
+					<div role="checkbox" aria-checked="mixed" aria-controls="cond1 cond2 cond3 cond4" tabindex="0" id="checkbox-controller">All condiments</div>
+					<ul class="checkboxes">
+						<li>
+							<label>
+								<input type="checkbox" id="cond1"> 
+								Lettuce
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" id="cond2" checked> 
+								Tomato
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" id="cond3"> 
+								Mustard
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" id="cond4"> 
+								Sprouts
+							</label>
+						</li>
+					</ul>
+				</fieldset>
+			</div>
+			<script>
+				var CheckboxMix = function( node ){
+					this.node = node;
+					this.checkboxes = [];
+					this.nth = 0;
+				};
+				CheckboxMix.prototype = {
+					init : function(){
+						this.getCheckboxesState();
+						this.node.addEventListener( 'click', this.changeState.bind(this) );
+						this.node.addEventListener( 'keydown', this.keydownEventHandler.bind(this) );
+					},
+					getControllerState : function(){
+						this.nth = this.nth == 3 ? 1 : this.nth + 1;
+						switch( this.nth ){
+							case 1 : 
+								this.contollerState = 'true';
+								break;
+							case 2 :
+								this.contollerState = 'false';
+								break;
+							case 3 :
+								this.contollerState = 'mixed';
+								break;
+						}
+					},
+					setControllerState : function(){
+						this.node.setAttribute('aria-checked', this.contollerState);
+					},
+					getCheckboxesState : function(){
+						var controls = this.node.getAttribute('aria-controls');
+						controls = controls.split(' ');
+						controls.forEach(function(item, index, array){
+							this.checkboxes.push( document.getElementById(item) );
+						}.bind(this));
+						this.checkboxes.forEach(function(item, index, array){
+							item.initChecked = item.hasAttribute('checked');
+						});
+					},
+					setCheckboxesState : function(){
+						switch( this.contollerState ) {
+							case 'true' :
+								this.checkboxes.forEach(function(item, index, array) {
+									item.checked = true;
+								});
+								break;
+							case 'false' :
+								this.checkboxes.forEach(function(item, index, array) {
+									item.checked = false;
+								});
+								break;
+							case 'mixed' :
+								this.checkboxes.forEach(function(item, index, array){
+									item.checked = item.initChecked;
+								});
+								break;
+						}
+					},
+					changeState : function(){
+						this.getControllerState();
+						this.setControllerState();
+						this.setCheckboxesState();
+					},
+					keydownEventHandler : function( event ){
+						var key = event.which || event.keyCode;
+						switch( key ){
+							case keyCodes.space :
+							case keyCodes.enter :
+								event.preventDefault();
+								this.changeState();
+								break;
+						}
+					}
+				};
+
+				var newCheckboxMix = new CheckboxMix( document.getElementById('checkbox-controller') );
+				newCheckboxMix.init();
+				
+			</script>
+		</section>
+
+		<section>
+			<h2>Keyboard Interaction</h2>
+			<p>When the checkbox has focus, pressing the <kbd>Space</kbd> key changes ther state of the checkbox. </p>
+		</section>
+
+		<section>
+			<h2>WAI-ARIA Roles, States, and Properties</h2>
+			<ul>
+				<li>
+					The checkbox has role <strong>checkbox</strong>.
+				</li>
+				<li>
+					The checkbox has an accessible label, preferably provided by a visible label associated using <strong>aria-labelleby</strong>.
+				</li>
+				<li>
+					When checked, the checkbox element has state <strong>aria-checked</strong> set to <strong>true</strong>.
+				</li>
+				<li>
+					When not checked, it has state <strong>aria-checked</strong> set to <strong>false</strong>.
+				</li>
+				<li>
+					When partially checked, it has state <strong>aria-checked</strong> to <strong>mixed</strong>.
+				</li>
+				<li>
+					If a set of checkboxes is presented as a logical group with a visible lable, the checkboxes are included in an element with role <strong>group</strong>that ahs the property <strong>aria-labelledby</strong> set to the ID of the element containg the label.
+				</li>
+				<li>
+					If the presentation includes additional descriptive static text relevant to a checkbox or checkbox group, the checkbox or checkbox group has the property <strong>aria-describedby</strong> set to the ID of element containing the desciption.
+
+				</li>
+			</ul>
+		</section>
+		
+		<section>
+			<h2>URL</h2>
+			<ul>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/#checkbox" target="_blank">W3 Practices</a></li>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/checkbox/checkbox-1/checkbox-1.html" target="_blank">W3 Example : Simple Two-State Checkbox Example</a></li>
+				<li><a href="https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20161214/examples/checkbox/checkbox-2/checkbox-2.html" target="_blank">W3 Example : Tri-State Checkbox Example</a></li>
+			</ul>
+		</section>
+		
+	</main>
 </body>
 </html>
