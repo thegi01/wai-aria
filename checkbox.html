@@ -262,12 +262,12 @@
 				CheckboxTri.prototype = {
 					init : function(){
 						this.getCheckboxes();
-						this.updateCheckboxesState();
+						this.updateCheckboxes();
 
-						this.node.addEventListener( 'click', this.changeChecked.bind(this) );
-						this.node.addEventListener( 'keydown', this.keydownEventHandler.bind(this) );
+						this.node.addEventListener( 'click', this.change.bind(this) );
+						this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
 						this.checkboxes.forEach(function( element ){
-							element.addEventListener('change', this.checkboxesChangeHandler.bind(this));
+							element.addEventListener('change', this.updateCheckboxes.bind(this));
 						}.bind(this));
 					},
 					getCheckboxes : function(){
@@ -277,12 +277,16 @@
 							this.checkboxes.push( document.getElementById(element) );
 						}.bind(this));
 					},
-					updateCheckboxesState : function(){
+					updateCheckboxes : function(){
 						this.checkboxes.forEach(function( element ){
 							element.lastChecked = element.checked;
 						}.bind(this));
 					},
-					getControllerState : function(){
+					change : function(){
+						this.changeController();
+						this.setCheckboxes();
+					},
+					changeController : function(){
 						var getChecked = this.node.getAttribute('aria-checked');
 						switch( getChecked ){
 							case 'mixed' :
@@ -292,18 +296,25 @@
 								this.state = false;
 								break;
 							case 'false' :
-								if( this.hasLastChecked() ) {
+								if( this.isLastChecked() ) {
 									this.state = 'mixed';
 								} else {
 									this.state = true;
 								}
 								break;
 						}
-					},
-					setControllerState : function(){
 						this.node.setAttribute('aria-checked', this.state);
 					},
-					setCheckboxesState : function(){
+					isLastChecked : function(){
+						var count = 0;
+						this.checkboxes.forEach(function( element ){
+							if( element.lastChecked ){
+								count++;
+							}
+						}.bind(this));
+						return count > 0;
+					},
+					setCheckboxes : function(){
 						switch( this.state ) {
 							case true :
 							case false :
@@ -318,30 +329,13 @@
 								break;
 						}
 					},
-					hasLastChecked : function(){
-						var count = 0;
-						this.checkboxes.forEach(function( element ){
-							if( element.lastChecked ){
-								count++;
-							}
-						}.bind(this));
-						return count > 0;
-					},
-					checkboxesChangeHandler : function(){
-						this.updateCheckboxesState();
-					},
-					changeChecked : function(){
-						this.getControllerState();
-						this.setControllerState();
-						this.setCheckboxesState();
-					},
-					keydownEventHandler : function( event ){
+					keydownHandler : function( event ){
 						var key = event.which || event.keyCode;
 						switch( key ){
 							case keyCodes.space :
 							case keyCodes.enter :
 								event.preventDefault();
-								this.changeChecked();
+								this.change();
 								break;
 						}
 					}
