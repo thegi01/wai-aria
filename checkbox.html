@@ -179,7 +179,7 @@
 				}
 
 				.ex2 [role='checkbox'][aria-checked='true']:before{
-					background-color: green;
+					background-color: blue;
 					border-color: #000;
 				}
 
@@ -254,43 +254,53 @@
 				var CheckboxMix = function( node ){
 					this.node = node;
 					this.checkboxes = [];
-					this.nth = 0;
+					this.state = undefined;
 				};
 				CheckboxMix.prototype = {
 					init : function(){
-						this.getCheckboxesState();
-						this.node.addEventListener( 'click', this.changeState.bind(this) );
+						this.getCheckboxes();
+						this.updateCheckboxesState();
+						this.node.addEventListener( 'click', this.changeChecked.bind(this) );
 						this.node.addEventListener( 'keydown', this.keydownEventHandler.bind(this) );
+						this.checkboxes.forEach(function(item, index, array){
+							item.addEventListener('click', this.checkboxesChangeHandler.bind(this, item));
+						}.bind(this));
 					},
-					getControllerState : function(){
-						this.nth = this.nth == 3 ? 1 : this.nth + 1;
-						switch( this.nth ){
-							case 1 : 
-								this.contollerState = 'true';
-								break;
-							case 2 :
-								this.contollerState = 'false';
-								break;
-							case 3 :
-								this.contollerState = 'mixed';
-								break;
-						}
-					},
-					setControllerState : function(){
-						this.node.setAttribute('aria-checked', this.contollerState);
-					},
-					getCheckboxesState : function(){
+					getCheckboxes : function(){
 						var controls = this.node.getAttribute('aria-controls');
 						controls = controls.split(' ');
 						controls.forEach(function(item, index, array){
 							this.checkboxes.push( document.getElementById(item) );
 						}.bind(this));
+					},
+					updateCheckboxesState : function(){
 						this.checkboxes.forEach(function(item, index, array){
-							item.initChecked = item.hasAttribute('checked');
-						});
+							item.lastChecked = item.checked;
+						}.bind(this));
+					},
+					getControllerState : function(){
+						var getChecked = this.node.getAttribute('aria-checked');
+						switch( getChecked ){
+							case 'mixed' :
+								this.state = 'true';
+								break;
+							case 'true' :
+								this.state = 'false';
+								break;
+							case 'false' :
+								if( this.hasLastChecked() ) {
+									this.state = 'mixed';
+								} else {
+									this.state = 'true';
+								}
+								break;
+						}
+					},
+					setControllerState : function(){
+						this.node.setAttribute('aria-checked', this.state);
 					},
 					setCheckboxesState : function(){
-						switch( this.contollerState ) {
+						switch( this.state ) {
 							case 'true' :
 								this.checkboxes.forEach(function(item, index, array) {
 									item.checked = true;
@@ -303,12 +313,24 @@
 								break;
 							case 'mixed' :
 								this.checkboxes.forEach(function(item, index, array){
-									item.checked = item.initChecked;
+									item.checked = item.lastChecked;
 								});
 								break;
 						}
 					},
-					changeState : function(){
+					hasLastChecked : function(){
+						var count = 0;
+						this.checkboxes.forEach(function(item, index, array){
+							if( item.lastChecked ){
+								count++;
+							}
+						}.bind(this));
+						return count > 0;
+					},
+					checkboxesChangeHandler : function( item ){
+						this.updateCheckboxesState();
+					},
+					changeChecked : function(){
 						this.getControllerState();
 						this.setControllerState();
 						this.setCheckboxesState();
@@ -319,7 +341,7 @@
 							case keyCodes.space :
 							case keyCodes.enter :
 								event.preventDefault();
-								this.changeState();
+								this.changeChecked();
 								break;
 						}
 					}
