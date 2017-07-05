@@ -263,7 +263,7 @@
 					init : function(){
 						this.getCheckboxes();
 						this.updateCheckboxesState();
-						
+
 						this.node.addEventListener( 'click', this.changeChecked.bind(this) );
 						this.node.addEventListener( 'keydown', this.keydownEventHandler.bind(this) );
 						this.checkboxes.forEach(function( element ){
@@ -271,9 +271,9 @@
 						}.bind(this));
 					},
 					getCheckboxes : function(){
-						var controls = this.node.getAttribute('aria-controls');
-						controls = controls.split(' ');
-						controls.forEach(function( element ){
+						var controlled = this.node.getAttribute('aria-controls');
+						controlled = controlled.split(' ');
+						controlled.forEach(function( element ){
 							this.checkboxes.push( document.getElementById(element) );
 						}.bind(this));
 					},
@@ -286,16 +286,16 @@
 						var getChecked = this.node.getAttribute('aria-checked');
 						switch( getChecked ){
 							case 'mixed' :
-								this.state = 'true';
+								this.state =  true;
 								break;
 							case 'true' :
-								this.state = 'false';
+								this.state = false;
 								break;
 							case 'false' :
 								if( this.hasLastChecked() ) {
 									this.state = 'mixed';
 								} else {
-									this.state = 'true';
+									this.state = true;
 								}
 								break;
 						}
@@ -305,11 +305,11 @@
 					},
 					setCheckboxesState : function(){
 						switch( this.state ) {
-							case 'true' :
-							case 'false' :
+							case true :
+							case false :
 								this.checkboxes.forEach(function( element ){
 									element.checked = this.state;
-								});
+								}.bind(this));
 								break;
 							case 'mixed' :
 								this.checkboxes.forEach(function( element ){
