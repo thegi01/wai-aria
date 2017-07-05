@@ -12,6 +12,11 @@
 
   - Dialog(Modal) : https://thegi01.github.io/wai-aria/dialog-modal.html
 
+  - Button : https://thegi01.github.io/wai-aria/button.html
+
+  - Checkbox : https://thegi01.github.io/wai-aria/checkbox.html
+
+
   #### Issue 
     - js : lte ie8
     - To components
