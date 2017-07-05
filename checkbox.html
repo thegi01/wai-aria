@@ -113,14 +113,14 @@
 				Checkbox.prototype = {
 					init : function(){
 						this.node.addEventListener( 'click', this.toggleState.bind(this) );
-						this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
+						this.node.addEventListener( 'keydown', this.keydownEventListener.bind(this) );
 					},
 					toggleState : function(){
 						var value = this.node.getAttribute('aria-checked');
 						value = ( value == 'true' ) ? 'false' : 'true';
 						this.node.setAttribute('aria-checked', value);
 					},
-					keydownHandler : function( event ){
+					keydownEventListener : function( event ){
 						var key = event.which || event.keyCode;
 						switch( key ){
 							case keyCodes.enter :
@@ -265,7 +265,7 @@
 						this.saveCheckboxesLastState();
 
 						this.node.addEventListener( 'click', this.change.bind(this) );
-						this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
+						this.node.addEventListener( 'keydown', this.keydownEventListener.bind(this) );
 						this.checkboxes.forEach(function( element ){
 							element.addEventListener('change', this.saveCheckboxesLastState.bind(this));
 						}.bind(this));
@@ -329,7 +329,7 @@
 								break;
 						}
 					},
-					keydownHandler : function( event ){
+					keydownEventListener : function( event ){
 						var key = event.which || event.keyCode;
 						switch( key ){
 							case keyCodes.space :
