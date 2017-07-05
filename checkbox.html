@@ -109,10 +109,12 @@
 			<script>
 				var Checkbox = function( node ){
 					this.node = node;
-					this.node.addEventListener( 'click', this.toggleState.bind(this) );
-					this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
 				};
 				Checkbox.prototype = {
+					init : function(){
+						this.node.addEventListener( 'click', this.toggleState.bind(this) );
+						this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
+					},
 					toggleState : function(){
 						var value = this.node.getAttribute('aria-checked');
 						value = ( value == 'true' ) ? 'false' : 'true';
@@ -135,8 +137,9 @@
 				};
 
 				var checkboxes = document.querySelectorAll('#ex1 [role="checkbox"]');
-				checkboxes.forEach(function(item, index, array){
+				checkboxes.forEach(function(element, index, array){
 					var newCheckbox = new Checkbox( checkboxes[index] );
+					newCheckbox.init();
 				});
 
 			</script>
@@ -260,22 +263,23 @@
 					init : function(){
 						this.getCheckboxes();
 						this.updateCheckboxesState();
+						
 						this.node.addEventListener( 'click', this.changeChecked.bind(this) );
 						this.node.addEventListener( 'keydown', this.keydownEventHandler.bind(this) );
-						this.checkboxes.forEach(function(item, index, array){
-							item.addEventListener('change', this.checkboxesChangeHandler.bind(this, item));
+						this.checkboxes.forEach(function( element ){
+							element.addEventListener('change', this.checkboxesChangeHandler.bind(this));
 						}.bind(this));
 					},
 					getCheckboxes : function(){
 						var controls = this.node.getAttribute('aria-controls');
 						controls = controls.split(' ');
-						controls.forEach(function(item, index, array){
-							this.checkboxes.push( document.getElementById(item) );
+						controls.forEach(function( element ){
+							this.checkboxes.push( document.getElementById(element) );
 						}.bind(this));
 					},
 					updateCheckboxesState : function(){
-						this.checkboxes.forEach(function(item, index, array){
-							item.lastChecked = item.checked;
+						this.checkboxes.forEach(function( element ){
+							element.lastChecked = element.checked;
 						}.bind(this));
 					},
 					getControllerState : function(){
@@ -302,32 +306,28 @@
 					setCheckboxesState : function(){
 						switch( this.state ) {
 							case 'true' :
-								this.checkboxes.forEach(function(item, index, array) {
-									item.checked = true;
-								});
-								break;
 							case 'false' :
-								this.checkboxes.forEach(function(item, index, array) {
-									item.checked = false;
+								this.checkboxes.forEach(function( element ){
+									element.checked = this.state;
 								});
 								break;
 							case 'mixed' :
-								this.checkboxes.forEach(function(item, index, array){
-									item.checked = item.lastChecked;
+								this.checkboxes.forEach(function( element ){
+									element.checked = element.lastChecked;
 								});
 								break;
 						}
 					},
 					hasLastChecked : function(){
 						var count = 0;
-						this.checkboxes.forEach(function(item, index, array){
-							if( item.lastChecked ){
+						this.checkboxes.forEach(function( element ){
+							if( element.lastChecked ){
 								count++;
 							}
 						}.bind(this));
 						return count > 0;
 					},
-					checkboxesChangeHandler : function( item ){
+					checkboxesChangeHandler : function(){
 						this.updateCheckboxesState();
 					},
 					changeChecked : function(){
