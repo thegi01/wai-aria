@@ -254,12 +254,12 @@
 				</fieldset>
 			</div>
 			<script>
-				var CheckboxMix = function( node ){
+				var CheckboxTri = function( node ){
 					this.node = node;
 					this.checkboxes = [];
 					this.state = undefined;
 				};
-				CheckboxMix.prototype = {
+				CheckboxTri.prototype = {
 					init : function(){
 						this.getCheckboxes();
 						this.updateCheckboxesState();
@@ -347,8 +347,8 @@
 					}
 				};
 
-				var newCheckboxMix = new CheckboxMix( document.getElementById('checkbox-controller') );
-				newCheckboxMix.init();
+				var newCheckboxTri = new CheckboxTri( document.getElementById('checkbox-controller') );
+				newCheckboxTri.init();
 				
 			</script>
 		</section>
