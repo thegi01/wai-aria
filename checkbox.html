@@ -262,12 +262,12 @@
 				CheckboxTri.prototype = {
 					init : function(){
 						this.getCheckboxes();
-						this.updateCheckboxes();
+						this.saveCheckboxesLastState();
 
 						this.node.addEventListener( 'click', this.change.bind(this) );
 						this.node.addEventListener( 'keydown', this.keydownHandler.bind(this) );
 						this.checkboxes.forEach(function( element ){
-							element.addEventListener('change', this.updateCheckboxes.bind(this));
+							element.addEventListener('change', this.saveCheckboxesLastState.bind(this));
 						}.bind(this));
 					},
 					getCheckboxes : function(){
@@ -277,14 +277,14 @@
 							this.checkboxes.push( document.getElementById(element) );
 						}.bind(this));
 					},
-					updateCheckboxes : function(){
+					saveCheckboxesLastState : function(){
 						this.checkboxes.forEach(function( element ){
 							element.lastChecked = element.checked;
 						}.bind(this));
 					},
 					change : function(){
 						this.changeController();
-						this.setCheckboxes();
+						this.changeCheckboxes();
 					},
 					changeController : function(){
 						var getChecked = this.node.getAttribute('aria-checked');
@@ -314,7 +314,7 @@
 						}.bind(this));
 						return count > 0;
 					},
-					setCheckboxes : function(){
+					changeCheckboxes : function(){
 						switch( this.state ) {
 							case true :
 							case false :
