@@ -102,13 +102,13 @@
             <script>
                 "user strict";
 
-                var dialogCC = {
+                var dialogC = {
                     compnt : document.querySelector('[role="alertdialog"]'),
                     clickEventListener : function( event ){
                         var target = event.target;
                         var message = target.getAttribute('data-dialog-message');
                         if(message){
-                            dialogCC.open(target, message);  // 추후 정리요~
+                            dialogC.open(target, message);  // 추후 정리요~
                         }
                     },
                     open : function( opener, message ){
@@ -182,7 +182,7 @@
                 document.addEventListener('DOMContentLoaded', function(){
                     var buttons = [].slice.call( document.querySelectorAll('[data-dialog-message]') );
                     buttons.map(function(button){
-                        button.addEventListener('click', dialogCC.clickEventListener );
+                        button.addEventListener('click', dialogC.clickEventListener );
                     });
                 });
 

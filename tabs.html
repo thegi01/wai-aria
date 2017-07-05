@@ -112,12 +112,12 @@
 						<script>
 							/* Tabs Component Control */
 							// GTE IE9
-							var TabsCC = function( tabsComponent ){
+							var TabsC = function( tabsComponent ){
 								this.compnt = tabsComponent;
 							  	this.tablist = tabsComponent.querySelectorAll('[role="tablist"]')[0];
 							  	this.getElements();
 							};
-							TabsCC.prototype = {
+							TabsC.prototype = {
 								getElements : function(){
 									this.tabs = this.compnt.querySelectorAll('[role="tab"]');
 									this.tabpanels = this.compnt.querySelectorAll('[role="tabpanel"]');
@@ -295,9 +295,9 @@
 							};
 							
 
-							// TabsCC 실행
-							var tabsCC = new TabsCC( document.getElementById('tabs') );
-							tabsCC.init( 1 ); // Visible tab index, default : 0
+							// TabsC 실행
+							var tabsC = new TabsC( document.getElementById('tabs') );
+							tabsC.init( 1 ); // Visible tab index, default : 0
 						</script>
 				</div>
 			</div>

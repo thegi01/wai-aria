@@ -98,12 +98,12 @@
 				<script>
 
 					/* 2017.06.21 js 재수정 */
-					var AccordionCC = function( accordionCompnt ){
-						this.compnt = accordionCompnt;
+					var Accordion = function( accordionompnt ){
+						this.compnt = accordionompnt;
 						this.allowToggle = true;
 						this.getElements();
 					};
-					AccordionCC.prototype = {
+					Accordion.prototype = {
 						getElements : function(){
 							this.buttons = this.compnt.querySelectorAll('[role="button"]');
 							this.expandedHeading = this.buttons[0];
@@ -174,9 +174,9 @@
 						space: 32
 					}
 
-					var accordionCC = new AccordionCC( document.getElementById('accordion') );
-					// accordionCC.allowToggle = false; // allowToggle, default : true
-					accordionCC.init( 1 ); // Visible heading index, default : 0
+					var accordion = new Accordion( document.getElementById('accordion') );
+					// accordion.allowToggle = false; // allowToggle, default : true
+					accordion.init( 1 ); // Visible heading index, default : 0
 
 				</script>
 			</div>
