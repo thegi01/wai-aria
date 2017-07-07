@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>Layout Grid | WAI-ARIA</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<main>
+		<h1>Layout Grid Examples</h1>
+
+		<section>
+			<h2>Example 1 : Simple List Of Links</h2>
+
+			<div id="ex1">
+
+				<style>
+					#ex1 .list-links {
+					  font-size: 0px;
+					}
+					#ex1 .list-link {
+						box-sizing: border-box;
+					  background: #f8f8f8;
+					  border: 1px solid #ccc;
+					  display: inline-block;
+					  font-size: 14px;
+					  height: 40px;
+					  margin: 5px 0 0 0;
+					  padding: 5px;
+					  vertical-align: middle;
+					  width: 25%;
+					}
+				</style>
+
+				<h3 id="ex1-label">Related Documents</h3>
+				<div role="grid" class="list-links" aria-labelldby="ex1-label" data-wrap-cols="true" data-wrap-rows="true" data-restructure="ture">
+					<div role="row">
+						<span role="gridcell" class="list-link">
+							<a tabindex="0" href="">Link 1</a>
+						</span>
+						<span role="gridcell" class="list-link">
+							<a tabindex="-1" href="">Link 2</a>
+						</span>
+						<span role="gridcell" class="list-link">
+							<a tabindex="-1" href="">Link 3</a>
+						</span>
+						<span role="gridcell" class="list-link">
+							<a tabindex="-1" href="">Link 4</a>
+						</span>
+						<span role="gridcell" class="list-link">
+							<a tabindex="-1" href="">Link 5</a>
+						</span>
+						<span role="gridcell" class="list-link">
+							<a tabindex="-1" href="">Link 6</a>
+						</span>
+					</div>
+				</div>
+
+				<script>
+
+					var Grid = function( gridnode ){
+						this.node = gridnode;
+						this.cell = Array.prototype.slice.call( this.node.querySelectorAll('[role="gridcell"]') );
+					};
+					Grid.prototype = {
+						init : function(){
+							this.node.addEventListener('keydown', this.keydownEventListener.bind(this) );
+						},
+						keydownEventListener : function( event ){
+							var key = event.which || event.keyCode;
+							switch( key ){
+								case keyCodes.RIGHT :
+									this.index = this.cell.indexOf( event.target.parentNode );
+									if( this.index != this.cell.length-1 ){
+										this.cell[++this.index].querySelector('[tabindex]').focus();
+									} 
+									break;
+								case keyCodes.LEFT :
+									this.index = this.cell.indexOf( event.target.parentNode );
+									if( this.index != 0 ){
+										this.cell[--this.index].querySelector('[tabindex]').focus();
+									} 
+									break;
+							}
+						}
+					};
+
+
+					var keyCodes = {
+						BACKSPACE: 8,
+						TAB: 9,
+						RETURN: 13,
+						ESC: 27,
+						SPACE: 32,
+						PAGE_UP: 33,
+						PAGE_DOWN: 34,
+						END: 35,
+						HOME: 36,
+						LEFT: 37,
+						UP: 38,
+						RIGHT: 39,
+						DOWN: 40,
+						DELETE: 46
+					};
+
+					var ex1Grid = document.getElementById('ex1').querySelector('[role="grid"]');
+					var newEx1Grid = new Grid( ex1Grid );
+					newEx1Grid.init();
+
+				</script>
+			</div>
+
+			<div class="note">
+				<h3>NOTE</h3>
+				<ol>
+					<li>
+						This grid is useful in a responsive design as it dynamically adjusts the number cells oer row based on screen size. <br>
+						And, as the grid structure changes, the arrow key behavior adjusts accordingly.
+					</li>
+					<li>
+						Since all of the links are part of a single logical group, repeatedly pressing either <kbd>Down Arrow</kbd> or <kbd>Right Arrow</kbd> will moves focus through all links in diffrent sequences that depend on the visual arrangement.
+					</li>
+					<li>
+						The <kbd>Left Arrow</kbd> and <kbd>Up Arrow</kbd> keys reverse <kbd>Right Arrow</kbd> and <kbd>Down Arrow</kbd> focus movement, respectively.
+					</li>
+					<li>
+						The <kbd>Home</kbd> and <kbd>End</kbd> keys will move focus to the first and last links, respectively.
+					</li>
+					<li>
+						The <kbd>Page Down</kbd> and <kbd>Page Up</kbd> keys are not supported since scrolling or row skipping functions are not needed with so few rows.
+					</li>
+					<li>
+						The links can be activated with the keyboard when focused.
+					</li>
+				</ol>
+			</div>
+
+		</section>
+
+		<section>
+			<h2>Example 2 : Pill List For a List of Message Recipients</h2>
+			<div id="ex2">
+				<div class="recipient-list">
+					<span id="send-to-label">Send To :</span>
+					<div role="grid" class="pill-list" aria-labelledby="send-to-label" data-wrap-cols="true">
+						<div role="row" class="pill-item" data-id="1">
+							<span role="gridcell">
+								<a href="#" id="r1" class="pill-name" tabindex="-1">Recipient Name 1</a>
+							</span>
+							<span role="gridcell">
+								<span id="rb1" class="pill-remove" tabindex="-1" role="button" aria-label="Remove" aria-labelledby="rb1 r1">X</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			  <!-- <div class="recipient-list">
+			    <span id="send_to_label">
+			      Send To:
+			    </span>
+			    <div role="grid"
+			       class="pill-list"
+			       aria-labelledby="send_to_label"
+			       data-wrap-cols="true">
+			      <div role="row"
+			         class="pill-item"
+			         data-id="1">
+			        <span role="gridcell">
+			          <a id="r1"
+			           class="pill-name"
+			           tabindex="-1"
+			           href="#">
+			            Recipient Name 1
+			          </a>
+			        </span>
+			        <span role="gridcell">
+			          <span id="rb1"
+			              class="pill-remove"
+			              tabindex="-1"
+			              role="button"
+			              aria-label="Remove"
+			              aria-labelledby="rb1 r1">
+			             X 
+			          </span>
+			        </span>
+			      </div>
+			      <div role="row"
+			         class="pill-item"
+			         data-id="2">
+			        <span role="gridcell">
+			          <a id="r2"
+			           class="pill-name"
+			           tabindex="-1"
+			           href="#">
+			            Recipient Name 2
+			          </a>
+			        </span>
+			        <span role="gridcell">
+			          <span id="rb2"
+			              class="pill-remove"
+			              tabindex="-1"
+			              role="button"
+			              aria-label="Remove"
+			              aria-labelledby="rb2 r2">
+			             X 
+			          </span>
+			        </span>
+			      </div>
+			    </div>
+			    <div id="recipient-form">
+			      <input id="add-recipient-input"
+			           type="text"
+			           aria-label="Add Recipient"
+			           placeholder="New Recipient Name">
+			      <button id="add-recipient-button">
+			        Add
+			      </button>
+			      <div class="accessible_elem">
+			         Last change to recipient list: 
+			        <span aria-live="polite"
+			            aria-relevant="text"
+			            id="form-action-text">
+			      </div>
+			    </div>
+			  </div> -->
+			</div>
+		</section>
+	</main>
+</body>
+</html>

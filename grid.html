@@ -12,19 +12,27 @@
 		.underline {
 			text-decoration: underline;
 		}
-			
+		.section {
+			padding-top: 50px;
+		}
 		.section h2 {
 			padding: 20px;
 			border: 1px solid #ccc;
 		}
+		.section h3 {
+			padding: 20px;
+			border-top: dashed 1px #ccc;
+			border-bottom: dashed 1px #ccc;
+		}
+
 		.note {
 			padding: 10px;
 			background-color: #f8f8f8;
 		}
-		.note ul {
+		.note ul,
+		.note p {
 			font-size: 0.8em;
 		}
-
 	</style>
 </head>
 <body>
@@ -136,24 +144,287 @@
 						</li>
 					</ul>
 				</div>
+				<p>If a grid suppoorts selection of cells, rows, or columns, the following keys are commonly used for these functions. </p>
+				<ul>
+					<li>
+						<kbd>Control + Space</kbd>
+						: Selects the column that contains the focus.
+					</li>
+					<li>
+						<kbd>Shift + Space</kbd>
+						: Selects the row that contains the focus. If the grid includes a column with checkboxes for selecting rows, this key can serve as a shortcut for checking the box when focus is not on the checkbox.
+					</li>
+					<li>
+						<kbd>Control + A</kbd>
+						: Selects all cells.
+					</li>
+					<li>
+						<kbd>Shift + Right Arrow </kbd>
+						: Extends selection one cell to the right.
+					</li>
+					<li>
+						<kbd>Shift + Left Arrow</kbd>
+						: Extends selection one cell to the left.
+					</li>
+					<li>
+						<kbd>Shift + Down Arrow</kbd>
+						: Extends selection one cell down.
+					</li>
+					<li>
+						<kbd>Shift + Up Arrow</kbd>
+						Extends selection one cell up.
+					</li>
+				</ul>
 			</section>
+			<div class="note">
+				<h5>NOTE</h5>
+				<p>See <a href="keyboard.html" target="_blank">Global Recommendations for cut, copy and paste key assignments. </a></p>
+			</div>
 
 		</section>
 	
 		<section class="section">
 			<h2><sup>[Section 2]</sup> Layout Grids for Grouping Widgets</h2>
+			<p>
+				The grid pattern can be used to group a set of interactive elements, such as links, buttons, or checkboxes. <br>
+				Since only one element in the entire grid is included in the tab sequence, <span class="underline">grouping with a grid can dramatically reduce the number of tab stops on a page</span>. <br>
+				This is especially valuable <span class="underline">if scrolling through a list of elements dynamically loads more of those elements from a large data set</span>, such as in a continuous list of suggested products on a shopping site. <br>
+				If elements in a list like this were in the tab sequence, keyboard users are effectively trapped in the list. <br>
+				If any elements in the group also have associated elements that <span class="underline">appear on hover</span>	, the grid pattern is also useful for providing keyboard access to those contextual elements of the user interface.
+			</p>
+			<p>
+				Unlike grids used to present data, <span class="underline">A grid used for layout does not necessarily have header cells for labeling rows or columns and might contain only a single row or a single column</span>. <br>
+				Even if it has multiple rows and columns, it may present <span class="underline">a single, logically homogenous set of elements</span>. <br>
+				For example, a list of recipients for a message may be a grid where each cell contains a link that represents a recipient. <br>
+				The grid may initially have a single row but then wrap into multiple rows as recipients are added. <br>
+				In such circumstances, grid navigation keys may also wrap so the user can read list from beginning to end by pressing either <kbd>Right Arrow</kbd> or <kbd>Down Arrow</kbd>. <br>
+				While this type of focus movement wrapping can be very helpful in a layout grid, it would be disorienting if used in a data grid, especially for users of assistive technologies.
+			</p>
+			<p>
+				Because arrow keys are used to move focus inside of a grid, a grid is both easier to build and use if the components it contains do not require the arrow keys to operate. <br>
+				If a cell contains an element like a listbox, then a extra key command to focus and activate the listbox is needed as well as a command for restoring the grid navigation functionality. <br>
+				Aprocahes to supporting this need are described in the section on <a href="#gridNav-inside">Editing and Navigating Inside a cell</a>.
+			</p>
+			<section>
+				<h3>Keyboard Interaction For Layout Grids</h3>
+				<p>
+					The follwoing keys provide grid navigation by moving focus among cells of the grid. <br>
+					These key commands are available by default after an element in the grid receives focus.
+				</p>
+				<ul>
+					<li>
+						<kbd>Right Arrow</kbd>
+						: Moves focus one cell to the right. Optionally, if focus is on the right-most cell in the row, focus may move to the first cell in the following row. If focus is on the last cell in the grid, focus does not move.
+					</li>
+					<li>
+						<kbd>Left Arrow</kbd>
+						: Moves focus one cell to the left. Optionally, if focus is on the left-most cell in the row, focus may move to the last cell in the previous row. If focus is on the first cell in the grid, focus does not move.
+					</li>
+					<li>
+						<kbd>Down Arrow</kbd>
+						: Moves focus one cell down. Optionally, if focus is on the bottom cell in the column, focus may move to the top cell in the following column. If focus is on the last cell in the grid, focus does not move.
+					</li>
+					<li>
+						<kbd>Up Arrow</kbd>
+						: Moves focus one cell up. Optionally, if focus is on the top cell in the column, focus may move to the bottom cell in the previous column. If focus is on the first cell in the grid, focus does not move.
+					</li>
+					<li>
+						<kbd>Page Down (Optional)</kbd>
+						: Moves focus down an author-determined number of rows, typically scrolling so the bottom row in the currently visible set of rows becomes one of the first visible rows. If focus is in the last row of the grid, focus does not move.
+					</li>
+					<li>
+						<kbd>Page Up (Optional)</kbd>
+						: Moves focus up an author-detrmined number of rows, typically scrolling so the top row in the currently visible set of rows becomes one of the last visible rows. If focus is in the first row of the grid, focus deos not move.
+					</li>
+					<li>
+						<kbd>Home</kbd>
+						: Moves focus to the first cell in the row that contains focus. Optionally, if the grid has a single column or fewer than three cells per row, focus may instead move to the first cell in the grid.
+					</li>
+					<li>
+						<kbd>End</kbd>
+						: Moves focus to the last cell in the row that contains focus. Optionally, if the grid has has a single column or fewer than three cells per row, focus may instead move to the last cell in the grid.
+					</li>
+					<li>
+						<kbd>Control + Home (Optional)</kbd>
+						: Moves focus to the first cell in the first row.
+					</li>
+					<li>
+						<kbd>Contrl + End (Optional)</kbd>
+						: Moves focus to the last cell in the last row.
+					</li>
+				</ul>
+				<div class="note">
+					<h4>NOTE</h4>
+					<ul>
+						<li>
+							When the above grid navigation keys move focus, whether the focus is set in an element inside the cell or the grid cell depends on cell contet. See <a href="#gridNav_focus">Whether to focus on a Cell or an Element Inside It</a>.
+						</li>
+						<li>
+							While navigation keys, such as arrow keys, are moving focus from cell to cell, they are not available to do something like operate a combobox or move an editing caret inside of cell. If this functionality is neededm see <a href="gridNav_inside">Editing and Nvaigating Inside a Cell</a>.
+						</li>
+						<li>
+							If navigation functions can dynamically add more rows or columns to the DOM, key events that move focus to the beginning or end of the grid, such as <kbd>Control + End</kbd>, may move focus to the last row in the DOM rather than the last available row in the back-end data.
+							
+						</li>
+					</ul>
+				</div>
+				<p>
+					It would be unusual for a layout grid to provide functions that rquire cell selection. <br>
+					If it did, though, the following keys are commonly used for these functions.
+				</p>
+				<ul>
+					<li>
+						<kbd>Control + Space</kbd>
+						: selects the column that contains the focus.
+					</li>
+					<li>
+						<kbd>Shift + Space</kbd>
+						: Selects the row that contains the focus. If the grid includes a column with checkboxes for selecting rows, this key can serve as a shortcut for checking the box when focus is not on the chekcbox.
+					</li>
+					<li>
+						<kbd>Control + A</kbd>
+						: Selects all cells.
+					</li>
+					<li>
+						<kbd>Shift + Right Arrow</kbd>
+						: Extends selections one cell to the right.
+					</li>
+					<li>
+						<kbd>Shift + Left Arrow</kbd>
+						: Extends selection one cell to the left.
+					</li>
+					<li>
+						<kbd>Shift + Down Arrow</kbd>
+						: Extends selection one cell down.
+					</li>
+					<li>
+						<kbd>Shift + Up Arrow</kbd>
+						: Extends selection one cell up.
+					</li>
+				</ul>
+				<div class="note">
+					<h4>NOTE</h4>
+					<p>
+						See <a href="keyboard.html" target="_blank">Global Recommendations</a> for cut, copy and paste key assignments.
+					</p>
+				</div>
+
+			</section>
+		</section>
+
+		<section class="section">
+			<h3 class="h3">Keyboard Interaction - Setting Focus and Navigating Inside Cells</h3>
+			<p>
+				This section describes two important aspects of keyboard interaction design shared by both data and layout grid patterns:
+			</p>
+			<ol>
+				<li>
+					Choosing wheter a cell or an element inside a cell receives focus in response to grid navigation key events.
+				</li>
+				<li>
+					Enabling grid navigation keys to be used to interact with elements inside of a cell.
+				</li>
+			</ol>
+
+			<h5>Whether to focus on a Cell or an Element Inside IT</h5>
+			<p>
+				For assistive technology users, the quality of experience when navigating a grid heavily depends on both what a cell contains and on where keyboard focus is set. <br>
+				For example, if a cell contains a button and a grid navigation key places focus on the cell instead of button, screen readers announce the button label but do not tell users a button is prsent.
+			</p>
+			<p>
+				There are two optimal cell design and focus behavior combinations:
+			</p>
+			<ol>
+				<li>
+					A cell contains one widget whose operation does not require arrow keys and grid navigation keys set focus on that widget. <br>
+					Exmaples of such widgets include link, button, menubutton, toggle button, radio button (not radio group), switch, and cehckbox.
+				</li>
+				<li>
+					A cell contains text or a single graphic and grid navigation keys set focus on the cell.
+				</li>
+			</ol>
+			<p>
+				While any combination of widgets, text, and graphics may be included in a single cell, grids that do not follow one of these two cell design and focus movement patterns add compelxity for authors or user or both. <br>
+				The reference implementations included in the example section below demostrate some strategies for making other cell designs as accessible as possible, but the most widely accessible experiences are likely to come by applying the above two patterns.
+			</p>
+
+			<h5>Editing and Navigating Inside a Cell </h5>
+			<p>
+				While navigation keys, such as arrow keys, are moving focus from cell to cell, they are not available to perform actions like operate a combobox or move an editing caret inside of a cell. The user may need keys that are used for grid navigation to operate elements inside a cell if a cell contains:
+ 			</p>
+ 			<ol>
+ 				<li>Editable content.</li>
+ 				<li>Multiple widgets.</li>
+ 				<li>A widget that utilizes arrow keys in its interaction model, such as a radio group or slider. </li>
+ 			</ol>
+ 			<p>Following are common keyboard conventions for <span class="underline">disabling and restoring grid navigation functions</span>. </p>
+ 			<ul>
+ 				<li>
+ 					<kbd>Enter</kbd>: Disables grid navigation and :
+ 					<ul>
+ 						<li>
+ 							If the cell contains editable content, places focus in an input field, such as a textbox. <br>
+ 							If the input is a single-line text field, a subsequent press of <kbd>Enter</kbd> may either restore grid navigation functions or move focus to an input field in a neighboring cell.
+ 						</li>
+ 						<li>
+ 							If the cell contains one or more widgets, places focus on the first widget.
+ 						</li>
+ 					</ul>
+ 				</li>
+ 				<li>
+ 					<kbd>F2</kbd>: 
+ 					<ul>
+ 						<li>
+ 							If the cell contains editable content, places focus in an input field, such as a textbox. <br>
+ 							A subsequent press of <kbd>F2</kbd> restores grid navigation functions.
+ 						</li>
+ 						<li>
+ 							If the cell contains one or more widgets, places focus on the first widget. <br>
+ 							A subsequent press of <kbd>F2</kbd> restores grid navigation functions.
+ 						</li>
+ 					</ul>
+ 				</li>
+ 				<li>
+ 					<kbd>Alphanumeric keys</kbd>
+ 					: If the cell contains editable content, places focus in an input field, such as a textbox.
+ 				</li>
+ 			</ul>
+			
+			<p>When grid navigation is disabled, conventional changes to navigation behaviros include: </p>
+			<ul>
+				<li>
+					<kbd>Escape</kbd>
+					: Restores grid navigation. If content was being edited, it may also undo edits.
+				</li>
+				<li>
+					<kbd>Right Arrow or Down Arrow</kbd>
+					: If the cell contains multiple widgets, moves focus to the next widget inside the cell, optionally wrapping to the first widget if focus is on the last widget. Otherwise, passes the key event to the focused widget.
+				</li>
+				<li>
+					<kbd>Left Arrow or Up Arrow</kbd>
+					: If the cell contains multiple widgets, moves focus to the previous widget inside the cell, optionally wrapping to the first widget if focus is on the ast widget. Otherwise, passes the key event to the focused widget. 
+				</li>
+				<li>
+					<kbd>Tab</kbd>
+					: Moves focus to the next widget in the grid. Optionally, the focus movement may wrap inside an single cell or within the grid itself.
+				</li>
+				<li>
+					<kbd>Shieft + Tab</kbd>
+					: Moves focus to the previous widget in the grid. Optionally, the focus movement may wrap inside a single cell or within the grid itself.
+				</li>
+			</ul>
 
 		</section>
 
 		<section>
+			<h2>WAI-ARIA Roles, States, and Properties</h2>
+		</section>
+
+		<section>
 			<h2>Example</h2>
-			<style>
-				
-			</style>
-			<div class="demo">	
-				
-			</div>
-				
+			<ul>
+				<li><a href="grid-layout.html" target="_blank">Layout Grid Examples</a></li>
+			</ul>
 		</section>
 
 		
