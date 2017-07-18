@@ -37,8 +37,8 @@
 					}
 				</style>
 
-				<h3 id="ex1-label">Related Documents</h3>
-				<div role="grid" class="list-links" aria-labelldby="ex1-label" data-wrap-cols="true" data-wrap-rows="true" data-restructure="ture">
+				<h3 id="ex1Label">Related Documents</h3>
+				<div role="grid" class="list-links" aria-labelldby="ex1Label" data-wrap-cols="true" data-wrap-rows="true" data-restructure="ture">
 					<div role="row">
 						<span role="gridcell" class="list-link">
 							<a tabindex="0" href="">Link 1</a>
@@ -65,7 +65,10 @@
 
 					var Grid = function( gridnode ){
 						this.node = gridnode;
-						this.cell = Array.prototype.slice.call( this.node.querySelectorAll('[role="gridcell"]') );
+						this.updateCells();
+						// this.cells = Array.prototype.slice.call( this.node.querySelectorAll('[role="gridcell"]') );
+						this.updateRows();	
+						// this.rows = Array.prototype.slice.call( this.node.querySelectorAll('[role="row"]') );
 					};
 					Grid.prototype = {
 						init : function(){
@@ -74,24 +77,35 @@
 						keydownEventListener : function( event ){
 							var key = event.which || event.keyCode;
 							switch( key ){
-								case keyCodes.RIGHT :
-									this.index = this.cell.indexOf( event.target.parentNode );
-									if( this.index != this.cell.length-1 ){
-										this.cell[++this.index].querySelector('[tabindex]').focus();
+								case KEYCODES.RIGHT :
+									this.index = this.cells.indexOf( event.target.parentNode );
+									if( this.index != this.cells.length-1 ){
+										this.cells[++this.index].querySelector('[tabindex]').focus();
 									} 
 									break;
-								case keyCodes.LEFT :
-									this.index = this.cell.indexOf( event.target.parentNode );
+								case KEYCODES.LEFT :
+									this.index = this.cells.indexOf( event.target.parentNode );
 									if( this.index != 0 ){
-										this.cell[--this.index].querySelector('[tabindex]').focus();
+										this.cells[--this.index].querySelector('[tabindex]').focus();
 									} 
+									break;
+								case KEYCODES.HOME : 
+									this.cells[0].querySelector('[tabindex]').focus();
+									break;
+								case KEYCODES.END : 
+									this.cells[this.cells.length-1].querySelector('[tabindex]').focus();
 									break;
 							}
+						},
+						updateCells : function(){
+							this.cells = Array.prototype.slice.call( this.node.querySelectorAll('[role="gridcell"]') );
+						},
+						updateRows : function(){
+							this.rows = Array.prototype.slice.call( this.node.querySelectorAll('[role="row"]') );
 						}
 					};
 
-
-					var keyCodes = {
+					var KEYCODES = {
 						BACKSPACE: 8,
 						TAB: 9,
 						RETURN: 13,
@@ -145,88 +159,180 @@
 		<section>
 			<h2>Example 2 : Pill List For a List of Message Recipients</h2>
 			<div id="ex2">
-				<div class="recipient-list">
-					<span id="send-to-label">Send To :</span>
-					<div role="grid" class="pill-list" aria-labelledby="send-to-label" data-wrap-cols="true">
+				<style>
+					.accessible-elem {
+						clip: rect(1px 1px 1px 1px);
+						clip: rect(1px, 1px, 1px, 1px);
+						height: 1px;
+						overflow: hidden;
+						position: absolute;
+						white-space: nowrap;
+						width: 1px;
+					}
+					.recipient-list {
+						background: #eee;
+						border: 1px solid #ddd;
+						margin-bottom: 10px;
+					  padding: 5px 15px;
+					  position: relative;
+					}
+
+					#sendToLabel {
+						font-size: 14px;
+						font-weight: bold;
+						position: absolute;
+						top: 1.2em;
+					}
+
+					.pill-list {
+						background: white;
+						border: 1px solid #ccc;
+						font-size: 0;
+						margin-bottom: 5px;
+						margin-left: 65px;
+						min-height: 31px;
+						padding: 0 5px 5px;
+					}
+
+					.pill-item {
+					  background: #eee;
+					  border: 1px solid #acc1e4;
+					  border-radius: 2px;
+					  color: #acc1e4;
+					  display: inline-block;
+						font-size: 14px;
+					  margin: 5px 5px 0 0;
+					  padding: .3em;
+					}
+
+					.pill-name {
+					  text-decoration: none;
+					}
+
+					.pill-remove {
+					  cursor: default;
+					  margin-left: 10px;
+					}
+
+					#recipientForm {
+						margin-left: 65px;
+					}
+
+					#addRecipientInput {
+					  font-size: 14px;
+					}
+				</style>
+
+				<div id="ex2" class="recipient-list">
+					<span id="sendToLabel">Send To :</span>
+					<div role="grid" class="pill-list" aria-labelledby="sendToLabel" data-wrap-cols="true">
 						<div role="row" class="pill-item" data-id="1">
 							<span role="gridcell">
-								<a href="#" id="r1" class="pill-name" tabindex="-1">Recipient Name 1</a>
+								<a id="r1" class="pill-name" tabindex="0" href="#">Recipient Name 1</a>
 							</span>
 							<span role="gridcell">
-								<span id="rb1" class="pill-remove" tabindex="-1" role="button" aria-label="Remove" aria-labelledby="rb1 r1">X</span>
+								<span id="remove1" class="pill-remove" tabindex="-1" role="button" aria-label="Remove" aria-labelledby="remove1 r1">X</span>
+							</span>
+						</div>
+						<div role="row" class="pill-item" data-id="2">
+							<span role="gridcell">
+								<a id="r2" class="pill-name" tabindex="-1" href="#">Recipient Name 2</a>
+							</span>
+							<span role="gridcell">
+								<span id="remove2" class="pill-remove" tabindex="-1" role="button" aria-label="Remove" aria-labelledby="remove2 r2">X</span>
 							</span>
 						</div>
 					</div>
+					<div id="recipientForm">
+						<input id="addRecipientInput" type="text" aria-label="Add Recipient" placeholder="New Recipient Name">
+						<button id="addRecipientButton">Add</button>
+						<div class="accessible-elem">
+							Last change to recipient list : 
+							<span aria-live="polite" aria-relevant="text" id="form-action-text"></span>
+						</div>
+					</div>
 				</div>
-			  <!-- <div class="recipient-list">
-			    <span id="send_to_label">
-			      Send To:
-			    </span>
-			    <div role="grid"
-			       class="pill-list"
-			       aria-labelledby="send_to_label"
-			       data-wrap-cols="true">
-			      <div role="row"
-			         class="pill-item"
-			         data-id="1">
-			        <span role="gridcell">
-			          <a id="r1"
-			           class="pill-name"
-			           tabindex="-1"
-			           href="#">
-			            Recipient Name 1
-			          </a>
-			        </span>
-			        <span role="gridcell">
-			          <span id="rb1"
-			              class="pill-remove"
-			              tabindex="-1"
-			              role="button"
-			              aria-label="Remove"
-			              aria-labelledby="rb1 r1">
-			             X 
-			          </span>
-			        </span>
-			      </div>
-			      <div role="row"
-			         class="pill-item"
-			         data-id="2">
-			        <span role="gridcell">
-			          <a id="r2"
-			           class="pill-name"
-			           tabindex="-1"
-			           href="#">
-			            Recipient Name 2
-			          </a>
-			        </span>
-			        <span role="gridcell">
-			          <span id="rb2"
-			              class="pill-remove"
-			              tabindex="-1"
-			              role="button"
-			              aria-label="Remove"
-			              aria-labelledby="rb2 r2">
-			             X 
-			          </span>
-			        </span>
-			      </div>
-			    </div>
-			    <div id="recipient-form">
-			      <input id="add-recipient-input"
-			           type="text"
-			           aria-label="Add Recipient"
-			           placeholder="New Recipient Name">
-			      <button id="add-recipient-button">
-			        Add
-			      </button>
-			      <div class="accessible_elem">
-			         Last change to recipient list: 
-			        <span aria-live="polite"
-			            aria-relevant="text"
-			            id="form-action-text">
-			      </div>
-			    </div>
-			  </div> -->
+
+				<script>
+
+					Grid.prototype.getRemoveDataId = function( element ){
+						var str = Array.prototype.slice.call( element.getAttribute('id').split(''));
+						var idx = str[str.length-1] ;
+						this.removeRow( idx );
+					};
+
+					Grid.prototype.removeRow = function( idx ){
+						this.rows.forEach( function(element, index, array) {
+							if( element.getAttribute('data-id') == idx ){
+								element.remove();
+							}
+						});
+					};
+
+
+					var ex2GridElement = document.getElementById('ex2').querySelector('[role="grid"]');
+					var ex2Grid = new Grid( ex2GridElement );
+					ex2Grid.init();
+
+					ex2Grid.deleteButtonClickEventListener = function(){
+						this.cells.forEach(function(item, index, array){
+							var button = item.querySelector('[role="button"]');
+
+							if( button ){
+								button.addEventListener('click', this.getRemoveDataId.bind(this, button ) );
+							}
+
+						}.bind(ex2Grid));
+					}
+					ex2Grid.drawRow = function( name, dataID ){
+						var row = document.createElement('div');
+						row.setAttribute('role','row');
+						row.className = 'pill-item';
+						row.setAttribute('data-id', dataID);
+
+						var gridcell1 = document.createElement('span');
+						gridcell1.setAttribute('role', 'gridcell');
+						var gridcell1c = document.createElement('a');
+						gridcell1c.className = 'pill-name';
+						gridcell1c.setAttribute('id', 'r' + dataID );
+						gridcell1c.setAttribute('tabindex', '-1');
+						gridcell1c.setAttribute('href', '#');
+						gridcell1c.textContent = name;
+						gridcell1.appendChild( gridcell1c );
+
+						var gridcell2 = document.createElement('span');
+						gridcell2.setAttribute('role', 'gridcell');
+						var gridcell2c = document.createElement('span');
+						gridcell2c.className = 'pill-remove';
+						gridcell2c.setAttribute('id', 'remove' + dataID );
+						gridcell2c.setAttribute('tabindex', '-1');
+						gridcell2c.setAttribute('role', 'button');
+						gridcell2c.setAttribute('aria-label', 'Remove');
+						gridcell2c.setAttribute('aria-labelledby', 'remove' + dataID + ' r' + dataID);
+						gridcell2c.textContent = 'X';
+						gridcell2.appendChild( gridcell2c );
+
+						row.appendChild(gridcell1);
+						row.appendChild(gridcell2);
+						this.node.appendChild(row);
+					}
+
+					ex2Grid.deleteButtonClickEventListener();
+					
+					document.getElementById('addRecipientButton').addEventListener('click', function(){
+						var name = document.getElementById('addRecipientInput').value;
+						ex2Grid.updateRows();
+						var dataId = Number( ex2Grid.rows[ ex2Grid.rows.length-1 ].getAttribute('data-id') ) + 1;
+						ex2Grid.drawRow( name, dataId );
+
+						ex2Grid.updateCells();
+						ex2Grid.updateRows();
+						ex2Grid.deleteButtonClickEventListener();
+
+					});
+
+
+				</script>
 			</div>
 		</section>
 	</main>
