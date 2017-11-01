@@ -122,9 +122,9 @@
 						DELETE: 46
 					};
 
-					var ex1Grid = document.getElementById('ex1').querySelector('[role="grid"]');
-					var newEx1Grid = new Grid( ex1Grid );
-					newEx1Grid.init();
+					var ex1GridCompnt = document.getElementById('ex1').querySelector('[role="grid"]');
+					var ex1Grid = new Grid( ex1GridCompnt );
+					ex1Grid.init();
 
 				</script>
 			</div>
@@ -270,8 +270,8 @@
 					};
 
 
-					var ex2GridElement = document.getElementById('ex2').querySelector('[role="grid"]');
-					var ex2Grid = new Grid( ex2GridElement );
+					var ex2GridCompnt = document.getElementById('ex2').querySelector('[role="grid"]');
+					var ex2Grid = new Grid( ex2GridCompnt );
 					ex2Grid.init();
 
 					ex2Grid.deleteButtonClickEventListener = function(){
@@ -318,7 +318,7 @@
 					}
 
 					ex2Grid.deleteButtonClickEventListener();
-					
+
 					document.getElementById('addRecipientButton').addEventListener('click', function(){
 						var name = document.getElementById('addRecipientInput').value;
 						ex2Grid.updateRows();
