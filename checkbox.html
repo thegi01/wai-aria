@@ -258,14 +258,14 @@
 					this.compnt = compnt;
 					this.checkboxes = [];
 					this.state = {
-						checked : 'mixed',
+						cRole : 'mixed',
 						checkedCount : 0
 					}
 				};
 				CheckboxMix.prototype = {
 					init : function(){
 						this.getCheckboxes();
-						this.getCheckboxesValue();
+						this.getChecked();
 						this.addListener();
 					},
 					getCheckboxes : function(){
@@ -275,7 +275,32 @@
 							this.checkboxes.push( document.getElementById( c ) );
 						}.bind(this));
 					},
-					getCheckboxesValue : function(){
+					addListener: function() {
+						this.checkboxes.forEach(function( c ){
+							c.addEventListener('change', this.handleChange.bind(this));
+						}.bind(this));
+						this.compnt.addEventListener( 'click', this.handleClick.bind(this) );
+						this.compnt.addEventListener( 'keydown', this.handleKeydown.bind(this) );
+					},
+					handleChange(){
+						this.getChecked();
+						this.setController();
+					},
+					handleClick : function(){
+						this.handleController();
+						this.changeCheckboxes();
+					},
+					handleKeydown : function( event ){
+						var key = event.which || event.keyCode;
+						switch( key ){
+							case keyCodes.space :
+							case keyCodes.enter :
+								event.preventDefault();
+								this.handleClick();
+								break;
+						}
+					},
+					getChecked : function(){
 						let _index = 0;
 						this.checkboxes.forEach(function( c ){
 							c.lastChecked = c.checked;
@@ -285,72 +310,48 @@
 						}.bind(this));
 						this.state.checkedCount = _index;
 					},
-					addListener: function() {
-						this.checkboxes.forEach(function( c ){
-							c.addEventListener('change', this.handleChange.bind(this));
-						}.bind(this));
-						this.compnt.addEventListener( 'click', this.handleClick.bind(this) );
-						this.compnt.addEventListener( 'keydown', this.handleKeydown.bind(this) );
-					},
-					handleChange(){
-						this.getCheckboxesValue();
-						this.setController();
-					},
 					setController(){
 						var _count = this.state.checkedCount;
 						if( _count === 0){
-							this.state.checked = false;
+							this.state.cRole = false;
 						} else if( _count === this.checkboxes.length){
-							this.state.checked = true;
+							this.state.cRole = true;
 						} else {
-							this.state.checked = 'mixed';
+							this.state.cRole = 'mixed';
 						}
-						this.compnt.setAttribute('aria-checked', this.state.checked);
+						this.compnt.setAttribute('aria-checked', this.state.cRole);
 					},
-					handleClick : function(){
-						this.handleController();
-						this.changeCheckboxes();
-					},
+					
 					handleController : function(){
 						switch( this.compnt.getAttribute('aria-checked') ){
 							case 'mixed' :
-								this.state.checked =  true;
+								this.state.cRole =  true;
 								break;
 							case 'true' :
-								this.state.checked = false;
+								this.state.cRole = false;
 								break;
 							case 'false' :
 								if( this.state.checkedCount ) {
-									this.state.checked = 'mixed';
+									this.state.cRole = 'mixed';
 								} else {
-									this.state.checked = true;
+									this.state.cRole = true;
 								}
 								break;
 						}
-						this.compnt.setAttribute('aria-checked', this.state.checked);
+						this.compnt.setAttribute('aria-checked', this.state.cRole);
 					},
 					changeCheckboxes : function(){
-						switch( this.state.checked ) {
+						switch( this.state.cRole ) {
 							case true :
 							case false :
 								this.checkboxes.forEach(function( c ){
-									c.checked = this.state.checked;
+									c.checked = this.state.cRole;
 								}.bind(this));
 								break;
 							case 'mixed' :
 								this.checkboxes.forEach(function( c ){
 									c.checked = c.lastChecked;
 								});
-								break;
-						}
-					},
-					handleKeydown : function( event ){
-						var key = event.which || event.keyCode;
-						switch( key ){
-							case keyCodes.space :
-							case keyCodes.enter :
-								event.preventDefault();
-								this.handleClick();
 								break;
 						}
 					}
