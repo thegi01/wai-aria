@@ -254,25 +254,19 @@
 				</fieldset>
 			</div>
 			<script>
-				var CheckboxTri = function( compnt ){
+				var CheckboxMix = function( compnt ){
 					this.compnt = compnt;
 					this.checkboxes = [];
-					this.state = undefined;
+					this.state = {
+						checked : 'mixed',
+						checkedCount : 0
+					}
 				};
-				CheckboxTri.prototype = {
+				CheckboxMix.prototype = {
 					init : function(){
 						this.getCheckboxes();
-						this.initChecked();
+						this.getCheckboxesValue();
 						this.addListener();
-					},
-					addListener: function() {
-						this.compnt.addEventListener( 'click', this.handleClick.bind(this) );
-						this.compnt.addEventListener( 'keydown', this.handleKeydown.bind(this) );
-						this.checkboxes.forEach(function( c ){
-							c.addEventListener('change', function(){
-								c.lastChecked = c.checked
-							});
-						}.bind(this));
 					},
 					getCheckboxes : function(){
 						var _c = this.compnt.getAttribute('aria-controls');
@@ -281,49 +275,66 @@
 							this.checkboxes.push( document.getElementById( c ) );
 						}.bind(this));
 					},
-					initChecked : function(){
+					getCheckboxesValue : function(){
+						let _index = 0;
 						this.checkboxes.forEach(function( c ){
 							c.lastChecked = c.checked;
+							if(c.checked){
+								_index++;
+							}
 						}.bind(this));
+						this.state.checkedCount = _index;
+					},
+					addListener: function() {
+						this.checkboxes.forEach(function( c ){
+							c.addEventListener('change', this.handleChange.bind(this));
+						}.bind(this));
+						this.compnt.addEventListener( 'click', this.handleClick.bind(this) );
+						this.compnt.addEventListener( 'keydown', this.handleKeydown.bind(this) );
+					},
+					handleChange(){
+						this.getCheckboxesValue();
+						this.setController();
+					},
+					setController(){
+						var _count = this.state.checkedCount;
+						if( _count === 0){
+							this.state.checked = false;
+						} else if( _count === this.checkboxes.length){
+							this.state.checked = true;
+						} else {
+							this.state.checked = 'mixed';
+						}
+						this.compnt.setAttribute('aria-checked', this.state.checked);
 					},
 					handleClick : function(){
-						this.changeController();
+						this.handleController();
 						this.changeCheckboxes();
 					},
-					changeController : function(){
-						var getChecked = this.compnt.getAttribute('aria-checked');
-						switch( getChecked ){
+					handleController : function(){
+						switch( this.compnt.getAttribute('aria-checked') ){
 							case 'mixed' :
-								this.state =  true;
+								this.state.checked =  true;
 								break;
 							case 'true' :
-								this.state = false;
+								this.state.checked = false;
 								break;
 							case 'false' :
-								if( this.hasLastChecked() ) {
-									this.state = 'mixed';
+								if( this.state.checkedCount ) {
+									this.state.checked = 'mixed';
 								} else {
-									this.state = true;
+									this.state.checked = true;
 								}
 								break;
 						}
-						this.compnt.setAttribute('aria-checked', this.state);
-					},
-					hasLastChecked : function(){
-						var count = 0;
-						this.checkboxes.forEach(function( c ){
-							if( c.lastChecked ){
-								count++;
-							}
-						}.bind(this));
-						return count > 0;
+						this.compnt.setAttribute('aria-checked', this.state.checked);
 					},
 					changeCheckboxes : function(){
-						switch( this.state ) {
+						switch( this.state.checked ) {
 							case true :
 							case false :
 								this.checkboxes.forEach(function( c ){
-									c.checked = this.state;
+									c.checked = this.state.checked;
 								}.bind(this));
 								break;
 							case 'mixed' :
@@ -345,8 +356,8 @@
 					}
 				};
 
-				var newCheckboxTri = new CheckboxTri( document.getElementById('checkbox-controller') );
-				newCheckboxTri.init();
+				var newCheckboxMix = new CheckboxMix( document.getElementById('checkbox-controller') );
+				newCheckboxMix.init();
 				
 			</script>
 		</section>
