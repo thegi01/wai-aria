@@ -73,100 +73,101 @@
 					}
 			    </style>
 				<dl class="accordion" id="accordion">
+
 					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="accordion-button-0" aria-controls="accordion-region-0" aria-expanded="false">Button 1</a>
+						<a role="button" href="#" id="accordion-button-0" aria-controls="accordion-region-0" aria-expanded="false">Button 0</a>
 					</dt>
 					<dd role="region" id="accordion-region-0" aria-labelledby="accordion-button-0" aria-hidden="true">
+						resigon 0 <br>
+						<a href="">test</a>
+					</dd>
+
+					<dt role="heading" aria-level="3">
+						<a role="button" href="#" id="accordion-button-1" aria-controls="accordion-region-1" aria-expanded="false">Button 1</a>
+					</dt>
+					<dd role="region" id="accordion-region-1" aria-labelledby="accordion-button-1" aria-hidden="true">
 						resigon 1 <br>
 						<a href="">test</a>
 					</dd>
+
 					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="accordion-button-1" aria-controls="accordion-region-1" aria-expanded="false">Button 2</a>
+						<a role="button" href="#" id="accordion-button-2" aria-controls="accordion-region-2" aria-expanded="false">Button 2</a>
 					</dt>
-					<dd role="region" id="accordion-region-1" aria-labelledby="accordion-button-1" aria-hidden="true">
+					<dd role="region" id="accordion-region-2" aria-labelledby="accordion-button-2" aria-hidden="true">
 						resigon 2 <br>
 						<a href="">test</a>
 					</dd>
-					<dt role="heading" aria-level="3">
-						<a role="button" href="#" id="accordion-button-2" aria-controls="accordion-region-2" aria-expanded="false">Button 3</a>
-					</dt>
-					<dd role="region" id="accordion-region-2" aria-labelledby="accordion-button-2" aria-hidden="true">
-						resigon 3 <br>
-						<a href="">test</a>
-					</dd>
+
 				</dl>
 				<script>
 
-					/* 2017.06.21 js 재수정 */
-					var Accordion = function( accordionompnt ){
-						this.compnt = accordionompnt;
+					var Accordion = function( compnt ){
+						this.compnt = compnt;
 						this.allowToggle = true;
+						this.headings = '';
+						this.headingExpanded = '';
 						this.getElements();
 					};
 					Accordion.prototype = {
 						getElements : function(){
-							this.buttons = this.compnt.querySelectorAll('[role="button"]');
-							this.expandedHeading = this.buttons[0];
+							this.headings = this.compnt.querySelectorAll('[role="button"]');
+							this.headingExpanded = this.headings[0];
+							this.bindListener();
 						},
-						init : function( index ){
-							index = index ||  0;
-							this.expand( this.buttons[index] );
-							this.expandedHeading = this.buttons[index];
-
-							this.bind();
-						},
-						bind : function(){
-							for(var i=0 ; i<this.buttons.length ; i++){
-								this.addListeners(i);
+						bindListener : function(){
+							for(var i=0 ; i<this.headings.length ; i++){
+								let heading = this.headings[i];
+								heading.addEventListener( 'click', this.handleClick.bind(this, heading) );
+								heading.addEventListener( 'keydown', this.handleKeydown.bind(this, heading) );
 							}
 						},
-						addListeners : function( index ){
-							var button = this.buttons[index];
-							button.addEventListener( 'click', this.clickEventListener.bind(this, button) );
-							button.addEventListener( 'keydown', this.keydownEventListener.bind(this, button) );
-						},
-						clickEventListener : function( button ){
+						handleClick : function( heading ){
 							event.preventDefault();
-							this.toggle( button );
+							this.toggle( heading );
 						},
-						keydownEventListener : function( button ){
+						handleKeydown : function( heading ){
 							var key = event.keyCode;
 							switch( key ) {
 								case keyCodes.space :
 									event.preventDefault();
-									this.toggle( button );
+									this.toggle( heading );
 									break;
 							}
 						},
-						expand : function( button ){
-							button.setAttribute('aria-expanded', 'true');
+						expand : function( heading ){
+							heading.setAttribute('aria-expanded', 'true');
 							if(!this.allowToggle) {
-								button.setAttribute('aria-disabled', 'true');
+								heading.setAttribute('aria-disabled', 'true');
 							}
-							var controls = button.getAttribute('aria-controls');
-							document.getElementById(controls).setAttribute('aria-hidden', 'false');
+							var region = heading.getAttribute('aria-controls');
+							document.getElementById(region).setAttribute('aria-hidden', 'false');
 						},
 						collapse : function(){
-							var button = this.expandedHeading;
-							if(button){
-								button.setAttribute('aria-expanded', 'false');
+							var heading = this.headingExpanded;
+							if(heading){
+								heading.setAttribute('aria-expanded', 'false');
 								if(!this.allowToggle){
-									button.setAttribute('aria-disabled', 'false');
+									heading.setAttribute('aria-disabled', 'false');
 								}
-								var controls = button.getAttribute('aria-controls');
-								document.getElementById(controls).setAttribute('aria-hidden', 'true');
+								var region = heading.getAttribute('aria-controls');
+								document.getElementById(region).setAttribute('aria-hidden', 'true');
 							}
 						},
-						toggle : function( button ){
-							var isOpen = button.getAttribute('aria-expanded') == 'true' ? true : false;
+						toggle : function( heading ){
+							var isOpen = heading.getAttribute('aria-expanded') == 'true' ? true : false;
 							if(isOpen && this.allowToggle){
-								this.collapse( this.expandedHeading );
-								this.expandedHeading = null;
+								this.collapse( this.headingExpanded );
+								this.headingExpanded = null;
 							} else if(!isOpen) {
-								this.expand( button );
+								this.expand( heading );
 								this.collapse();
-								this.expandedHeading = button;
+								this.headingExpanded = heading;
 							}
+						},
+						init : function( index ){
+							index = index ||  0;
+							this.expand( this.headings[index] );
+							this.headingExpanded = this.headings[index];
 						}
 					}
 
