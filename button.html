@@ -80,9 +80,14 @@
 				}
 			</style>
 			<div class="demo">	
+
+
+				<!-- Button By Div Element -->
 				<section class="ex">
 					<h4>div element</h4>
-					<div tabindex="0" role="button" id="button-print">Print Page</div>
+
+					<div tabindex="0" role="button" id="buttonPrint">Print Page</div>
+
 					<h5>Accessibility Feature</h5>
 					<ul>
 						<li>div element with role="button". </li>
@@ -91,9 +96,14 @@
 						<li>div element has tabindex="0" to become part of tab order of the page.</li>
 					</ul>
 				</section>
+
+
+				<!-- Button By Span Element -->
 				<section class="ex">
 					<h4>span element</h4>
-					<span tabindex="0" role="button" id="button-toggle" aria-pressed="false">Mute</span>
+
+					<span tabindex="0" role="button" id="buttonToggle" aria-pressed="false">Mute</span>
+
 					<h5>Accessibility Feature</h5>
 					<ul>
 						<li>span element with role="button".</li>
@@ -102,9 +112,14 @@
 						<li>Toggle status using the aria-pressed attribute.</li>
 					</ul>
 				</section>
+
+
+				<!-- button By A Element -->
 				<section class="ex">
 					<h4>a element</h4>
-					<a tabindex="0" role="button" id="button-alert">Show alert</a>
+
+					<a tabindex="0" role="button" id="buttonAlert">Show alert</a>
+
 					<h5>Accessibility Feature</h5>
 					<ul>
 						<li>a element has onclick event to handle mouse clicks.</li>
@@ -112,6 +127,8 @@
 						<li>a element has tabindex="0" to become part of tab order of the page.</li>
 					</ul>
 				</section>
+
+
 			</div>
 			<script>
 				var keyCodes = {
@@ -119,7 +136,7 @@
 				    space : 32
 				};
 				
-				var buttonPrintEventHandler = function( event ){
+				var buttonPrintHandleEvents = function( event ){
 					var type = event.type;
 					if( type === 'click'){
 						window.print();
@@ -131,7 +148,7 @@
 						}
 					}
 				};
-				var buttonToggleEventHandler = function( event ){
+				var buttonToggleHandleEvents = function( event ){
 					var type = event.type;
 					if( type === 'click' ){
 						buttonToggleState( event );
@@ -148,7 +165,7 @@
 					var newState = ( button.getAttribute('aria-pressed') === 'true' ) ? 'false' : 'true';
 					button.setAttribute('aria-pressed', newState);
 				};
-				var buttonAlertEventHandler = function( event ){
+				var buttonAlertHandleEvents = function( event ){
 					var type = event.type;
 					var message = 'Hej, hello, ciao, こんにちは';
 					if( type === 'click' ){
@@ -162,14 +179,14 @@
 					}
 				};
 
-				document.getElementById('button-print').addEventListener( 'click', buttonPrintEventHandler );
-				document.getElementById('button-print').addEventListener( 'keydown', buttonPrintEventHandler );
+				document.getElementById('buttonPrint').addEventListener( 'click', buttonPrintHandleEvents );
+				document.getElementById('buttonPrint').addEventListener( 'keydown', buttonPrintHandleEvents );
 
-				document.getElementById('button-toggle').addEventListener( 'click', buttonToggleEventHandler );
-				document.getElementById('button-toggle').addEventListener( 'keydown', buttonToggleEventHandler );
+				document.getElementById('buttonToggle').addEventListener( 'click', buttonToggleHandleEvents );
+				document.getElementById('buttonToggle').addEventListener( 'keydown', buttonToggleHandleEvents );
 
-				document.getElementById('button-alert').addEventListener( 'click', buttonAlertEventHandler );
-				document.getElementById('button-alert').addEventListener( 'keydown', buttonAlertEventHandler );
+				document.getElementById('buttonAlert').addEventListener( 'click', buttonAlertHandleEvents );
+				document.getElementById('buttonAlert').addEventListener( 'keydown', buttonAlertHandleEvents );
 
 			</script>
 		</section>
